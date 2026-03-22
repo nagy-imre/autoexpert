@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class CarService {
   private apiUrl = 'http://localhost:5000/api/cars';
+  private rentalUrl = 'http://localhost:5000/api/rentals';
+  private inquiryUrl = 'http://localhost:5000/api/inquiries';
 
   constructor(private http: HttpClient) { }
 
@@ -17,5 +19,13 @@ export class CarService {
 
   getCarById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
+  createRental(data: any): Observable<any> {
+    return this.http.post<any>(this.rentalUrl, data);
+  }
+
+  createInquiry(data: any): Observable<any> {
+    return this.http.post<any>(this.inquiryUrl, data);
   }
 }

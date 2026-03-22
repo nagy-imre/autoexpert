@@ -1,12 +1,10 @@
 @if (car) {
   <div class="container my-5">
 
-    <!-- Vissza gomb -->
     <button class="btn btn-outline-dark rounded-pill mb-4" (click)="goBack()">
       ← Vissza a listához
     </button>
 
-    <!-- FELSŐ SOR: Kép + Adatok -->
     <div class="row g-4 mb-4">
 
       <!-- BAL: Kép -->
@@ -103,14 +101,11 @@
 
     <!-- ALSÓ SOR: Leírás + Elérhetőség/Ár -->
     <div class="row g-4">
-
-      <!-- BAL: Leírás -->
       <div class="col-md-6">
         <h5 class="fw-bold mb-2">Leírás</h5>
         <p class="text-secondary">{{ car.description || 'Nincs leírás megadva ehhez a járműhöz.' }}</p>
       </div>
 
-      <!-- JOBB: Elérhetőség + Ár + Gomb -->
       <div class="col-md-6">
         <ul class="list-group list-group-flush mb-4">
           <li class="list-group-item px-0 d-flex justify-content-between">
@@ -133,21 +128,140 @@
               </h4>
             </div>
 
-            @if (car.isAvailable) {
-              @if (car.purpose === 'rent') {
-                <button class="btn btn-success rounded-pill px-4">Bérlés</button>
-              } @else {
-                <button class="btn btn-primary rounded-pill px-4">Érdeklődöm</button>
-              }
+            @if (car.purpose === 'rent') {
+              <button class="btn btn-success rounded-pill px-4" (click)="openRentalModal()">Érdeklődöm</button>
             } @else {
-              <button class="btn btn-secondary disabled rounded-pill px-4">Foglalt</button>
+              <button class="btn btn-primary rounded-pill px-4" (click)="openSaleModal()">Érdeklődöm</button>
             }
           </li>
         </ul>
       </div>
-
     </div>
+
   </div>
+
+  <!-- BÉRLŐS MODAL -->
+  @if (showRentalModal) {
+    <div class="modal-backdrop" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;"
+      (click)="closeRentalModal()">
+    </div>
+    <div class="modal-box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 1001; background: white; border-radius: 16px; padding: 2rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;">
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">Vegye fel velünk a kapcsolatot!</h4>
+        <button class="btn btn-sm btn-outline-secondary rounded-pill" (click)="closeRentalModal()">✕</button>
+      </div>
+      <p class="text-muted mb-2">Töltse ki az alábbi adatokat és hamarosan visszajelzünk, vagy keressen minket telefonon!</p>
+      <p class="mb-4 text-center">
+        <a [href]="'tel:' + rentPhone" class="fw-semibold text-success fs-5">{{ rentPhone }}</a>
+      </p>
+
+      <form [formGroup]="rentalForm">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Teljes név *</label>
+          <input type="text" class="form-control rounded-3" formControlName="customerName" placeholder="pl. Bérlő Lajos">
+          @if (rentalForm.get('customerName')?.invalid && rentalForm.get('customerName')?.touched) {
+            <div class="text-danger small mt-1">A név megadása kötelező.</div>
+          }
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email cím *</label>
+          <input type="email" class="form-control rounded-3" formControlName="customerEmail" placeholder="pl. berlolajos@pelda.hu">
+          @if (rentalForm.get('customerEmail')?.invalid && rentalForm.get('customerEmail')?.touched) {
+            <div class="text-danger small mt-1">Érvényes email cím megadása kötelező.</div>
+          }
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Telefonszám *</label>
+          <input type="tel" class="form-control rounded-3" formControlName="customerPhone" placeholder="pl. +36 30 123 4567">
+          @if (rentalForm.get('customerPhone')?.invalid && rentalForm.get('customerPhone')?.touched) {
+            <div class="text-danger small mt-1">A telefonszám megadása kötelező.</div>
+          }
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label class="form-label fw-semibold">Bérlés kezdete *</label>
+            <input type="date" class="form-control rounded-3" formControlName="startDate">
+            @if (rentalForm.get('startDate')?.invalid && rentalForm.get('startDate')?.touched) {
+              <div class="text-danger small mt-1">Kötelező mező.</div>
+            }
+          </div>
+          <div class="col">
+            <label class="form-label fw-semibold">Bérlés vége *</label>
+            <input type="date" class="form-control rounded-3" formControlName="endDate">
+            @if (rentalForm.get('endDate')?.invalid && rentalForm.get('endDate')?.touched) {
+              <div class="text-danger small mt-1">Kötelező mező.</div>
+            }
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Megjegyzés <span class="text-muted fw-normal">(opcionális)</span></label>
+          <textarea class="form-control rounded-3" formControlName="message" rows="3"
+            placeholder="Ha van bármilyen kérése vagy kérdése, írja le itt..."></textarea>
+        </div>
+        <button class="btn btn-success w-100 rounded-pill py-2 fw-semibold"
+          (click)="submitRental()"
+          [disabled]="rentalForm.invalid || rentalSending">
+          {{ rentalSending ? 'Küldés...' : 'Érdeklődés elküldése' }}
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- ELADÓS MODAL -->
+  @if (showSaleModal) {
+    <div class="modal-backdrop" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;"
+      (click)="closeSaleModal()">
+    </div>
+    <div class="modal-box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 1001; background: white; border-radius: 16px; padding: 2rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;">
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">Érdekli ez az autó?</h4>
+        <button class="btn btn-sm btn-outline-secondary rounded-pill" (click)="closeSaleModal()">✕</button>
+      </div>
+      <p class="text-muted mb-2">Töltse ki az alábbi adatokat és hamarosan visszajelzünk, vagy keressen minket telefonon!</p>
+      <p class="mb-4 text-center">
+        <a [href]="'tel:' + salePhone" class="fw-semibold text-primary fs-5">{{ salePhone }}</a>
+      </p>
+
+      <form [formGroup]="saleForm">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Teljes név *</label>
+          <input type="text" class="form-control rounded-3" formControlName="customerName" placeholder="pl. Vevő János">
+          @if (saleForm.get('customerName')?.invalid && saleForm.get('customerName')?.touched) {
+            <div class="text-danger small mt-1">A név megadása kötelező.</div>
+          }
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email cím *</label>
+          <input type="email" class="form-control rounded-3" formControlName="customerEmail" placeholder="pl. vevojanos@pelda.hu">
+          @if (saleForm.get('customerEmail')?.invalid && saleForm.get('customerEmail')?.touched) {
+            <div class="text-danger small mt-1">Érvényes email cím megadása kötelező.</div>
+          }
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Telefonszám *</label>
+          <input type="tel" class="form-control rounded-3" formControlName="customerPhone" placeholder="pl. +36 30 123 4567">
+          @if (saleForm.get('customerPhone')?.invalid && saleForm.get('customerPhone')?.touched) {
+            <div class="text-danger small mt-1">A telefonszám megadása kötelező.</div>
+          }
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Megjegyzés <span class="text-muted fw-normal">(opcionális)</span></label>
+          <textarea class="form-control rounded-3" formControlName="message" rows="3"
+            placeholder="Ha van bármilyen kérése vagy kérdése, írja le itt..."></textarea>
+        </div>
+        <button class="btn btn-primary w-100 rounded-pill py-2 fw-semibold"
+          (click)="submitSale()"
+          [disabled]="saleForm.invalid || saleSending">
+          {{ saleSending ? 'Küldés...' : 'Érdeklődés elküldése' }}
+        </button>
+      </form>
+    </div>
+  }
+
 } @else {
   <div class="container my-5 text-center">
     <div class="spinner-border" role="status"></div>

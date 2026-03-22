@@ -6,6 +6,7 @@ const path = require('path');
 const carRoutes = require('./routes/carRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const rentalRoutes = require('./routes/rentalRoutes');
+const inquiryRoutes = require('./routes/inquiryRoutes');
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.get('/', (req, res) => {
 app.use('/api/cars', carRoutes);
 app.use('/api/uploads', uploadRoutes);
 app.use('/api/rentals', rentalRoutes);
+app.use('/api/inquiries', inquiryRoutes);
 
 module.exports = app;
