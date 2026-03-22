@@ -14,7 +14,7 @@ app.use(express.json());
 
 // --- STATIKUS MAPPA BEÁLLÍTÁSA ---
 // Ez teszi lehetővé, hogy a http://localhost:5000/uploads/kepneve.jpg URL-en betöltődjön a kép
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.get('/', (req, res) => {
   res.json({ message: 'Autókereskedés API fut!' });

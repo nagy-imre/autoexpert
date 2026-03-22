@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const Car = require('../models/Car');
 const CarImage = require('../models/CarImage');
 
@@ -6,10 +8,7 @@ exports.createCar = async (req, res) => {
   try {
     const carData = req.body;
     const newCar = await Car.create(carData, {
-      include: [{
-        model: CarImage,
-        as: 'images'
-      }]
+      include: [{ model: CarImage, as: 'images' }]
     });
     res.status(201).json({ message: 'Autó sikeresen rögzítve!', car: newCar });
   } catch (error) {
@@ -21,17 +20,14 @@ exports.createCar = async (req, res) => {
 // --- 2. Összes autó lekérése (GET, szűréssel) ---
 exports.getCars = async (req, res) => {
   try {
-    const { purpose } = req.query; 
+    const { purpose } = req.query;
     const whereClause = {};
     if (purpose) {
       whereClause.purpose = purpose;
     }
     const cars = await Car.findAll({
       where: whereClause,
-      include: [{
-        model: CarImage,
-        as: 'images' 
-      }],
+      include: [{ model: CarImage, as: 'images' }],
       order: [['createdAt', 'DESC']]
     });
     res.status(200).json(cars);
@@ -46,12 +42,8 @@ exports.getCarById = async (req, res) => {
   try {
     const carId = req.params.id;
     const car = await Car.findByPk(carId, {
-      include: [{
-        model: CarImage,
-        as: 'images'
-      }]
+      include: [{ model: CarImage, as: 'images' }]
     });
-
     if (!car) {
       return res.status(404).json({ message: 'A keresett autó nem található.' });
     }
@@ -67,19 +59,12 @@ exports.updateCar = async (req, res) => {
   try {
     const carId = req.params.id;
     const updateData = req.body;
-
     const car = await Car.findByPk(carId);
-
     if (!car) {
       return res.status(404).json({ message: 'A módosítani kívánt autó nem található.' });
     }
-
     await car.update(updateData);
-
-    res.status(200).json({
-      message: 'Autó adatai sikeresen frissítve!',
-      car: car
-    });
+    res.status(200).json({ message: 'Autó adatai sikeresen frissítve!', car: car });
   } catch (error) {
     console.error('Hiba az autó frissítésekor:', error);
     res.status(400).json({ message: 'Hiba történt az autó frissítésekor.', error: error.message });
@@ -90,26 +75,88 @@ exports.updateCar = async (req, res) => {
 exports.deleteCar = async (req, res) => {
   try {
     const carId = req.params.id;
-    
-    // Megkeressük a törölni kívánt autót
     const car = await Car.findByPk(carId);
-
     if (!car) {
       return res.status(404).json({ message: 'A törölni kívánt autó nem található.' });
     }
-
-    // A Sequelize 'destroy' metódusával véglegesen töröljük az adatbázisból.
-    // Emlékszel? Mivel a server.js-ben beállítottuk az 'onDelete: CASCADE' opciót, 
-    // a törölt autóhoz tartozó képek is automatikusan törlődni fognak a CarImages táblából!
     await car.destroy();
-
     res.status(200).json({ message: 'Autó és a hozzá tartozó képek adatai sikeresen törölve!' });
-
   } catch (error) {
     console.error('Hiba az autó törlésekor:', error);
-    res.status(500).json({ 
-      message: 'Hiba történt az autó törlésekor.', 
-      error: error.message 
+    res.status(500).json({ message: 'Hiba történt az autó törlésekor.', error: error.message });
+  }
+};
+
+// --- 6. Kép csatolása autóhoz (POST) ---
+exports.addImageToCar = async (req, res) => {
+  try {
+    const carId = req.params.id;
+    const { imageUrl, isMain } = req.body;
+    const car = await Car.findByPk(carId);
+    if (!car) {
+      return res.status(404).json({ message: 'Az autó nem található.' });
+    }
+    const newImage = await CarImage.create({
+      imageUrl: imageUrl,
+      isMain: isMain || false,
+      CarId: carId
     });
+    res.status(201).json({ message: 'Kép sikeresen csatolva!', image: newImage });
+  } catch (error) {
+    console.error('Hiba a kép csatolásakor:', error);
+    res.status(500).json({ message: 'Hiba történt a kép csatolásakor.', error: error.message });
+  }
+};
+
+// --- 7. Autó összes képének lekérése (GET) ---
+exports.getImagesByCar = async (req, res) => {
+  try {
+    const carId = req.params.id;
+    const car = await Car.findByPk(carId);
+    if (!car) {
+      return res.status(404).json({ message: 'Az autó nem található.' });
+    }
+    const images = await CarImage.findAll({ where: { CarId: carId } });
+    res.status(200).json(images);
+  } catch (error) {
+    console.error('Hiba a képek lekérésekor:', error);
+    res.status(500).json({ message: 'Hiba történt a képek lekérésekor.', error: error.message });
+  }
+};
+
+// --- 8. Kép adatainak módosítása (PUT) ---
+exports.updateImage = async (req, res) => {
+  try {
+    const imageId = req.params.imageId;
+    const { isMain } = req.body;
+    const image = await CarImage.findByPk(imageId);
+    if (!image) {
+      return res.status(404).json({ message: 'A kép nem található.' });
+    }
+    await image.update({ isMain });
+    res.status(200).json({ message: 'Kép adatai sikeresen frissítve!', image: image });
+  } catch (error) {
+    console.error('Hiba a kép frissítésekor:', error);
+    res.status(500).json({ message: 'Hiba történt a kép frissítésekor.', error: error.message });
+  }
+};
+
+// --- 9. Kép törlése (DELETE) ---
+exports.deleteImage = async (req, res) => {
+  try {
+    const imageId = req.params.imageId;
+    const image = await CarImage.findByPk(imageId);
+    if (!image) {
+      return res.status(404).json({ message: 'A kép nem található.' });
+    }
+    const filePath = path.join(__dirname, '../../../uploads', image.imageUrl);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+    await image.destroy();
+    res.status(200).json({ message: 'Kép sikeresen törölve!' });
+  } catch (error) {
+    console.error('Hiba a kép törlésekor:', error);
+    res.status(500).json({ message: 'Hiba történt a kép törlésekor.', error: error.message });
   }
 };
