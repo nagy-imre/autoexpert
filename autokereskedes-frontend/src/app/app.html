@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" routerLink="/">🚗 AUTOEXPERT</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Főoldal</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/cars" routerLinkActive="active">Kínálat</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/about" routerLinkActive="active">Rólunk</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/contact" routerLinkActive="active">Kapcsolat</a></li>
+      </ul>
+      <a class="btn btn-outline-warning btn-sm" routerLink="/admin/add">Admin: Új autó</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-5">
+  <router-outlet></router-outlet>
+</div>
