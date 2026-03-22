@@ -1,7 +1,7 @@
 @if (car) {
-  <div class="container my-5">
+  <div class="container detail-container">
 
-    <button class="btn btn-outline-dark rounded-pill mb-4" (click)="goBack()">
+    <button class="detail-back-btn" (click)="goBack()">
       ← Vissza a listához
     </button>
 
@@ -9,22 +9,33 @@
 
       <!-- BAL: Kép -->
       <div class="col-md-6">
-        <img
-          [src]="car.images && car.images.length > 0
-            ? backendUrl + car.images[activeImageIndex].imageUrl
-            : 'https://via.placeholder.com/800x500?text=Nincs+kép'"
-          class="img-fluid rounded-4 shadow-sm w-100"
-          style="height: 380px; object-fit: cover;"
-          alt="Autó fotó">
+        <div class="detail-img-main">
+          <img
+            [src]="car.images && car.images.length > 0
+              ? backendUrl + car.images[activeImageIndex].imageUrl
+              : 'https://via.placeholder.com/800x500?text=Nincs+kép'"
+            alt="Autó fotó">
+
+          <!-- BADGE -->
+          <div class="detail-badges">
+            @if (car.purpose === 'sale') {
+              <span class="detail-badge detail-badge-sale">Eladó</span>
+            } @else {
+              <span class="detail-badge detail-badge-rent">Bérelhető</span>
+            }
+            @if (!car.isAvailable) {
+              <span class="detail-badge detail-badge-unavailable">Foglalt</span>
+            }
+          </div>
+        </div>
 
         @if (car.images && car.images.length > 1) {
-          <div class="d-flex gap-2 mt-3 flex-wrap">
+          <div class="detail-thumbs">
             @for (img of car.images; track img.id; let i = $index) {
               <img
                 [src]="backendUrl + img.imageUrl"
                 (click)="setActiveImage(i)"
-                style="width: 80px; height: 60px; object-fit: cover; cursor: pointer; border-radius: 8px;"
-                [style.border]="activeImageIndex === i ? '3px solid #000' : '3px solid transparent'"
+                [class.active]="activeImageIndex === i"
                 alt="előnézet">
             }
           </div>
@@ -33,108 +44,102 @@
 
       <!-- JOBB: Műszaki adatok -->
       <div class="col-md-6">
-        <div class="d-flex align-items-center gap-2 mb-3">
-          <h2 class="fw-bold mb-0">{{ car.brand }} {{ car.model }}</h2>
-          @if (car.purpose === 'sale') {
-            <span class="badge bg-primary px-3 py-2">ELADÓ</span>
-          } @else {
-            <span class="badge bg-success px-3 py-2">BÉRELHETŐ</span>
-          }
-        </div>
+        <h2 class="detail-title">{{ car.brand }} {{ car.model }}</h2>
 
-        <ul class="list-group list-group-flush">
+        <div class="detail-specs">
           @if (car.year) {
-            <li class="list-group-item px-0 d-flex justify-content-between">
-              <span class="text-muted">Évjárat</span>
-              <span class="fw-semibold">{{ car.year }}</span>
-            </li>
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Évjárat</span>
+              <span class="detail-spec-value">{{ car.year }}</span>
+            </div>
           }
           @if (car.fuelType) {
-            <li class="list-group-item px-0 d-flex justify-content-between">
-              <span class="text-muted">Üzemanyag</span>
-              <span class="fw-semibold">{{ car.fuelType }}</span>
-            </li>
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Üzemanyag</span>
+              <span class="detail-spec-value">{{ car.fuelType }}</span>
+            </div>
           }
           @if (car.transmission) {
-            <li class="list-group-item px-0 d-flex justify-content-between">
-              <span class="text-muted">Sebességváltó</span>
-              <span class="fw-semibold">{{ car.transmission }}</span>
-            </li>
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Sebességváltó</span>
+              <span class="detail-spec-value">{{ car.transmission }}</span>
+            </div>
           }
           @if (car.engineCapacity) {
-            <li class="list-group-item px-0 d-flex justify-content-between">
-              <span class="text-muted">Hengerűrtartalom</span>
-              <span class="fw-semibold">{{ car.engineCapacity }} cm³</span>
-            </li>
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Hengerűrtartalom</span>
+              <span class="detail-spec-value">{{ car.engineCapacity }} cm³</span>
+            </div>
           }
           @if (car.horsepower) {
-            <li class="list-group-item px-0 d-flex justify-content-between">
-              <span class="text-muted">Teljesítmény</span>
-              <span class="fw-semibold">{{ car.horsepower }} LE</span>
-            </li>
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Teljesítmény</span>
+              <span class="detail-spec-value">{{ car.horsepower }} LE</span>
+            </div>
           }
           @if (car.mileage) {
-            <li class="list-group-item px-0 d-flex justify-content-between">
-              <span class="text-muted">Futásteljesítmény</span>
-              <span class="fw-semibold">{{ car.mileage | number:'1.0-0' }} km</span>
-            </li>
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Futásteljesítmény</span>
+              <span class="detail-spec-value">{{ car.mileage | number:'1.0-0' }} km</span>
+            </div>
           }
           @if (car.color) {
-            <li class="list-group-item px-0 d-flex justify-content-between">
-              <span class="text-muted">Szín</span>
-              <span class="fw-semibold">{{ car.color }}</span>
-            </li>
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Szín</span>
+              <span class="detail-spec-value">{{ car.color }}</span>
+            </div>
           }
           @if (car.features && car.features.length > 0) {
-            <li class="list-group-item px-0">
-              <span class="text-muted d-block mb-2">Felszereltség</span>
-              <div class="d-flex flex-wrap gap-2">
+            <div class="detail-spec-item detail-spec-features">
+              <span class="detail-spec-label">Felszereltség</span>
+              <div class="detail-features">
                 @for (feature of car.features; track feature) {
-                  <span class="badge bg-light text-dark border">{{ feature }}</span>
+                  <span class="detail-feature-tag">{{ feature }}</span>
                 }
               </div>
-            </li>
+            </div>
           }
-        </ul>
+        </div>
       </div>
     </div>
 
     <!-- ALSÓ SOR: Leírás + Elérhetőség/Ár -->
-    <div class="row g-4">
+    <div class="row g-4 mb-5">
       <div class="col-md-6">
-        <h5 class="fw-bold mb-2">Leírás</h5>
-        <p class="text-secondary">{{ car.description || 'Nincs leírás megadva ehhez a járműhöz.' }}</p>
+        <h5 class="detail-section-title">Leírás</h5>
+        <p class="detail-description">{{ car.description || 'Nincs leírás megadva ehhez a járműhöz.' }}</p>
       </div>
 
       <div class="col-md-6">
-        <ul class="list-group list-group-flush mb-4">
-          <li class="list-group-item px-0 d-flex justify-content-between">
-            <span class="text-muted">Elérhetőség</span>
+        <div class="detail-purchase-card">
+          <div class="detail-availability">
+            <span class="detail-spec-label">Elérhetőség</span>
             @if (car.isAvailable) {
-              <span class="badge bg-success">Elérhető</span>
+              <span class="detail-badge detail-badge-available">Elérhető</span>
             } @else {
-              <span class="badge bg-secondary">Foglalt</span>
+              <span class="detail-badge detail-badge-unavailable">Foglalt</span>
             }
-          </li>
-          <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+          </div>
+
+          <div class="detail-price-row">
             <div>
-              <span class="text-muted small d-block">Ár</span>
-              <h4 class="fw-bold mb-0">
+              <span class="detail-price-label">Ár</span>
+              <div class="detail-price">
                 @if (car.purpose === 'sale') {
                   {{ car.salePrice | number:'1.0-0' }} Ft
                 } @else {
-                  {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small class="fw-normal fs-6">/ nap</small>
+                  {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small>/ nap</small>
                 }
-              </h4>
+              </div>
             </div>
 
             @if (car.purpose === 'rent') {
-              <button class="btn btn-success rounded-pill px-4" (click)="openRentalModal()">Érdeklődöm</button>
+              <button class="detail-cta-btn detail-cta-rent" (click)="openRentalModal()">Érdeklődöm</button>
             } @else {
-              <button class="btn btn-primary rounded-pill px-4" (click)="openSaleModal()">Érdeklődöm</button>
+              <button class="detail-cta-btn detail-cta-sale" (click)="openSaleModal()">Érdeklődöm</button>
             }
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -142,65 +147,64 @@
 
   <!-- BÉRLŐS MODAL -->
   @if (showRentalModal) {
-    <div class="modal-backdrop" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;"
-      (click)="closeRentalModal()">
-    </div>
-    <div class="modal-box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      z-index: 1001; background: white; border-radius: 16px; padding: 2rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;">
-
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold mb-0">Vegye fel velünk a kapcsolatot!</h4>
-        <button class="btn btn-sm btn-outline-secondary rounded-pill" (click)="closeRentalModal()">✕</button>
+    <div class="modal-overlay" (click)="closeRentalModal()"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <h4 class="modal-title">Vegye fel velünk a kapcsolatot!</h4>
+        <button class="modal-close" (click)="closeRentalModal()">✕</button>
       </div>
-      <p class="text-muted mb-2">Töltse ki az alábbi adatokat és hamarosan visszajelzünk, vagy keressen minket telefonon!</p>
-      <p class="mb-4 text-center">
-        <a [href]="'tel:' + rentPhone" class="fw-semibold text-success fs-5">{{ rentPhone }}</a>
+      <p class="modal-subtitle">Töltse ki az alábbi adatokat és hamarosan visszajelzünk, vagy keressen minket telefonon!</p>
+      <p class="modal-phone">
+        <a [href]="'tel:' + rentPhone">{{ rentPhone }}</a>
       </p>
 
       <form [formGroup]="rentalForm">
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Teljes név *</label>
-          <input type="text" class="form-control rounded-3" formControlName="customerName" placeholder="pl. Bérlő Lajos">
+        <div class="modal-field">
+          <label>Teljes név *</label>
+          <input type="text" formControlName="customerName" placeholder="pl. Bérlő Lajos">
           @if (rentalForm.get('customerName')?.invalid && rentalForm.get('customerName')?.touched) {
-            <div class="text-danger small mt-1">A név megadása kötelező.</div>
+            <span class="modal-error">A név megadása kötelező.</span>
           }
         </div>
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Email cím *</label>
-          <input type="email" class="form-control rounded-3" formControlName="customerEmail" placeholder="pl. berlolajos@pelda.hu">
+        <div class="modal-field">
+          <label>Email cím *</label>
+          <input type="email" formControlName="customerEmail" placeholder="pl. berlolajos@pelda.hu">
           @if (rentalForm.get('customerEmail')?.invalid && rentalForm.get('customerEmail')?.touched) {
-            <div class="text-danger small mt-1">Érvényes email cím megadása kötelező.</div>
+            <span class="modal-error">Érvényes email cím megadása kötelező.</span>
           }
         </div>
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Telefonszám *</label>
-          <input type="tel" class="form-control rounded-3" formControlName="customerPhone" placeholder="pl. +36 30 123 4567">
+        <div class="modal-field">
+          <label>Telefonszám *</label>
+          <input type="tel" formControlName="customerPhone" placeholder="pl. +36 30 123 4567">
           @if (rentalForm.get('customerPhone')?.invalid && rentalForm.get('customerPhone')?.touched) {
-            <div class="text-danger small mt-1">A telefonszám megadása kötelező.</div>
+            <span class="modal-error">A telefonszám megadása kötelező.</span>
           }
         </div>
-        <div class="row mb-3">
+        <div class="row g-3 mb-3">
           <div class="col">
-            <label class="form-label fw-semibold">Bérlés kezdete *</label>
-            <input type="date" class="form-control rounded-3" formControlName="startDate">
-            @if (rentalForm.get('startDate')?.invalid && rentalForm.get('startDate')?.touched) {
-              <div class="text-danger small mt-1">Kötelező mező.</div>
-            }
+            <div class="modal-field mb-0">
+              <label>Bérlés kezdete *</label>
+              <input type="date" formControlName="startDate">
+              @if (rentalForm.get('startDate')?.invalid && rentalForm.get('startDate')?.touched) {
+                <span class="modal-error">Kötelező mező.</span>
+              }
+            </div>
           </div>
           <div class="col">
-            <label class="form-label fw-semibold">Bérlés vége *</label>
-            <input type="date" class="form-control rounded-3" formControlName="endDate">
-            @if (rentalForm.get('endDate')?.invalid && rentalForm.get('endDate')?.touched) {
-              <div class="text-danger small mt-1">Kötelező mező.</div>
-            }
+            <div class="modal-field mb-0">
+              <label>Bérlés vége *</label>
+              <input type="date" formControlName="endDate">
+              @if (rentalForm.get('endDate')?.invalid && rentalForm.get('endDate')?.touched) {
+                <span class="modal-error">Kötelező mező.</span>
+              }
+            </div>
           </div>
         </div>
-        <div class="mb-4">
-          <label class="form-label fw-semibold">Megjegyzés <span class="text-muted fw-normal">(opcionális)</span></label>
-          <textarea class="form-control rounded-3" formControlName="message" rows="3"
-            placeholder="Ha van bármilyen kérése vagy kérdése, írja le itt..."></textarea>
+        <div class="modal-field">
+          <label>Megjegyzés <span class="optional">(opcionális)</span></label>
+          <textarea formControlName="message" rows="3" placeholder="Ha van bármilyen kérése vagy kérdése, írja le itt..."></textarea>
         </div>
-        <button class="btn btn-success w-100 rounded-pill py-2 fw-semibold"
+        <button class="modal-submit modal-submit-rent"
           (click)="submitRental()"
           [disabled]="rentalForm.invalid || rentalSending">
           {{ rentalSending ? 'Küldés...' : 'Érdeklődés elküldése' }}
@@ -211,49 +215,44 @@
 
   <!-- ELADÓS MODAL -->
   @if (showSaleModal) {
-    <div class="modal-backdrop" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;"
-      (click)="closeSaleModal()">
-    </div>
-    <div class="modal-box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      z-index: 1001; background: white; border-radius: 16px; padding: 2rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;">
-
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold mb-0">Érdekli ez az autó?</h4>
-        <button class="btn btn-sm btn-outline-secondary rounded-pill" (click)="closeSaleModal()">✕</button>
+    <div class="modal-overlay" (click)="closeSaleModal()"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <h4 class="modal-title">Érdekli ez az autó?</h4>
+        <button class="modal-close" (click)="closeSaleModal()">✕</button>
       </div>
-      <p class="text-muted mb-2">Töltse ki az alábbi adatokat és hamarosan visszajelzünk, vagy keressen minket telefonon!</p>
-      <p class="mb-4 text-center">
-        <a [href]="'tel:' + salePhone" class="fw-semibold text-primary fs-5">{{ salePhone }}</a>
+      <p class="modal-subtitle">Töltse ki az alábbi adatokat és hamarosan visszajelzünk, vagy keressen minket telefonon!</p>
+      <p class="modal-phone">
+        <a [href]="'tel:' + salePhone">{{ salePhone }}</a>
       </p>
 
       <form [formGroup]="saleForm">
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Teljes név *</label>
-          <input type="text" class="form-control rounded-3" formControlName="customerName" placeholder="pl. Vevő János">
+        <div class="modal-field">
+          <label>Teljes név *</label>
+          <input type="text" formControlName="customerName" placeholder="pl. Vevő János">
           @if (saleForm.get('customerName')?.invalid && saleForm.get('customerName')?.touched) {
-            <div class="text-danger small mt-1">A név megadása kötelező.</div>
+            <span class="modal-error">A név megadása kötelező.</span>
           }
         </div>
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Email cím *</label>
-          <input type="email" class="form-control rounded-3" formControlName="customerEmail" placeholder="pl. vevojanos@pelda.hu">
+        <div class="modal-field">
+          <label>Email cím *</label>
+          <input type="email" formControlName="customerEmail" placeholder="pl. vevojanos@pelda.hu">
           @if (saleForm.get('customerEmail')?.invalid && saleForm.get('customerEmail')?.touched) {
-            <div class="text-danger small mt-1">Érvényes email cím megadása kötelező.</div>
+            <span class="modal-error">Érvényes email cím megadása kötelező.</span>
           }
         </div>
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Telefonszám *</label>
-          <input type="tel" class="form-control rounded-3" formControlName="customerPhone" placeholder="pl. +36 30 123 4567">
+        <div class="modal-field">
+          <label>Telefonszám *</label>
+          <input type="tel" formControlName="customerPhone" placeholder="pl. +36 30 123 4567">
           @if (saleForm.get('customerPhone')?.invalid && saleForm.get('customerPhone')?.touched) {
-            <div class="text-danger small mt-1">A telefonszám megadása kötelező.</div>
+            <span class="modal-error">A telefonszám megadása kötelező.</span>
           }
         </div>
-        <div class="mb-4">
-          <label class="form-label fw-semibold">Megjegyzés <span class="text-muted fw-normal">(opcionális)</span></label>
-          <textarea class="form-control rounded-3" formControlName="message" rows="3"
-            placeholder="Ha van bármilyen kérése vagy kérdése, írja le itt..."></textarea>
+        <div class="modal-field">
+          <label>Megjegyzés <span class="optional">(opcionális)</span></label>
+          <textarea formControlName="message" rows="3" placeholder="Ha van bármilyen kérése vagy kérdése, írja le itt..."></textarea>
         </div>
-        <button class="btn btn-primary w-100 rounded-pill py-2 fw-semibold"
+        <button class="modal-submit modal-submit-sale"
           (click)="submitSale()"
           [disabled]="saleForm.invalid || saleSending">
           {{ saleSending ? 'Küldés...' : 'Érdeklődés elküldése' }}
@@ -264,7 +263,7 @@
 
 } @else {
   <div class="container my-5 text-center">
-    <div class="spinner-border" role="status"></div>
+    <div class="spinner-border text-warning" role="status"></div>
     <p class="mt-3 text-muted">Adatok betöltése...</p>
   </div>
 }

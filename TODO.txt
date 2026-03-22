@@ -1,0 +1,20 @@
+// kapcsolat oldal --> footer elérhetőség megírása
+// rólunk részen kapcsolatfelvétel
+// csapatnak külön telefonszámok + email címek
+// főoldal legalsó része tuning 
+// ADMIN felület
+        --minden dolgozónak saját fiók
+            --tulaj meg az ügyvezető tud mindent
+            --értékesítő tud mindent kivéve törölni
+            --koordinátor tud mindent kivéve törölni meg módosítani
+
+    / külön javafx + scenebuilder admin felület ha van idő
+
+// dolgozók pólóján lévő logó használata --> navbar, footer, faviconm
+                                                meg ahol jól néz ki
+
+// indításkor deprecation 
+
+// kínálat szűrés bővítése
+// nagyobb adatbázis több autóval képekkel
+// kínálat részen lapozható képek 

@@ -1,14 +1,95 @@
+$gold: #c9a84c;
+$dark: #1a1a1a;
+
 .footer {
-  background-color: #212529;
-  color: #adb5bd;
+  background: $dark;
+  margin-top: auto;
+
+  .footer-top {
+    padding: 4rem 0 3rem;
+  }
+
+  .footer-brand {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+
+  .footer-desc {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.7;
+    max-width: 280px;
+    margin: 0;
+  }
+
+  .footer-heading {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 0.6rem;
+    }
+  }
 
   .footer-link {
-    color: #adb5bd;
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.5);
     text-decoration: none;
     transition: color 0.2s ease;
 
     &:hover {
-      color: #fff;
+      color: $gold;
     }
+  }
+
+  .footer-contact-item {
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-contact-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 0.3rem;
+  }
+
+  .footer-contact-phone {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $gold;
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 1.5rem 0;
+    text-align: center;
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.2);
+    margin: 0;
   }
 }

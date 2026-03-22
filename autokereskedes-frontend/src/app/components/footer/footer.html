@@ -1,54 +1,44 @@
-<footer class="footer mt-5">
+<footer class="footer">
   <div class="container">
-    <div class="row g-4 py-5">
+    <div class="row g-4 footer-top">
 
       <!-- Logó + leírás -->
       <div class="col-12 col-md-4">
-        <h5 class="fw-bold mb-3">🚗 AUTOEXPERT</h5>
-        <p class="text-secondary small">
+        <div class="footer-brand">🚗 AUTOEXPERT</div>
+        <p class="footer-desc">
           Megbízható autókereskedés és bérlési szolgáltatás. Minőségi járművek, átlátható árak, gyors ügyintézés.
         </p>
       </div>
 
       <!-- Navigáció -->
       <div class="col-6 col-md-4">
-        <h6 class="fw-bold mb-3 text-uppercase small text-white-50">Navigáció</h6>
-        <ul class="list-unstyled">
-          <li class="mb-2">
-            <a routerLink="/" class="footer-link">Főoldal</a>
-          </li>
-          <li class="mb-2">
-            <a routerLink="/cars" class="footer-link">Kínálat</a>
-          </li>
-          <li class="mb-2">
-            <a routerLink="/about" class="footer-link">Rólunk</a>
-          </li>
-          <li class="mb-2">
-            <a routerLink="/contact" class="footer-link">Kapcsolat</a>
-          </li>
+        <h6 class="footer-heading">Navigáció</h6>
+        <ul class="footer-nav">
+          <li><a routerLink="/" class="footer-link">Főoldal</a></li>
+          <li><a routerLink="/cars" class="footer-link">Kínálat</a></li>
+          <li><a routerLink="/about" class="footer-link">Rólunk</a></li>
+          <li><a routerLink="/contact" class="footer-link">Kapcsolat</a></li>
         </ul>
       </div>
 
       <!-- Elérhetőség -->
       <div class="col-6 col-md-4">
-        <h6 class="fw-bold mb-3 text-uppercase small text-white-50">Elérhetőség</h6>
-        <ul class="list-unstyled small">
-          <li class="mb-3">
-            <span class="text-white-50 d-block mb-1">Értékesítés</span>
-            <a href="tel:+36301234567" class="footer-link fw-semibold">+36 30 123 4567</a>
-          </li>
-          <li>
-            <span class="text-white-50 d-block mb-1">Bérlés</span>
-            <a href="tel:+36309876543" class="footer-link fw-semibold">+36 30 987 6543</a>
-          </li>
-        </ul>
+        <h6 class="footer-heading">Elérhetőség</h6>
+        <div class="footer-contact-item">
+          <span class="footer-contact-label">Értékesítés</span>
+          <a href="tel:+36301234567" class="footer-contact-phone">+36 30 123 4567</a>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-label">Bérlés</span>
+          <a href="tel:+36309876543" class="footer-contact-phone">+36 30 987 6543</a>
+        </div>
       </div>
 
     </div>
 
     <!-- Copyright -->
-    <div class="border-top border-secondary pt-4 pb-3 text-center">
-      <p class="text-secondary small mb-0">© {{ currentYear }} AutoExpert. Minden jog fenntartva.</p>
+    <div class="footer-bottom">
+      <p class="footer-copy">© {{ currentYear }} AutoExpert. Minden jog fenntartva.</p>
     </div>
   </div>
 </footer>

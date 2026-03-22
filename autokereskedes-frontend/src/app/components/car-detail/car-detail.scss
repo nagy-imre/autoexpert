@@ -1,0 +1,436 @@
+$gold: #c9a84c;
+$sale: #e87c2e;
+$rent: #c9a84c;
+$unavailable: #e05a5a;
+$available: #4caf7d;
+$dark: #1a1a1a;
+
+// CONTAINER
+.detail-container {
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+// VISSZA GOMB
+.detail-back-btn {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  color: #666;
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 2rem;
+  display: inline-block;
+
+  &:hover {
+    border-color: $dark;
+    color: $dark;
+  }
+}
+
+// FŐ KÉP
+.detail-img-main {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 380px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// BADGE-EK
+.detail-badges {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-end;
+}
+
+.detail-badge {
+  padding: 0.3rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  &.detail-badge-sale {
+    background: $sale;
+    color: #fff;
+  }
+
+  &.detail-badge-rent {
+    background: $rent;
+    color: #fff;
+  }
+
+  &.detail-badge-unavailable {
+    background: $unavailable;
+    color: #fff;
+  }
+
+  &.detail-badge-available {
+    background: $available;
+    color: #fff;
+  }
+}
+
+// ELŐNÉZETI KÉPEK
+.detail-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+
+  img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+
+    &.active {
+      border-color: $gold;
+    }
+
+    &:hover {
+      border-color: $gold;
+    }
+  }
+}
+
+// CÍM
+.detail-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: $dark;
+  margin-bottom: 1.5rem;
+}
+
+// SPEC LISTA
+.detail-specs {
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.detail-spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f5f5f5;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.detail-spec-features {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+.detail-spec-label {
+  font-size: 0.85rem;
+  color: #aaa;
+  font-weight: 500;
+}
+
+.detail-spec-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $dark;
+}
+
+// FELSZERELTSÉG TAGEK
+.detail-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.detail-feature-tag {
+  background: #f8f8f6;
+  border: 1px solid #e8e8e8;
+  color: #666;
+  padding: 0.2rem 0.7rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+}
+
+// LEÍRÁS
+.detail-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: $gold;
+  margin-bottom: 0.75rem;
+}
+
+.detail-description {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.7;
+}
+
+// VÁSÁRLÁS KÁRTYA
+.detail-purchase-card {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.detail-availability {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f5f5f5;
+  margin-bottom: 1rem;
+}
+
+.detail-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-price-label {
+  font-size: 0.75rem;
+  color: #aaa;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.detail-price {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: $dark;
+
+  small {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #aaa;
+  }
+}
+
+// CTA GOMBOK
+.detail-cta-btn {
+  padding: 0.75rem 1.75rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &.detail-cta-rent {
+    background: $rent;
+    color: #fff;
+
+    &:hover {
+      background: darken($rent, 8%);
+    }
+  }
+
+  &.detail-cta-sale {
+    background: $sale;
+    color: #fff;
+
+    &:hover {
+      background: darken($sale, 8%);
+    }
+  }
+}
+
+// MODAL
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $dark;
+  margin: 0;
+}
+
+.modal-close {
+  background: #f5f5f5;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #666;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #eee;
+    color: $dark;
+  }
+}
+
+.modal-subtitle {
+  font-size: 0.875rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.modal-phone {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  a {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $gold;
+    text-decoration: none;
+
+    &:hover {
+      color: darken($gold, 10%);
+    }
+  }
+}
+
+.modal-field {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 0.4rem;
+  }
+
+  .optional {
+    font-weight: 400;
+    color: #aaa;
+  }
+
+  input, textarea {
+    width: 100%;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.875rem;
+    color: $dark;
+    background: #fafafa;
+    transition: border-color 0.2s;
+    outline: none;
+
+    &:focus {
+      border-color: $gold;
+      background: #fff;
+    }
+  }
+
+  textarea {
+    resize: none;
+  }
+}
+
+.modal-error {
+  display: block;
+  font-size: 0.75rem;
+  color: $unavailable;
+  margin-top: 0.3rem;
+}
+
+.modal-submit {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: 50px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &.modal-submit-rent {
+    background: $rent;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: darken($rent, 8%);
+    }
+  }
+
+  &.modal-submit-sale {
+    background: $sale;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: darken($sale, 8%);
+    }
+  }
+}
+
+// RESZPONZÍV
+@media (max-width: 768px) {
+  .modal-box {
+    padding: 1.5rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .detail-img-main {
+    height: 260px;
+  }
+}

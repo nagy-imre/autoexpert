@@ -1,1 +1,82 @@
-<p>about works!</p>
+<!-- HERO -->
+<section class="about-hero">
+  <div class="container">
+    <p class="about-eyebrow">Ismerjen meg minket</p>
+    <h1 class="about-title">Az AutoExpert csapata</h1>
+    <p class="about-subtitle">
+      Szenvedélyünk az autó, küldetésünk az elégedett ügyfél. Több mint 15 éve dolgozunk azért, hogy Ön megtalálja álmai járművét.
+    </p>
+  </div>
+</section>
+
+<!-- ÉRTÉKEINK -->
+<section class="about-values">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12 col-md-4">
+        <div class="value-card">
+          <div class="value-icon">✦</div>
+          <h5 class="value-title">Megbízhatóság</h5>
+          <p class="value-text">15 éve építjük az ügyfelek bizalmát. Nálunk minden ígéret valóra válik.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="value-card">
+          <div class="value-icon">◈</div>
+          <h5 class="value-title">Szakértelem</h5>
+          <p class="value-text">Csapatunk évtizedes tapasztalattal rendelkezik az autóipar minden területén.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="value-card">
+          <div class="value-icon">⬡</div>
+          <h5 class="value-title">Személyes törődés</h5>
+          <p class="value-text">Minden ügyfelet egyénként kezelünk. Az Ön igénye a mi prioritásunk.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CSAPAT -->
+<section class="about-team">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <p class="about-eyebrow">Akikre számíthat</p>
+      <h2 class="about-section-title">Csapatunk</h2>
+      <div class="about-divider"></div>
+    </div>
+
+    <div class="row g-4">
+      @for (member of team; track member.name) {
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+          <div class="team-card" [class.team-card-featured]="member.role.includes('Vezérigazgató') || member.role.includes('asszisztens')">
+            <div class="team-card-img">
+              <img [src]="member.image" [alt]="member.name">
+            </div>
+            <div class="team-card-body">
+              <h5 class="team-card-name">{{ member.name }}</h5>
+              <p class="team-card-role">{{ member.role }}</p>
+              <p class="team-card-bio">{{ member.bio }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="about-cta">
+  <div class="container">
+    <div class="about-cta-inner">
+      <p class="about-eyebrow">Várjuk Önt</p>
+      <h2 class="about-cta-title">Keressen fel minket személyesen!</h2>
+      <p class="about-cta-subtitle">Csapatunk örömmel fogadja Önt. Látogasson el hozzánk, vagy vegye fel velünk a kapcsolatot.</p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+        <a routerLink="/contact" class="about-btn-primary">Kapcsolatfelvétel</a>
+        <a routerLink="/cars" class="about-btn-secondary">Kínálat megtekintése</a>
+      </div>
+    </div>
+  </div>
+</section>

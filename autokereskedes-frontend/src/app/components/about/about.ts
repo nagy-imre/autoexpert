@@ -1,11 +1,56 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-about',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './about.html',
-  styleUrl: './about.scss',
+  styleUrl: './about.scss'
 })
 export class About {
-
+  team = [
+    {
+      name: 'Darányi Zsolt',
+      role: 'Tulajdonos / Vezérigazgató',
+      bio: 'Több mint 25 éves tapasztalattal rendelkezik az autóiparban. Zsolt vezetésével az AutoExpert a régió egyik legmegbízhatóbb kereskedésévé nőtte ki magát.',
+      image: 'assets/team/daranyi-zsolt.webp'
+    },
+    {
+      name: 'Kovács Bendegúz',
+      role: 'Ügyvezető asszisztens',
+      bio: 'Zsolt jobb keze. Bendegúz gondoskodik arról, hogy minden a legmagasabb színvonalon működjön – az ügyfélkiszolgálástól az adminisztrációig.',
+      image: 'assets/team/kovacs-bendeguz.webp'
+    },
+    {
+      name: 'Ifj. Rácz Lajos',
+      role: 'Értékesítési vezető',
+      bio: 'Lajos szenvedélyesen szereti az autókat. Precíz szemmel választja ki a kínálatba kerülő járműveket, és mindig megtalálja az ügyfélnek legmegfelelőbb ajánlatot.',
+      image: 'assets/team/ifj-racz-lajos.webp'
+    },
+    {
+      name: 'Vásárhelyi Gábor',
+      role: 'Műszaki szakértő',
+      bio: 'Gábor minden autó "orvosa". Alapos műszaki vizsgálatainak köszönhetően csak kifogástalan állapotú járművek kerülnek kínálatunkba.',
+      image: 'assets/team/vasarhelyi-gabor.webp'
+    },
+    {
+      name: 'Popovics Nikolett',
+      role: 'Ügyfélkapcsolati menedzser',
+      bio: 'Nikolett az a személy, akit az ügyfelek először megismernek. Mosolya és szakértelme garantálja, hogy mindenki elégedetten távozzon.',
+      image: 'assets/team/popovics-nikolett.webp'
+    },
+    {
+      name: 'Szentgyörgyi Péter',
+      role: 'Bérlési koordinátor',
+      bio: 'Péter felel a bérlési folyamat zökkenőmentes lebonyolításáért. Pontossága és rugalmassága miatt az ügyfelek mindig számíthatnak rá.',
+      image: 'assets/team/szentgyorgyi-peter.webp'
+    },
+    {
+      name: 'Borbély Réka',
+      role: 'Értékesítési asszisztens',
+      bio: 'Réka energiája és lelkesedése fertőző. Minden ügyféllel egyénre szabottan foglalkozik, és mindig megtalálja a legjobb megoldást.',
+      image: 'assets/team/borbely-reka.webp'
+    }
+  ];
 }
