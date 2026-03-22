@@ -1,58 +1,114 @@
-<div class="container mt-4">
+<div class="container-fluid mt-4">
   <div class="row">
-    @for (car of cars; track car.id) {
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-          
-          <div class="position-absolute top-0 end-0 m-3">
-            @if (car.purpose === 'sale') {
-              <span class="badge bg-primary px-3 py-2">ELADÓ</span>
-            } @else {
-              <span class="badge bg-success px-3 py-2">BÉRELHETŐ</span>
-            }
-          </div>
 
-          <img 
-            [src]="car.images && car.images.length > 0 ? backendUrl + car.images[0].imageUrl : 'https://via.placeholder.com/400x250?text=Nincs+kép'" 
-            class="card-img-top" 
-            alt="Autó fotó"
-            style="height: 220px; object-fit: cover;">
+    <!-- OLDALSÁV: Szűrés -->
+    <div class="col-md-2">
+      <div class="card border-0 shadow-sm rounded-4 p-3">
+        <h6 class="fw-bold mb-3">Szűrés</h6>
+        <div class="d-flex flex-column gap-2">
+          <button
+            class="btn rounded-pill"
+            [class.btn-dark]="activeFilter === 'all'"
+            [class.btn-outline-dark]="activeFilter !== 'all'"
+            (click)="setFilter('all')">
+            Összes
+          </button>
+          <button
+            class="btn rounded-pill"
+            [class.btn-primary]="activeFilter === 'sale'"
+            [class.btn-outline-primary]="activeFilter !== 'sale'"
+            (click)="setFilter('sale')">
+            Eladó
+          </button>
+          <button
+            class="btn rounded-pill"
+            [class.btn-success]="activeFilter === 'rent'"
+            [class.btn-outline-success]="activeFilter !== 'rent'"
+            (click)="setFilter('rent')">
+            Bérelhető
+          </button>
+        </div>
+      </div>
+    </div>
 
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1">{{ car.brand }}</h5>
-            <h6 class="card-subtitle mb-3 text-muted">{{ car.model }}</h6>
-            
-            <p class="card-text text-secondary small flex-grow-1">
-              {{ car.description || 'Nincs leírás megadva ehhez a járműhöz.' }}
-            </p>
+    <!-- AUTÓK LISTÁJA -->
+    <div class="col-md-10">
+      <div class="row">
+        @for (car of cars; track car.id) {
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
 
-            <div class="mt-3 border-top pt-3 d-flex justify-content-between align-items-center">
-              <div>
-                <span class="text-muted small d-block">Ár:</span>
-                <h4 class="text-dark fw-bold mb-0">
-                  @if (car.purpose === 'sale') {
-                    {{ car.salePrice | number:'1.0-0' }} Ft
-                  } @else {
-                    {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small class="fw-normal">/ nap</small>
-                  }
-                </h4>
+              <div class="position-absolute top-0 end-0 m-3" style="z-index:1">
+                @if (car.purpose === 'sale') {
+                  <span class="badge bg-primary px-3 py-2">ELADÓ</span>
+                } @else {
+                  <span class="badge bg-success px-3 py-2">BÉRELHETŐ</span>
+                }
               </div>
-              
-              @if (car.isAvailable) {
-                <button class="btn btn-outline-dark rounded-pill">Részletek</button>
-              } @else {
-                <button class="btn btn-secondary disabled rounded-pill">Foglalt</button>
+
+              <!-- FŐ KÉP -->
+              <img
+                [src]="car.images && car.images.length > 0
+                  ? backendUrl + car.images[activeImageIndex[car.id]].imageUrl
+                  : 'https://via.placeholder.com/400x250?text=Nincs+kép'"
+                class="card-img-top"
+                alt="Autó fotó"
+                style="height: 220px; object-fit: cover;">
+
+              <!-- ELŐNÉZETI KÉPEK -->
+              @if (car.images && car.images.length > 1) {
+                <div class="d-flex gap-1 px-2 pt-2">
+                  @for (img of car.images; track img.id; let i = $index) {
+                    <img
+                      [src]="backendUrl + img.imageUrl"
+                      (click)="setActiveImage(car.id, i)"
+                      style="width: 48px; height: 36px; object-fit: cover; cursor: pointer; border-radius: 6px;"
+                      [style.border]="activeImageIndex[car.id] === i ? '2px solid #000' : '2px solid transparent'"
+                      alt="előnézet">
+                  }
+                </div>
               }
+
+              <div class="card-body d-flex flex-column">
+                <!-- Márka + Modell -->
+                <h5 class="card-title fw-bold mb-3">{{ car.brand }} {{ car.model }}</h5>
+
+                <!-- Adatok -->
+                <ul class="list-unstyled text-secondary small mb-3">
+                  @if (car.year) {
+                    <li><span class="text-muted">Évjárat:</span> {{ car.year }}</li>
+                  }
+                  @if (car.horsepower) {
+                    <li><span class="text-muted">Teljesítmény:</span> {{ car.horsepower }} LE</li>
+                  }
+                  @if (car.fuelType) {
+                    <li><span class="text-muted">Üzemanyag:</span> {{ car.fuelType }}</li>
+                  }
+                </ul>
+                <!-- Ár és gomb -->
+                <div class="mt-auto border-top pt-3 d-flex justify-content-between align-items-center">
+                  <h5 class="fw-bold mb-0">
+                    @if (car.purpose === 'sale') {
+                      {{ car.salePrice | number:'1.0-0' }} Ft
+                    } @else {
+                      {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small class="fw-normal fs-6">/ nap</small>
+                    }
+                  </h5>
+                  <button class="btn btn-outline-dark rounded-pill" (click)="goToDetail(car.id)">Részletek</button>
+                </div>
+              </div>
+
             </div>
           </div>
-        </div>
+        } @empty {
+          <div class="col-12 text-center py-5">
+            <div class="alert alert-info border-0 shadow-sm">
+              <i class="bi bi-info-circle me-2"></i> Jelenleg nincs egyetlen autónk sem a kínálatban.
+            </div>
+          </div>
+        }
       </div>
-    } @empty {
-      <div class="col-12 text-center py-5">
-        <div class="alert alert-info border-0 shadow-sm">
-          <i class="bi bi-info-circle me-2"></i> Jelenleg nincs egyetlen autónk sem a kínálatban.
-        </div>
-      </div>
-    }
+    </div>
+
   </div>
 </div>

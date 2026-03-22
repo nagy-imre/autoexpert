@@ -6,13 +6,16 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CarService {
-  // A backendünk címe
   private apiUrl = 'http://localhost:5000/api/cars';
 
   constructor(private http: HttpClient) { }
 
-  // Összes autó lekérése a backendről
-  getCars(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getCars(purpose?: string): Observable<any[]> {
+    const url = purpose ? `${this.apiUrl}?purpose=${purpose}` : this.apiUrl;
+    return this.http.get<any[]>(url);
+  }
+
+  getCarById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }

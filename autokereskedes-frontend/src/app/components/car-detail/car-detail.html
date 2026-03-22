@@ -1,0 +1,156 @@
+@if (car) {
+  <div class="container my-5">
+
+    <!-- Vissza gomb -->
+    <button class="btn btn-outline-dark rounded-pill mb-4" (click)="goBack()">
+      ← Vissza a listához
+    </button>
+
+    <!-- FELSŐ SOR: Kép + Adatok -->
+    <div class="row g-4 mb-4">
+
+      <!-- BAL: Kép -->
+      <div class="col-md-6">
+        <img
+          [src]="car.images && car.images.length > 0
+            ? backendUrl + car.images[activeImageIndex].imageUrl
+            : 'https://via.placeholder.com/800x500?text=Nincs+kép'"
+          class="img-fluid rounded-4 shadow-sm w-100"
+          style="height: 380px; object-fit: cover;"
+          alt="Autó fotó">
+
+        @if (car.images && car.images.length > 1) {
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            @for (img of car.images; track img.id; let i = $index) {
+              <img
+                [src]="backendUrl + img.imageUrl"
+                (click)="setActiveImage(i)"
+                style="width: 80px; height: 60px; object-fit: cover; cursor: pointer; border-radius: 8px;"
+                [style.border]="activeImageIndex === i ? '3px solid #000' : '3px solid transparent'"
+                alt="előnézet">
+            }
+          </div>
+        }
+      </div>
+
+      <!-- JOBB: Műszaki adatok -->
+      <div class="col-md-6">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <h2 class="fw-bold mb-0">{{ car.brand }} {{ car.model }}</h2>
+          @if (car.purpose === 'sale') {
+            <span class="badge bg-primary px-3 py-2">ELADÓ</span>
+          } @else {
+            <span class="badge bg-success px-3 py-2">BÉRELHETŐ</span>
+          }
+        </div>
+
+        <ul class="list-group list-group-flush">
+          @if (car.year) {
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">Évjárat</span>
+              <span class="fw-semibold">{{ car.year }}</span>
+            </li>
+          }
+          @if (car.fuelType) {
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">Üzemanyag</span>
+              <span class="fw-semibold">{{ car.fuelType }}</span>
+            </li>
+          }
+          @if (car.transmission) {
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">Sebességváltó</span>
+              <span class="fw-semibold">{{ car.transmission }}</span>
+            </li>
+          }
+          @if (car.engineCapacity) {
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">Hengerűrtartalom</span>
+              <span class="fw-semibold">{{ car.engineCapacity }} cm³</span>
+            </li>
+          }
+          @if (car.horsepower) {
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">Teljesítmény</span>
+              <span class="fw-semibold">{{ car.horsepower }} LE</span>
+            </li>
+          }
+          @if (car.mileage) {
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">Futásteljesítmény</span>
+              <span class="fw-semibold">{{ car.mileage | number:'1.0-0' }} km</span>
+            </li>
+          }
+          @if (car.color) {
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">Szín</span>
+              <span class="fw-semibold">{{ car.color }}</span>
+            </li>
+          }
+          @if (car.features && car.features.length > 0) {
+            <li class="list-group-item px-0">
+              <span class="text-muted d-block mb-2">Felszereltség</span>
+              <div class="d-flex flex-wrap gap-2">
+                @for (feature of car.features; track feature) {
+                  <span class="badge bg-light text-dark border">{{ feature }}</span>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- ALSÓ SOR: Leírás + Elérhetőség/Ár -->
+    <div class="row g-4">
+
+      <!-- BAL: Leírás -->
+      <div class="col-md-6">
+        <h5 class="fw-bold mb-2">Leírás</h5>
+        <p class="text-secondary">{{ car.description || 'Nincs leírás megadva ehhez a járműhöz.' }}</p>
+      </div>
+
+      <!-- JOBB: Elérhetőség + Ár + Gomb -->
+      <div class="col-md-6">
+        <ul class="list-group list-group-flush mb-4">
+          <li class="list-group-item px-0 d-flex justify-content-between">
+            <span class="text-muted">Elérhetőség</span>
+            @if (car.isAvailable) {
+              <span class="badge bg-success">Elérhető</span>
+            } @else {
+              <span class="badge bg-secondary">Foglalt</span>
+            }
+          </li>
+          <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+            <div>
+              <span class="text-muted small d-block">Ár</span>
+              <h4 class="fw-bold mb-0">
+                @if (car.purpose === 'sale') {
+                  {{ car.salePrice | number:'1.0-0' }} Ft
+                } @else {
+                  {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small class="fw-normal fs-6">/ nap</small>
+                }
+              </h4>
+            </div>
+
+            @if (car.isAvailable) {
+              @if (car.purpose === 'rent') {
+                <button class="btn btn-success rounded-pill px-4">Bérlés</button>
+              } @else {
+                <button class="btn btn-primary rounded-pill px-4">Érdeklődöm</button>
+              }
+            } @else {
+              <button class="btn btn-secondary disabled rounded-pill px-4">Foglalt</button>
+            }
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+} @else {
+  <div class="container my-5 text-center">
+    <div class="spinner-border" role="status"></div>
+    <p class="mt-3 text-muted">Adatok betöltése...</p>
+  </div>
+}
