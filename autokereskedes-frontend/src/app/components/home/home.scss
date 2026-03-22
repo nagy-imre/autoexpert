@@ -61,6 +61,18 @@ $light-gray: #f8f8f6;
     user-select: none;
   }
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
   .hero-content {
     position: relative;
     z-index: 2;
@@ -110,6 +122,7 @@ $light-gray: #f8f8f6;
   text-decoration: none;
   transition: all 0.3s ease;
   border: 2px solid $dark;
+  display: inline-block;
 
   &:hover {
     background: $gold;
@@ -130,9 +143,11 @@ $light-gray: #f8f8f6;
   text-decoration: none;
   transition: all 0.3s ease;
   border: 2px solid rgba(0,0,0,0.2);
+  display: inline-block;
 
   &:hover {
-    border-color: $dark;
+    border-color: $gold;
+    color: $gold;
     transform: translateY(-2px);
   }
 }
@@ -159,13 +174,18 @@ $light-gray: #f8f8f6;
   50% { opacity: 1; transform: scaleY(1); }
 }
 
-// KIEMELT AUTÓK KÁRTYÁK
+// KIEMELT AUTÓK
+.featured {
+  background: #fff;
+}
+
 .featured-card {
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0,0,0,0.06);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #f0f0f0;
 
   &:hover {
     transform: translateY(-6px);
@@ -195,14 +215,14 @@ $light-gray: #f8f8f6;
     right: 1rem;
 
     .badge-sale {
-      background: #1a1a1a;
-      color: #fff;
-      padding: 0.3rem 0.9rem;
-      border-radius: 50px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+    background: #e87c2e;
+    color: #fff;
+    padding: 0.3rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     }
 
     .badge-rent {
@@ -277,12 +297,35 @@ $light-gray: #f8f8f6;
   }
 }
 
+// ÖSSZES GOMB
+.btn-outline-featured {
+  border: 1px solid rgba(0,0,0,0.15);
+  color: $dark;
+  padding: 0.7rem 2.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+
+  &:hover {
+    border-color: $gold;
+    color: $gold;
+  }
+}
+
 // ELŐNYÖK
 .benefits {
-  background: $light-gray !important;
+  background: $light-gray;
 
   .benefit-item {
     padding: 2rem 1.5rem;
+    border-right: 1px solid rgba(0,0,0,0.06);
+
+    &:last-child {
+      border-right: none;
+    }
   }
 
   .benefit-icon {
@@ -296,7 +339,6 @@ $light-gray: #f8f8f6;
     font-weight: 700;
     color: $dark;
     margin-bottom: 0.75rem;
-    letter-spacing: 0.3px;
   }
 
   .benefit-text {
@@ -309,6 +351,8 @@ $light-gray: #f8f8f6;
 
 // CTA
 .cta {
+  background: #fff;
+
   .cta-inner {
     background: $dark;
     border-radius: 24px;
@@ -348,13 +392,13 @@ $light-gray: #f8f8f6;
     padding: 0.85rem 2.5rem;
     border-radius: 50px;
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
     transition: all 0.3s ease;
     display: inline-block;
 
     &:hover {
-      background: lighten($gold, 10%);
+      background: darken($gold, 8%);
       transform: translateY(-2px);
     }
   }
@@ -383,5 +427,14 @@ $light-gray: #f8f8f6;
 @media (max-width: 768px) {
   .hero {
     min-height: 80vh;
+  }
+
+  .benefit-item {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 }

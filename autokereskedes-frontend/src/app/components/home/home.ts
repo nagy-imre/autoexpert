@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CarService } from '../../services/car';
@@ -15,11 +15,17 @@ export class Home implements OnInit, OnDestroy {
   backendUrl = 'http://localhost:5000/uploads/';
   private sub: any;
 
-  constructor(private carService: CarService) {}
+  constructor(
+    private carService: CarService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.sub = this.carService.getCars().subscribe({
-      next: (data) => this.featuredCars = data.slice(0, 3)
+      next: (data) => {
+        this.featuredCars = data.slice(0, 3);
+        this.cdr.detectChanges();
+      }
     });
   }
 
