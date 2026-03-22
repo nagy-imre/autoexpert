@@ -1,1 +1,131 @@
-<p>home works!</p>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <div class="row min-vh-80 align-items-center">
+      <div class="col-12 col-lg-7">
+        <p class="hero-eyebrow">Prémium autókereskedés</p>
+        <h1 class="hero-title">
+          Kivételes autók,<br>
+          <em>kivételes élmény.</em>
+        </h1>
+        <p class="hero-subtitle">
+          Válogasson gondosan összeválogatott, minőségi járműveink között. Eladó és bérelhető autók egy helyen.
+        </p>
+        <div class="d-flex gap-3 flex-wrap mt-5">
+          <a routerLink="/cars" class="btn btn-hero-primary">
+            Kínálat megtekintése
+          </a>
+          <a routerLink="/contact" class="btn btn-hero-secondary">
+            Kapcsolatfelvétel
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-indicator">
+    <span></span>
+  </div>
+</section>
+
+<!-- KIEMELT AUTÓK -->
+<section class="featured py-6">
+  <div class="container">
+
+    <div class="section-header text-center mb-6">
+      <p class="section-eyebrow">Válogatott ajánlatok</p>
+      <h2 class="section-title">Kiemelt járműveink</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="row g-4">
+      @for (car of featuredCars; track car.id) {
+        <div class="col-12 col-md-4">
+          <div class="featured-card">
+            <div class="featured-card-img">
+              <img
+                [src]="car.images && car.images.length > 0
+                  ? backendUrl + car.images[0].imageUrl
+                  : 'https://via.placeholder.com/600x400?text=Nincs+kép'"
+                alt="Autó fotó">
+              <div class="featured-card-badge">
+                @if (car.purpose === 'sale') {
+                  <span class="badge-sale">Eladó</span>
+                } @else {
+                  <span class="badge-rent">Bérelhető</span>
+                }
+              </div>
+            </div>
+            <div class="featured-card-body">
+              <h4 class="featured-card-title">{{ car.brand }} {{ car.model }}</h4>
+              <div class="featured-card-meta">
+                @if (car.year) { <span>{{ car.year }}</span> }
+                @if (car.fuelType) { <span>{{ car.fuelType }}</span> }
+                @if (car.transmission) { <span>{{ car.transmission }}</span> }
+              </div>
+              <div class="featured-card-footer">
+                <div class="featured-card-price">
+                  @if (car.purpose === 'sale') {
+                    {{ car.salePrice | number:'1.0-0' }} Ft
+                  } @else {
+                    {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small>/ nap</small>
+                  }
+                </div>
+                <a [routerLink]="['/cars', car.id]" class="btn-card">Részletek →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="text-center mt-5">
+      <a routerLink="/cars" class="btn btn-outline-dark rounded-pill px-5 py-2">
+        Összes jármű megtekintése
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ELŐNYÖK SZEKCIÓ -->
+<section class="benefits py-6 bg-light">
+  <div class="container">
+    <div class="row g-4 align-items-center">
+      <div class="col-12 col-md-4 text-center benefit-item">
+        <div class="benefit-icon">✦</div>
+        <h5 class="benefit-title">Prémium minőség</h5>
+        <p class="benefit-text">Minden jármű alapos műszaki vizsgálaton esik át mielőtt kínálatunkba kerül.</p>
+      </div>
+      <div class="col-12 col-md-4 text-center benefit-item">
+        <div class="benefit-icon">◈</div>
+        <h5 class="benefit-title">Átlátható árazás</h5>
+        <p class="benefit-text">Nincsenek rejtett költségek. Amit lát, azt fizeti – semmi meglepetés.</p>
+      </div>
+      <div class="col-12 col-md-4 text-center benefit-item">
+        <div class="benefit-icon">⬡</div>
+        <h5 class="benefit-title">Személyes kiszolgálás</h5>
+        <p class="benefit-text">Szakértő csapatunk segít megtalálni az Önnek legmegfelelőbb járművet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta py-6">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="row align-items-center g-4">
+        <div class="col-12 col-md-8">
+          <p class="cta-eyebrow">Készen áll?</p>
+          <h2 class="cta-title">Találja meg álmai autóját még ma.</h2>
+          <p class="cta-subtitle">Több mint 120 minőségi jármű várja Önt. Vegye fel velünk a kapcsolatot, vagy böngésszen kínálatunkban.</p>
+        </div>
+        <div class="col-12 col-md-4 text-md-end d-flex flex-md-column gap-3 justify-content-md-end">
+          <a routerLink="/cars" class="btn btn-cta-primary">Kínálat</a>
+          <a routerLink="/contact" class="btn btn-cta-secondary">Kapcsolat</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

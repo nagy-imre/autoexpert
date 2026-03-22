@@ -1,0 +1,387 @@
+// VÁLTOZÓK
+$gold: #c9a84c;
+$dark: #1a1a1a;
+$light-gray: #f8f8f6;
+
+// ÁLTALÁNOS
+.py-6 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.mb-6 {
+  margin-bottom: 4rem;
+}
+
+// SZEKCIÓ FEJLÉC
+.section-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: $gold;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: $dark;
+  margin-bottom: 1.5rem;
+}
+
+.section-divider {
+  width: 60px;
+  height: 2px;
+  background: $gold;
+  margin: 0 auto;
+}
+
+// HERO
+.hero {
+  position: relative;
+  min-height: 92vh;
+  background: linear-gradient(160deg, #f8f8f6 0%, #efefea 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  &::before {
+    content: 'AUTOEXPERT';
+    position: absolute;
+    right: -2%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: clamp(6rem, 15vw, 14rem);
+    font-weight: 900;
+    color: rgba(0,0,0,0.04);
+    letter-spacing: -5px;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 6rem 0;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: $gold;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: $dark;
+    margin-bottom: 1.5rem;
+
+    em {
+      font-style: italic;
+      font-weight: 300;
+      color: $gold;
+    }
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 480px;
+    line-height: 1.7;
+  }
+}
+
+// HERO GOMBOK
+.btn-hero-primary {
+  background: $dark;
+  color: #fff;
+  padding: 0.9rem 2.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid $dark;
+
+  &:hover {
+    background: $gold;
+    border-color: $gold;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-hero-secondary {
+  background: transparent;
+  color: $dark;
+  padding: 0.9rem 2.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(0,0,0,0.2);
+
+  &:hover {
+    border-color: $dark;
+    transform: translateY(-2px);
+  }
+}
+
+// SCROLL INDICATOR
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  span {
+    display: block;
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, $gold);
+    margin: 0 auto;
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+// KIEMELT AUTÓK KÁRTYÁK
+.featured-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+
+    .featured-card-img img {
+      transform: scale(1.05);
+    }
+  }
+
+  .featured-card-img {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+  }
+
+  .featured-card-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    .badge-sale {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 0.3rem 0.9rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .badge-rent {
+      background: $gold;
+      color: #fff;
+      padding: 0.3rem 0.9rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+  }
+
+  .featured-card-body {
+    padding: 1.5rem;
+  }
+
+  .featured-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $dark;
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-card-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+
+    span {
+      font-size: 0.75rem;
+      color: #888;
+      background: #f5f5f3;
+      padding: 0.2rem 0.7rem;
+      border-radius: 50px;
+    }
+  }
+
+  .featured-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1rem;
+  }
+
+  .featured-card-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $dark;
+
+    small {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: #888;
+    }
+  }
+
+  .btn-card {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $gold;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $dark;
+    }
+  }
+}
+
+// ELŐNYÖK
+.benefits {
+  background: $light-gray !important;
+
+  .benefit-item {
+    padding: 2rem 1.5rem;
+  }
+
+  .benefit-icon {
+    font-size: 1.8rem;
+    color: $gold;
+    margin-bottom: 1.25rem;
+  }
+
+  .benefit-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $dark;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.3px;
+  }
+
+  .benefit-text {
+    font-size: 0.875rem;
+    color: #777;
+    line-height: 1.7;
+    margin: 0;
+  }
+}
+
+// CTA
+.cta {
+  .cta-inner {
+    background: $dark;
+    border-radius: 24px;
+    padding: 4rem;
+
+    @media (max-width: 768px) {
+      padding: 2.5rem 1.5rem;
+    }
+  }
+
+  .cta-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: $gold;
+    margin-bottom: 1rem;
+  }
+
+  .cta-title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .cta-subtitle {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .btn-cta-primary {
+    background: $gold;
+    color: #fff;
+    padding: 0.85rem 2.5rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+
+    &:hover {
+      background: lighten($gold, 10%);
+      transform: translateY(-2px);
+    }
+  }
+
+  .btn-cta-secondary {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    padding: 0.85rem 2.5rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: inline-block;
+
+    &:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// RESZPONZÍV
+@media (max-width: 768px) {
+  .hero {
+    min-height: 80vh;
+  }
+}
