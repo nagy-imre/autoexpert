@@ -14,8 +14,6 @@ export class CarList implements OnInit {
   cars: any[] = [];
   activeFilter: string = 'all';
   backendUrl = 'http://localhost:5000/uploads/';
-
-  // Minden autóhoz tároljuk, melyik kép az aktív
   activeImageIndex: { [carId: number]: number } = {};
 
   constructor(
@@ -32,7 +30,6 @@ export class CarList implements OnInit {
     this.carService.getCars(purpose).subscribe({
       next: (data) => {
         this.cars = data;
-        // Minden autóhoz az első kép legyen aktív alapból
         this.cars.forEach(car => this.activeImageIndex[car.id] = 0);
         this.cdr.detectChanges();
       },
@@ -55,5 +52,16 @@ export class CarList implements OnInit {
 
   goToDetail(carId: number): void {
     this.router.navigate(['/cars', carId]);
+  }
+
+  // --- ÚJ: Státusz fordító és színező ---
+  getStatusText(status: string): string {
+    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Szervizben', 'SOLD': 'Eladva' };
+    return map[status] || status;
+  }
+
+  getStatusClass(status: string): string {
+    const map: any = { 'RESERVED': 'car-badge-reserved', 'RENTED': 'car-badge-rented', 'IN_SERVICE': 'car-badge-service', 'SOLD': 'car-badge-sold' };
+    return map[status] || '';
   }
 }

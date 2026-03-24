@@ -7,24 +7,22 @@
 
     <div class="row g-4 mb-4">
 
-      <!-- BAL: Kép -->
-      <div class="col-md-6">
-        <div class="detail-img-main">
+      <div class="col-lg-6">
+        <div class="detail-img-main" (click)="openImageModal()" title="Kattints a nagyításhoz">
           <img
             [src]="car.images && car.images.length > 0
               ? backendUrl + car.images[activeImageIndex].imageUrl
               : 'https://via.placeholder.com/800x500?text=Nincs+kép'"
             alt="Autó fotó">
 
-          <!-- BADGE -->
           <div class="detail-badges">
             @if (car.purpose === 'sale') {
               <span class="detail-badge detail-badge-sale">Eladó</span>
             } @else {
               <span class="detail-badge detail-badge-rent">Bérelhető</span>
             }
-            @if (!car.isAvailable) {
-              <span class="detail-badge detail-badge-unavailable">Foglalt</span>
+            @if (car.status !== 'AVAILABLE') {
+              <span class="detail-badge" [ngClass]="getStatusClass(car.status)">{{ getStatusText(car.status) }}</span>
             }
           </div>
         </div>
@@ -42,15 +40,39 @@
         }
       </div>
 
-      <!-- JOBB: Műszaki adatok -->
-      <div class="col-md-6">
+      <div class="col-lg-6">
         <h2 class="detail-title">{{ car.brand }} {{ car.model }}</h2>
 
         <div class="detail-specs">
+          
+          @if (car.vin) {
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Alvázszám</span>
+              <span class="detail-spec-value">{{ car.vin }}</span>
+            </div>
+          }
+          @if (car.licensePlate) {
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Rendszám</span>
+              <span class="detail-spec-value">{{ car.licensePlate }}</span>
+            </div>
+          }
           @if (car.year) {
             <div class="detail-spec-item">
               <span class="detail-spec-label">Évjárat</span>
               <span class="detail-spec-value">{{ car.year }}</span>
+            </div>
+          }
+          @if (car.mileage) {
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Futásteljesítmény</span>
+              <span class="detail-spec-value">{{ car.mileage | number:'1.0-0' }} km</span>
+            </div>
+          }
+          @if (car.bodyType) {
+            <div class="detail-spec-item">
+              <span class="detail-spec-label">Kivitel</span>
+              <span class="detail-spec-value">{{ car.bodyType }}</span>
             </div>
           }
           @if (car.fuelType) {
@@ -65,30 +87,19 @@
               <span class="detail-spec-value">{{ car.transmission }}</span>
             </div>
           }
-          @if (car.engineCapacity) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Hengerűrtartalom</span>
-              <span class="detail-spec-value">{{ car.engineCapacity }} cm³</span>
-            </div>
-          }
           @if (car.horsepower) {
             <div class="detail-spec-item">
               <span class="detail-spec-label">Teljesítmény</span>
               <span class="detail-spec-value">{{ car.horsepower }} LE</span>
             </div>
           }
-          @if (car.mileage) {
+          @if (car.condition) {
             <div class="detail-spec-item">
-              <span class="detail-spec-label">Futásteljesítmény</span>
-              <span class="detail-spec-value">{{ car.mileage | number:'1.0-0' }} km</span>
+              <span class="detail-spec-label">Állapot</span>
+              <span class="detail-spec-value">{{ getCondition(car.condition) }}</span>
             </div>
           }
-          @if (car.color) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Szín</span>
-              <span class="detail-spec-value">{{ car.color }}</span>
-            </div>
-          }
+
           @if (car.features && car.features.length > 0) {
             <div class="detail-spec-item detail-spec-features">
               <span class="detail-spec-label">Felszereltség</span>
@@ -103,23 +114,40 @@
       </div>
     </div>
 
-    <!-- ALSÓ SOR: Leírás + Elérhetőség/Ár -->
     <div class="row g-4 mb-5">
-      <div class="col-md-6">
+      <div class="col-lg-6">
         <h5 class="detail-section-title">Leírás</h5>
         <p class="detail-description">{{ car.description || 'Nincs leírás megadva ehhez a járműhöz.' }}</p>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-lg-6">
         <div class="detail-purchase-card">
+          
           <div class="detail-availability">
-            <span class="detail-spec-label">Elérhetőség</span>
-            @if (car.isAvailable) {
-              <span class="detail-badge detail-badge-available">Elérhető</span>
-            } @else {
-              <span class="detail-badge detail-badge-unavailable">Foglalt</span>
-            }
+            <span class="detail-spec-label">Jelenlegi státusz</span>
+            <span class="detail-badge" [ngClass]="getStatusClass(car.status)">
+              {{ getStatusText(car.status) }}
+            </span>
           </div>
+
+          @if (car.purpose === 'rent') {
+            <div class="detail-rental-extras">
+              @if (car.deposit) {
+                <div class="rental-extra-row">
+                  <span class="detail-spec-label">Kaució:</span>
+                  <span class="rental-extra-val">{{ car.deposit | number:'1.0-0' }} Ft</span>
+                </div>
+              }
+              <div class="rental-extra-row">
+                <span class="detail-spec-label">Napi limit:</span>
+                <span class="rental-extra-val">{{ car.dailyKmLimit }} km</span>
+              </div>
+              <div class="rental-extra-row">
+                <span class="detail-spec-label">Túlfutási díj:</span>
+                <span class="rental-extra-val">{{ car.extraKmFee }} Ft / km</span>
+              </div>
+            </div>
+          }
 
           <div class="detail-price-row">
             <div>
@@ -127,6 +155,9 @@
               <div class="detail-price">
                 @if (car.purpose === 'sale') {
                   {{ car.salePrice | number:'1.0-0' }} Ft
+                  @if (car.vatReclaimable) {
+                    <small class="vat-info">+ ÁFA visszaigényelhető</small>
+                  }
                 } @else {
                   {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small>/ nap</small>
                 }
@@ -134,9 +165,17 @@
             </div>
 
             @if (car.purpose === 'rent') {
-              <button class="detail-cta-btn detail-cta-rent" (click)="openRentalModal()">Érdeklődöm</button>
+              <button class="detail-cta-btn detail-cta-rent" 
+                      [disabled]="car.status === 'SOLD' || car.status === 'IN_SERVICE'" 
+                      (click)="openRentalModal()">
+                Érdeklődöm
+              </button>
             } @else {
-              <button class="detail-cta-btn detail-cta-sale" (click)="openSaleModal()">Érdeklődöm</button>
+              <button class="detail-cta-btn detail-cta-sale" 
+                      [disabled]="car.status === 'SOLD'" 
+                      (click)="openSaleModal()">
+                Érdeklődöm
+              </button>
             }
           </div>
         </div>
@@ -145,7 +184,25 @@
 
   </div>
 
-  <!-- BÉRLŐS MODAL -->
+  @if (showImageModal && car.images && car.images.length > 0) {
+    <div class="image-modal-overlay" (click)="closeImageModal()">
+      <button class="image-modal-close" (click)="closeImageModal()">✕</button>
+
+      @if (car.images.length > 1) {
+        <button class="image-nav-btn prev" (click)="prevImage($event)">❮</button>
+      }
+
+      <img class="image-modal-content"
+           [src]="backendUrl + car.images[activeImageIndex].imageUrl"
+           (click)="$event.stopPropagation()"
+           alt="Nagyított kép">
+
+      @if (car.images.length > 1) {
+        <button class="image-nav-btn next" (click)="nextImage($event)">❯</button>
+      }
+    </div>
+  }
+
   @if (showRentalModal) {
     <div class="modal-overlay" (click)="closeRentalModal()"></div>
     <div class="modal-box">
@@ -154,66 +211,46 @@
         <button class="modal-close" (click)="closeRentalModal()">✕</button>
       </div>
       <p class="modal-subtitle">Töltse ki az alábbi adatokat és hamarosan visszajelzünk, vagy keressen minket telefonon!</p>
-      <p class="modal-phone">
-        <a [href]="'tel:' + rentPhone">{{ rentPhone }}</a>
-      </p>
+      <p class="modal-phone"><a [href]="'tel:' + rentPhone">{{ rentPhone }}</a></p>
 
       <form [formGroup]="rentalForm">
         <div class="modal-field">
           <label>Teljes név *</label>
           <input type="text" formControlName="customerName" placeholder="pl. Bérlő Lajos">
-          @if (rentalForm.get('customerName')?.invalid && rentalForm.get('customerName')?.touched) {
-            <span class="modal-error">A név megadása kötelező.</span>
-          }
         </div>
         <div class="modal-field">
           <label>Email cím *</label>
           <input type="email" formControlName="customerEmail" placeholder="pl. berlolajos@pelda.hu">
-          @if (rentalForm.get('customerEmail')?.invalid && rentalForm.get('customerEmail')?.touched) {
-            <span class="modal-error">Érvényes email cím megadása kötelező.</span>
-          }
         </div>
         <div class="modal-field">
           <label>Telefonszám *</label>
           <input type="tel" formControlName="customerPhone" placeholder="pl. +36 30 123 4567">
-          @if (rentalForm.get('customerPhone')?.invalid && rentalForm.get('customerPhone')?.touched) {
-            <span class="modal-error">A telefonszám megadása kötelező.</span>
-          }
         </div>
         <div class="row g-3 mb-3">
           <div class="col">
             <div class="modal-field mb-0">
               <label>Bérlés kezdete *</label>
               <input type="date" formControlName="startDate">
-              @if (rentalForm.get('startDate')?.invalid && rentalForm.get('startDate')?.touched) {
-                <span class="modal-error">Kötelező mező.</span>
-              }
             </div>
           </div>
           <div class="col">
             <div class="modal-field mb-0">
               <label>Bérlés vége *</label>
               <input type="date" formControlName="endDate">
-              @if (rentalForm.get('endDate')?.invalid && rentalForm.get('endDate')?.touched) {
-                <span class="modal-error">Kötelező mező.</span>
-              }
             </div>
           </div>
         </div>
         <div class="modal-field">
           <label>Megjegyzés <span class="optional">(opcionális)</span></label>
-          <textarea formControlName="message" rows="3" placeholder="Ha van bármilyen kérése vagy kérdése, írja le itt..."></textarea>
+          <textarea formControlName="message" rows="3" placeholder="Ha van bármilyen kérése..."></textarea>
         </div>
-        <button class="modal-submit modal-submit-rent"
-          (click)="submitRental()"
-          [disabled]="rentalForm.invalid || rentalSending">
+        <button class="modal-submit modal-submit-rent" (click)="submitRental()" [disabled]="rentalForm.invalid || rentalSending">
           {{ rentalSending ? 'Küldés...' : 'Érdeklődés elküldése' }}
         </button>
       </form>
     </div>
   }
 
-  <!-- ELADÓS MODAL -->
   @if (showSaleModal) {
     <div class="modal-overlay" (click)="closeSaleModal()"></div>
     <div class="modal-box">
@@ -222,39 +259,26 @@
         <button class="modal-close" (click)="closeSaleModal()">✕</button>
       </div>
       <p class="modal-subtitle">Töltse ki az alábbi adatokat és hamarosan visszajelzünk, vagy keressen minket telefonon!</p>
-      <p class="modal-phone">
-        <a [href]="'tel:' + salePhone">{{ salePhone }}</a>
-      </p>
+      <p class="modal-phone"><a [href]="'tel:' + salePhone">{{ salePhone }}</a></p>
 
       <form [formGroup]="saleForm">
         <div class="modal-field">
           <label>Teljes név *</label>
           <input type="text" formControlName="customerName" placeholder="pl. Vevő János">
-          @if (saleForm.get('customerName')?.invalid && saleForm.get('customerName')?.touched) {
-            <span class="modal-error">A név megadása kötelező.</span>
-          }
         </div>
         <div class="modal-field">
           <label>Email cím *</label>
           <input type="email" formControlName="customerEmail" placeholder="pl. vevojanos@pelda.hu">
-          @if (saleForm.get('customerEmail')?.invalid && saleForm.get('customerEmail')?.touched) {
-            <span class="modal-error">Érvényes email cím megadása kötelező.</span>
-          }
         </div>
         <div class="modal-field">
           <label>Telefonszám *</label>
           <input type="tel" formControlName="customerPhone" placeholder="pl. +36 30 123 4567">
-          @if (saleForm.get('customerPhone')?.invalid && saleForm.get('customerPhone')?.touched) {
-            <span class="modal-error">A telefonszám megadása kötelező.</span>
-          }
         </div>
         <div class="modal-field">
           <label>Megjegyzés <span class="optional">(opcionális)</span></label>
-          <textarea formControlName="message" rows="3" placeholder="Ha van bármilyen kérése vagy kérdése, írja le itt..."></textarea>
+          <textarea formControlName="message" rows="3" placeholder="Ha van bármilyen kérése..."></textarea>
         </div>
-        <button class="modal-submit modal-submit-sale"
-          (click)="submitSale()"
-          [disabled]="saleForm.invalid || saleSending">
+        <button class="modal-submit modal-submit-sale" (click)="submitSale()" [disabled]="saleForm.invalid || saleSending">
           {{ saleSending ? 'Küldés...' : 'Érdeklődés elküldése' }}
         </button>
       </form>

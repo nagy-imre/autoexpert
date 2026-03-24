@@ -116,6 +116,22 @@ $dark: #1a1a1a;
     color: #fff;
   }
 
+  &.car-badge-reserved {
+    background: #3498;
+    color: #fff;
+  }
+  &.car-badge-rented {
+    background: #9b59b6;
+    color: #fff;
+  }
+  &.car-badge-service {
+    background: #f39c12;
+    color: #fff;
+  }
+  &.car-badge-sold {
+    background: #95a5a6;
+    color: #fff;
+  }
   &.car-badge-unavailable {
     background: $unavailable;
     color: #fff;

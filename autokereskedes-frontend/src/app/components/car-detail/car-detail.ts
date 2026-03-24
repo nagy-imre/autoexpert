@@ -19,6 +19,9 @@ export class CarDetail implements OnInit {
   salePhone = '+36 30 123 4567';
   rentPhone = '+36 30 987 6543';
 
+  // Képnézegető (Lightbox)
+  showImageModal = false;
+
   // Bérlős modal
   showRentalModal = false;
   rentalForm: FormGroup;
@@ -64,15 +67,69 @@ export class CarDetail implements OnInit {
     });
   }
 
+  // --- KÉPKEZELÉS ÉS GALÉRIA ---
   setActiveImage(index: number): void {
     this.activeImageIndex = index;
+    this.cdr.detectChanges();
   }
 
+  openImageModal(): void {
+    if (this.car && this.car.images && this.car.images.length > 0) {
+      this.showImageModal = true;
+      document.body.style.overflow = 'hidden';
+      this.cdr.detectChanges();
+    }
+  }
+
+  closeImageModal(): void {
+    this.showImageModal = false;
+    document.body.style.overflow = 'auto';
+    this.cdr.detectChanges();
+  }
+
+  nextImage(event: Event): void {
+    event.stopPropagation();
+    if (this.car.images && this.car.images.length > 0) {
+      this.activeImageIndex = (this.activeImageIndex + 1) % this.car.images.length;
+      this.cdr.detectChanges();
+    }
+  }
+
+  prevImage(event: Event): void {
+    event.stopPropagation();
+    if (this.car.images && this.car.images.length > 0) {
+      this.activeImageIndex = (this.activeImageIndex - 1 + this.car.images.length) % this.car.images.length;
+      this.cdr.detectChanges();
+    }
+  }
+
+  // --- NAVIGÁCIÓ ---
   goBack(): void {
     this.router.navigate(['/cars']);
   }
 
-  // Bérlős modal
+  // --- ADAT FORDÍTÓK ---
+  getStatusText(status: string): string {
+    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Szervizben', 'SOLD': 'Eladva' };
+    return map[status] || status;
+  }
+
+  getStatusClass(status: string): string {
+    const map: any = { 'AVAILABLE': 'detail-badge-available', 'RESERVED': 'detail-badge-reserved', 'RENTED': 'detail-badge-rented', 'IN_SERVICE': 'detail-badge-service', 'SOLD': 'detail-badge-sold' };
+    return map[status] || '';
+  }
+
+  getCondition(condition: string): string {
+    const map: any = { 'new': 'Új', 'excellent': 'Újszerű', 'normal': 'Normál', 'damaged': 'Sérült' };
+    return map[condition] || condition;
+  }
+
+  getServiceBook(book: string): string {
+    const map: any = { 'full_dealer': 'Végig márkaszervizben vezetett', 'partial': 'Részleges', 'none': 'Nincs' };
+    return map[book] || book;
+  }
+
+  // --- BÉRLŐS MODAL ---
   openRentalModal(): void {
     this.showRentalModal = true;
     this.rentalForm.reset();
@@ -89,31 +146,19 @@ export class CarDetail implements OnInit {
       next: () => {
         this.rentalSending = false;
         this.closeRentalModal();
-        Swal.fire({
-          icon: 'success',
-          title: 'Sikeresen elküldve!',
-          text: 'Érdeklődését sikeresen elküldtük! Hamarosan visszajelzünk.',
-          confirmButtonText: 'Rendben',
-          confirmButtonColor: '#198754'
-        });
+        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Érdeklődését sikeresen elküldtük! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#198754' });
         this.rentalForm.reset();
         this.cdr.detectChanges();
       },
       error: (err) => {
         this.rentalSending = false;
-        Swal.fire({
-          icon: 'error',
-          title: 'Hiba!',
-          text: err.error?.message || 'Hiba történt a küldés során.',
-          confirmButtonText: 'Rendben',
-          confirmButtonColor: '#198754'
-        });
+        Swal.fire({ icon: 'error', title: 'Hiba!', text: err.error?.message || 'Hiba történt a küldés során.', confirmButtonText: 'Rendben', confirmButtonColor: '#198754' });
         this.cdr.detectChanges();
       }
     });
   }
 
-  // Eladós modal
+  // --- ELADÓS MODAL ---
   openSaleModal(): void {
     this.showSaleModal = true;
     this.saleForm.reset();
@@ -130,25 +175,13 @@ export class CarDetail implements OnInit {
       next: () => {
         this.saleSending = false;
         this.closeSaleModal();
-        Swal.fire({
-          icon: 'success',
-          title: 'Sikeresen elküldve!',
-          text: 'Érdeklődését sikeresen elküldtük! Hamarosan visszajelzünk.',
-          confirmButtonText: 'Rendben',
-          confirmButtonColor: '#0d6efd'
-        });
+        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Érdeklődését sikeresen elküldtük! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#0d6efd' });
         this.saleForm.reset();
         this.cdr.detectChanges();
       },
       error: (err) => {
         this.saleSending = false;
-        Swal.fire({
-          icon: 'error',
-          title: 'Hiba!',
-          text: err.error?.message || 'Hiba történt a küldés során.',
-          confirmButtonText: 'Rendben',
-          confirmButtonColor: '#0d6efd'
-        });
+        Swal.fire({ icon: 'error', title: 'Hiba!', text: err.error?.message || 'Hiba történt a küldés során.', confirmButtonText: 'Rendben', confirmButtonColor: '#0d6efd' });
         this.cdr.detectChanges();
       }
     });

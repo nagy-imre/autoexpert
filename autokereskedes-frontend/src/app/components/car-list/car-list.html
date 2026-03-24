@@ -1,70 +1,42 @@
 <div class="container-fluid mt-4">
   <div class="row">
 
-    <!-- OLDALSÁV: Szűrés -->
     <div class="col-12 col-md-3 col-lg-2 mb-3 mb-md-0">
       <div class="filter-card p-3">
         <h6 class="filter-title">Szűrés</h6>
         <div class="d-flex flex-md-column flex-row gap-2">
-          <button
-            class="filter-btn flex-fill"
-            [class.active]="activeFilter === 'all'"
-            (click)="setFilter('all')">
-            Összes
-          </button>
-          <button
-            class="filter-btn filter-btn-sale flex-fill"
-            [class.active]="activeFilter === 'sale'"
-            (click)="setFilter('sale')">
-            Eladó
-          </button>
-          <button
-            class="filter-btn filter-btn-rent flex-fill"
-            [class.active]="activeFilter === 'rent'"
-            (click)="setFilter('rent')">
-            Bérelhető
-          </button>
+          <button class="filter-btn flex-fill" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">Összes</button>
+          <button class="filter-btn filter-btn-sale flex-fill" [class.active]="activeFilter === 'sale'" (click)="setFilter('sale')">Eladó</button>
+          <button class="filter-btn filter-btn-rent flex-fill" [class.active]="activeFilter === 'rent'" (click)="setFilter('rent')">Bérelhető</button>
         </div>
       </div>
     </div>
 
-    <!-- AUTÓK LISTÁJA -->
     <div class="col-12 col-md-9 col-lg-10">
       <div class="row">
         @for (car of cars; track car.id) {
           <div class="col-12 col-sm-6 col-xl-4 mb-4">
-            <div class="car-card" [class.car-card-unavailable]="!car.isAvailable">
+            <div class="car-card" [class.car-card-unavailable]="car.status !== 'AVAILABLE'">
 
-              <!-- BADGE -->
               <div class="car-card-badges">
                 @if (car.purpose === 'sale') {
                   <span class="car-badge car-badge-sale">Eladó</span>
                 } @else {
                   <span class="car-badge car-badge-rent">Bérelhető</span>
                 }
-                @if (!car.isAvailable) {
-                  <span class="car-badge car-badge-unavailable">Foglalt</span>
+                @if (car.status !== 'AVAILABLE') {
+                  <span class="car-badge" [ngClass]="getStatusClass(car.status)">{{ getStatusText(car.status) }}</span>
                 }
               </div>
 
-              <!-- FŐ KÉP -->
               <div class="car-card-img">
-                <img
-                  [src]="car.images && car.images.length > 0
-                    ? backendUrl + car.images[activeImageIndex[car.id]].imageUrl
-                    : 'https://via.placeholder.com/400x250?text=Nincs+kép'"
-                  alt="Autó fotó">
+                <img [src]="car.images && car.images.length > 0 ? backendUrl + car.images[activeImageIndex[car.id]].imageUrl : 'https://via.placeholder.com/400x250?text=Nincs+kép'" alt="Autó fotó">
               </div>
 
-              <!-- ELŐNÉZETI KÉPEK -->
               @if (car.images && car.images.length > 1) {
                 <div class="car-card-thumbs">
                   @for (img of car.images; track img.id; let i = $index) {
-                    <img
-                      [src]="backendUrl + img.imageUrl"
-                      (click)="setActiveImage(car.id, i)"
-                      [class.active]="activeImageIndex[car.id] === i"
-                      alt="előnézet">
+                    <img [src]="backendUrl + img.imageUrl" (click)="setActiveImage(car.id, i)" [class.active]="activeImageIndex[car.id] === i" alt="előnézet">
                   }
                 </div>
               }
@@ -73,15 +45,9 @@
                 <h5 class="car-card-title">{{ car.brand }} {{ car.model }}</h5>
 
                 <ul class="car-card-meta">
-                  @if (car.year) {
-                    <li><span>Évjárat:</span> {{ car.year }}</li>
-                  }
-                  @if (car.horsepower) {
-                    <li><span>Teljesítmény:</span> {{ car.horsepower }} LE</li>
-                  }
-                  @if (car.fuelType) {
-                    <li><span>Üzemanyag:</span> {{ car.fuelType }}</li>
-                  }
+                  @if (car.year) { <li><span>Évjárat:</span> {{ car.year }}</li> }
+                  @if (car.bodyType) { <li><span>Kivitel:</span> {{ car.bodyType }}</li> }
+                  @if (car.horsepower) { <li><span>Teljesítmény:</span> {{ car.horsepower }} LE</li> }
                 </ul>
 
                 <div class="car-card-footer">

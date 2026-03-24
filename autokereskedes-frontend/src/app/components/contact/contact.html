@@ -1,1 +1,88 @@
-<p>contact works!</p>
+<!-- HERO -->
+<section class="contact-hero">
+  <div class="container">
+    <p class="contact-eyebrow">Lépjen kapcsolatba velünk</p>
+    <h1 class="contact-title">Hogyan segíthetünk?</h1>
+    <p class="contact-subtitle">
+      Csapatunk készséggel áll rendelkezésére. Keressen minket telefonon, vagy látogasson el személyesen hozzánk.
+    </p>
+  </div>
+</section>
+
+<!-- ELÉRHETŐSÉGEK -->
+<section class="contact-section">
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+
+      <!-- Telefonszámok -->
+      @for (item of contactInfo; track item.label) {
+        <div class="col-12 col-md-4">
+          <div class="contact-card">
+            <div class="contact-card-icon">📞</div>
+            <p class="contact-card-label">{{ item.label }}</p>
+            <a [href]="item.href" class="contact-card-phone">{{ item.phone }}</a>
+            <p class="contact-card-desc">{{ item.desc }}</p>
+          </div>
+        </div>
+      }
+
+      <!-- Cím -->
+      <div class="col-12 col-md-4">
+        <div class="contact-card">
+          <div class="contact-card-icon">📍</div>
+          <p class="contact-card-label">Látogasson el hozzánk</p>
+          <p class="contact-card-address">1131, Budapest,<br>Turbina utca 3.</p>
+          <a href="https://maps.google.com/?q=1131+Budapest+Turbina+utca+3" target="_blank" class="contact-map-link">
+            Útvonaltervezés →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TÉRKÉP -->
+<section class="contact-map-section">
+  <div class="container">
+    <div class="contact-map-wrapper">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2694.5!2d19.0620!3d47.5380!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741dc0b0e0e0e0b%3A0x0!2zQnVkYXBlc3QsIFR1cmJpbmEgdS4gMywgMTEzMQ!5e0!3m2!1shu!2shu!4v1620000000000!5m2!1shu!2shu"
+        width="100%"
+        height="100%"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- NYITVATARTÁS -->
+<section class="contact-hours">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="hours-card">
+          <p class="contact-eyebrow text-center">Mikor találhat minket</p>
+          <h3 class="hours-title">Nyitvatartás</h3>
+          <div class="hours-list">
+            <div class="hours-item">
+              <span class="hours-day">Hétfő – Péntek</span>
+              <span class="hours-time">08:00 – 18:00</span>
+            </div>
+            <div class="hours-item">
+              <span class="hours-day">Szombat</span>
+              <span class="hours-time">09:00 – 14:00</span>
+            </div>
+            <div class="hours-item hours-item-closed">
+              <span class="hours-day">Vasárnap</span>
+              <span class="hours-time">Zárva</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

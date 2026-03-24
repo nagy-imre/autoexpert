@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 5000;
 // 3. Adatbázis szinkronizálása
 // Mivel ismét új táblát hoztunk létre, egyetlen indulás erejéig állítsuk 'alter: true'-ra!
 // (A 'force: true' mindent törölne, az 'alter' viszont csak frissíti a szerkezetet anélkül, hogy a felvitt autóid elvesznének!)
-sequelize.sync({}) 
+sequelize.sync({ alter: true}) 
   .then(() => {
     console.log('✅ Adatbázis sikeresen szinkronizálva.');
     
