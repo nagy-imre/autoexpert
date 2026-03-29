@@ -1,9 +1,15 @@
-<div class="app-wrapper">
+@if (!isAdminRoute) {
   <app-navbar></app-navbar>
+}
 
-  <main class="app-content">
-    <router-outlet></router-outlet>
-  </main>
+<div [class.admin-wrapper]="isAdminRoute">
+  @if (isAdminRoute) {
+    <app-admin-sidebar></app-admin-sidebar>
+  }
 
-  <app-footer></app-footer>
+  <router-outlet></router-outlet>
 </div>
+
+@if (!isAdminRoute) {
+  <app-footer></app-footer>
+}

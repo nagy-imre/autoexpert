@@ -1,1 +1,92 @@
-<p>rental-manager works!</p>
+<div class="admin-layout">
+    <main class="admin-main">
+        <app-admin-sidebar></app-admin-sidebar>
+        <div class="admin-header">
+            <div class="admin-header-row">
+                <div>
+                    <h1 class="admin-page-title">Bérlések</h1>
+                    <p class="admin-page-subtitle">{{ filteredRentals.length }} bérlés megjelenítve</p>
+                </div>
+                @if (hasRole('superadmin', 'rental_manager')) {
+                    <button class="btn-primary" (click)="openNewRentalModal()">
+                        + Új bérlés
+                    </button>
+                }
+            </div>
+        </div>
+        <div class="filter-bar">
+            <input 
+                type="text" 
+                class="filter-input" 
+                placeholder="🔍 Keresés név vagy email alapján..." 
+                [(ngModel)]="searchQuery"
+                (input)="applyFilters()">
+            
+            <select class="filter-select" [(ngModel)]="statusFilter" (change)="applyFilters()">
+                <option value="all">Minden státusz</option>
+                <option value="active">Aktív</option>
+                <option value="pending">Függőben</option>
+                <option value="completed">Lezárt</option>
+                <option value="cancelled">Törölt</option>
+            </select>
+
+            @if (searchQuery || statusFilter !== 'all') {
+                <button class="btn-clear" (click)="clearFilters()">Szűrők törlése</button>
+            }
+        </div>
+        @if (loading) {
+            <div class="loading-state">
+                <div class="spinner-border text-warning"></div>
+                <p>Adatok betöltése...</p>
+            </div>
+        } @else {
+            <div class="admin-section">
+                @if (filteredRentals.length > 0) {
+                    <table class="rentals-table">
+                        <thead>
+                            <tr>
+                                <th>Ügyfél</th>
+                                <th>Jármű</th>
+                                <th>Időszak</th>
+                                <th>Összeg</th>
+                                <th>Státusz</th>
+                                <th>Műveletek</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (rental of filteredRentals; track rental.id) {
+                                <tr>
+                                    <td>
+                                        <strong>{{ rental.customerName }}</strong>
+                                        <div style="font-size: 0.75rem; color: #aaa;">{{ rental.customerEmail }}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ rental.Car?.brand }} {{ rental.Car?.model }}</div>
+                                        <div style="font-size: 0.75rem; color: #aaa;">{{ rental.Car?.licensePlate }}</div>
+                                    </td>
+                                    <td>{{ rental.startDate | date:'yyyy.MM.dd' }} - {{ rental.endDate | date:'yyyy.MM.dd' }}</td>
+                                    <td>{{ rental.totalPrice | number }} Ft</td>
+                                    <td>
+                                        <span class="table-badge badge-{{ rental.status }}">
+                                            {{ getStatusLabel(rental.status) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="car-actions">
+                                            <button class="action-btn action-btn-edit" (click)="editRental(rental)">Szerkesztés</button>
+                                            <button class="action-btn action-btn-delete" (click)="deleteRental(rental.id)">Törlés</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                } @else {
+                    <div class="empty-state">
+                        <p>Nincs találat a szűrésnek megfelelően.</p>
+                    </div>
+                }
+            </div>
+        }
+    </main>
+</div>

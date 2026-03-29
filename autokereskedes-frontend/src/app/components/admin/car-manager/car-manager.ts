@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth';
@@ -20,7 +20,8 @@ export class CarManager implements OnInit {
   constructor(
     private carService: CarService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef // <-- Ezzel tudunk szólni az Angularnak, hogy frissítsen
   ) {}
 
   ngOnInit(): void {
@@ -34,13 +35,28 @@ export class CarManager implements OnInit {
       next: (data) => {
         this.cars = data;
         this.loading = false;
+        this.cdr.detectChanges(); // <-- Itt frissítjük a képernyőt az adatok megérkezése után!
       },
-      error: () => this.loading = false
+      error: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 
   hasRole(...roles: string[]): boolean {
     return this.authService.hasRole(...roles);
+  }
+
+  // --- ÚJ: Státusz fordító és színező ---
+  getStatusText(status: string): string {
+    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Szervizben', 'SOLD': 'Eladva' };
+    return map[status] || status;
+  }
+
+  getStatusClass(status: string): string {
+    const map: any = { 'AVAILABLE': 'table-badge-available', 'RESERVED': 'table-badge-reserved', 'RENTED': 'table-badge-rented', 'IN_SERVICE': 'table-badge-service', 'SOLD': 'table-badge-sold' };
+    return map[status] || 'table-badge-unavailable';
   }
 
   editCar(id: number): void {
@@ -61,21 +77,11 @@ export class CarManager implements OnInit {
       if (result.isConfirmed) {
         this.carService.deleteCar(id).subscribe({
           next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Törölve!',
-              text: `${brand} ${model} sikeresen törölve.`,
-              confirmButtonColor: '#c9a84c'
-            });
-            this.loadCars();
+            Swal.fire({ icon: 'success', title: 'Törölve!', text: `${brand} ${model} sikeresen törölve.`, confirmButtonColor: '#c9a84c' });
+            this.loadCars(); 
           },
           error: () => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Hiba!',
-              text: 'Hiba történt a törlés során.',
-              confirmButtonColor: '#c9a84c'
-            });
+            Swal.fire({ icon: 'error', title: 'Hiba!', text: 'Hiba történt a törlés során.', confirmButtonColor: '#c9a84c' });
           }
         });
       }

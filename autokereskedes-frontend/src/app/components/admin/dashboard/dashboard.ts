@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth';
 import { CarService } from '../../../services/car';
+// Importáljuk a kiszervezett oldalsávot (az útvonalat igazítsd, ha máshol van!)
+import { AdminSidebar } from '../admin-sidebar/admin-sidebar'; 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink], // <-- Ide is bekerült
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -36,9 +38,5 @@ export class Dashboard implements OnInit {
 
   hasRole(...roles: string[]): boolean {
     return this.authService.hasRole(...roles);
-  }
-
-  logout(): void {
-    this.authService.logout();
   }
 }

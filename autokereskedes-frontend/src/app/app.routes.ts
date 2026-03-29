@@ -12,6 +12,7 @@ import { CarForm } from './components/admin/car-form/car-form';
 import { RentalManager } from './components/admin/rental-manager/rental-manager';
 import { authGuard } from './guards/auth-guard';
 import { roleGuard } from './guards/role-guard';
+import { UserManager } from './components/admin/user-manager/user-manager';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -20,6 +21,7 @@ export const routes: Routes = [
   { path: 'about', component: About },
   { path: 'contact', component: Contact },
   { path: 'admin/login', component: Login },
+  { path: 'admin/users', component: UserManager},
   {
     path: 'admin/dashboard',
     component: Dashboard,

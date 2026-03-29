@@ -1,51 +1,9 @@
 <div class="admin-layout">
-
-  <!-- OLDALSÁV -->
-  <aside class="admin-sidebar">
-    <div class="sidebar-logo">🚗 AUTOEXPERT</div>
-    <p class="sidebar-subtitle">Admin felület</p>
-
-    <nav class="sidebar-nav">
-      <a routerLink="/admin/dashboard" routerLinkActive="active" class="sidebar-link">
-        <span class="sidebar-icon">⊞</span> Dashboard
-      </a>
-
-      @if (hasRole('superadmin', 'car_manager', 'viewer')) {
-        <a routerLink="/admin/cars" routerLinkActive="active" class="sidebar-link">
-          <span class="sidebar-icon">🚗</span> Autók
-        </a>
-      }
-
-      @if (hasRole('superadmin', 'car_manager')) {
-        <a routerLink="/admin/cars/new" routerLinkActive="active" class="sidebar-link">
-          <span class="sidebar-icon">+</span> Új autó
-        </a>
-      }
-
-      @if (hasRole('superadmin', 'rental_manager')) {
-        <a routerLink="/admin/rentals" routerLinkActive="active" class="sidebar-link">
-          <span class="sidebar-icon">📋</span> Bérlések
-        </a>
-      }
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <p class="sidebar-user-name">{{ currentUser?.name }}</p>
-        <p class="sidebar-user-role">{{ currentUser?.role }}</p>
-      </div>
-      <button class="sidebar-logout" (click)="logout()">Kijelentkezés</button>
-    </div>
-  </aside>
-
-  <!-- FŐ TARTALOM -->
   <main class="admin-main">
     <div class="admin-header">
       <h1 class="admin-page-title">Dashboard</h1>
       <p class="admin-page-subtitle">Üdvözöljük, {{ currentUser?.name }}!</p>
     </div>
-
-    <!-- STATISZTIKÁK -->
     <div class="row g-4 mb-5">
       <div class="col-12 col-sm-4">
         <div class="stat-card">
@@ -67,7 +25,6 @@
       </div>
     </div>
 
-    <!-- GYORS MŰVELETEK -->
     <div class="admin-section">
       <h5 class="admin-section-title">Gyors műveletek</h5>
       <div class="row g-3">
