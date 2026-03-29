@@ -5,6 +5,7 @@ import { CarDetail } from './components/car-detail/car-detail';
 import { AddCar } from './components/add-car/add-car';
 import { About } from './components/about/about';
 import { Contact } from './components/contact/contact';
+import { Nopage } from './components/nopage/nopage';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -13,5 +14,5 @@ export const routes: Routes = [
   { path: 'about', component: About },
   { path: 'contact', component: Contact },
   { path: 'admin/add', component: AddCar },
-  { path: '**', redirectTo: '' }
+  { path: '**', component: Nopage }
 ];

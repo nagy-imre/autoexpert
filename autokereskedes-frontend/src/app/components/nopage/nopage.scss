@@ -1,0 +1,107 @@
+$gold: #c9a84c;
+$dark: #1a1a1a;
+$light: #f8f8f6;
+
+.nopage-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh; 
+  padding: 3rem 1.5rem;
+  background-color: #fff;
+}
+
+.nopage-content {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+.nopage-image-wrapper {
+  margin-bottom: 2rem;
+  
+  .nopage-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 320px; /* Egy kicsit megnöveltem, hogy a kutya jobban látsszon */
+    object-fit: contain;
+    
+    // --- ÚJ: Balra-jobbra csúszó animáció ---
+    animation: slide 5s ease-in-out infinite; 
+  }
+}
+
+.nopage-title {
+  font-size: clamp(1.8rem, 5vw, 2.8rem); /* Egy kicsit kisebb betűméret a hosszabb cím miatt */
+  font-weight: 800;
+  color: $dark;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.nopage-text {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.nopage-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nopage-btn {
+  padding: 0.85rem 2rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+
+  &.nopage-btn-primary {
+    background: $gold;
+    color: #fff;
+    border: 2px solid $gold;
+
+    &:hover {
+      background: darken($gold, 10%);
+      border-color: darken($gold, 10%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+    }
+  }
+
+  &.nopage-btn-secondary {
+    background: transparent;
+    color: $dark;
+    border: 2px solid #e0e0e0;
+
+    &:hover {
+      border-color: $dark;
+      color: $dark;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// --- ÚJ: Balra-jobbra animáció kulcskockái ---
+@keyframes slide {
+  0% { transform: translateX(0px); }
+  25% { transform: translateX(-20px); } // Balra csúszik
+  75% { transform: translateX(20px); }  // Jobbra csúszik
+  100% { transform: translateX(0px); } // Visszatér középre
+}
+
+@media (max-width: 576px) {
+  .nopage-actions {
+    flex-direction: column;
+    
+    .nopage-btn {
+      width: 100%;
+    }
+  }
+}
