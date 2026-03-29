@@ -1,0 +1,117 @@
+<div class="admin-layout">
+
+  <!-- OLDALSÁV -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">🚗 AUTOEXPERT</div>
+    <p class="sidebar-subtitle">Admin felület</p>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" class="sidebar-link">
+        <span class="sidebar-icon">⊞</span> Dashboard
+      </a>
+      @if (hasRole('superadmin', 'car_manager', 'viewer')) {
+        <a routerLink="/admin/cars" routerLinkActive="active" class="sidebar-link">
+          <span class="sidebar-icon">🚗</span> Autók
+        </a>
+      }
+      @if (hasRole('superadmin', 'car_manager')) {
+        <a routerLink="/admin/cars/new" routerLinkActive="active" class="sidebar-link">
+          <span class="sidebar-icon">+</span> Új autó
+        </a>
+      }
+      @if (hasRole('superadmin', 'rental_manager')) {
+        <a routerLink="/admin/rentals" routerLinkActive="active" class="sidebar-link">
+          <span class="sidebar-icon">📋</span> Bérlések
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <p class="sidebar-user-name">{{ currentUser?.name }}</p>
+        <p class="sidebar-user-role">{{ currentUser?.role }}</p>
+      </div>
+      <button class="sidebar-logout" (click)="logout()">Kijelentkezés</button>
+    </div>
+  </aside>
+
+  <!-- FŐ TARTALOM -->
+  <main class="admin-main">
+    <div class="admin-header">
+      <div>
+        <h1 class="admin-page-title">Autók</h1>
+        <p class="admin-page-subtitle">{{ cars.length }} jármű a kínálatban</p>
+      </div>
+      @if (hasRole('superadmin', 'car_manager')) {
+        <a routerLink="/admin/cars/new" class="admin-add-btn">+ Új autó</a>
+      }
+    </div>
+
+    @if (loading) {
+      <div class="text-center py-5">
+        <div class="spinner-border text-warning"></div>
+      </div>
+    } @else {
+      <div class="cars-table-wrapper">
+        <table class="cars-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Márka / Modell</th>
+              <th>Kategória</th>
+              <th>Évjárat</th>
+              <th>Futás</th>
+              <th>Üzemanyag</th>
+              <th>Ár</th>
+              <th>Státusz</th>
+              @if (hasRole('superadmin', 'car_manager')) {
+                <th>Műveletek</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (car of cars; track car.id) {
+              <tr>
+                <td class="car-id">#{{ car.id }}</td>
+                <td class="car-name">
+                  <strong>{{ car.brand }}</strong> {{ car.model }}
+                  <span class="car-plate">{{ car.licensePlate }}</span>
+                </td>
+                <td>
+                  @if (car.purpose === 'sale') {
+                    <span class="table-badge table-badge-sale">Eladó</span>
+                  } @else {
+                    <span class="table-badge table-badge-rent">Bérelhető</span>
+                  }
+                </td>
+                <td>{{ car.year }}</td>
+                <td>{{ car.mileage | number:'1.0-0' }} km</td>
+                <td>{{ car.fuelType || '–' }}</td>
+                <td class="car-price">
+                  @if (car.purpose === 'sale') {
+                    {{ car.salePrice | number:'1.0-0' }} Ft
+                  } @else {
+                    {{ car.rentPricePerDay | number:'1.0-0' }} Ft/nap
+                  }
+                </td>
+                <td>
+                  @if (car.isAvailable) {
+                    <span class="table-badge table-badge-available">Elérhető</span>
+                  } @else {
+                    <span class="table-badge table-badge-unavailable">Foglalt</span>
+                  }
+                </td>
+                @if (hasRole('superadmin', 'car_manager')) {
+                  <td class="car-actions">
+                    <button class="action-btn action-btn-edit" (click)="editCar(car.id)">Szerkesztés</button>
+                    <button class="action-btn action-btn-delete" (click)="deleteCar(car.id, car.brand, car.model)">Törlés</button>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </main>
+</div>

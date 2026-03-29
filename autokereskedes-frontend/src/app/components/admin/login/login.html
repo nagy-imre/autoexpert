@@ -1,0 +1,37 @@
+<div class="login-wrapper">
+  <div class="login-card">
+
+    <div class="login-header">
+      <div class="login-logo">🚗</div>
+      <h2 class="login-title">AUTOEXPERT</h2>
+      <p class="login-subtitle">Admin felület</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="login-error">{{ errorMessage }}</div>
+    }
+
+    <form [formGroup]="loginForm">
+      <div class="login-field">
+        <label>Felhasználónév</label>
+        <input type="text" formControlName="username" placeholder="Felhasználónév">
+        @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+          <span class="login-field-error">Kötelező mező.</span>
+        }
+      </div>
+
+      <div class="login-field">
+        <label>Jelszó</label>
+        <input type="password" formControlName="password" placeholder="••••••••">
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <span class="login-field-error">Kötelező mező.</span>
+        }
+      </div>
+
+      <button class="login-btn" (click)="submit()" [disabled]="loginForm.invalid || loading">
+        {{ loading ? 'Bejelentkezés...' : 'Bejelentkezés' }}
+      </button>
+    </form>
+
+  </div>
+</div>

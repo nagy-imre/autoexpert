@@ -28,4 +28,15 @@ export class CarService {
   createInquiry(data: any): Observable<any> {
     return this.http.post<any>(this.inquiryUrl, data);
   }
+
+  deleteCar(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+}
+  createCar(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, data);
+}
+
+  updateCar(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, data);
+}
 }

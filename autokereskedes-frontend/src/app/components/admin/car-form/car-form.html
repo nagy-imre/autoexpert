@@ -1,0 +1,205 @@
+<div class="admin-layout">
+
+  <!-- OLDALSÁV -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">🚗 AUTOEXPERT</div>
+    <p class="sidebar-subtitle">Admin felület</p>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" class="sidebar-link">
+        <span class="sidebar-icon">⊞</span> Dashboard
+      </a>
+      @if (hasRole('superadmin', 'car_manager', 'viewer')) {
+        <a routerLink="/admin/cars" routerLinkActive="active" class="sidebar-link">
+          <span class="sidebar-icon">🚗</span> Autók
+        </a>
+      }
+      @if (hasRole('superadmin', 'car_manager')) {
+        <a routerLink="/admin/cars/new" routerLinkActive="active" class="sidebar-link">
+          <span class="sidebar-icon">+</span> Új autó
+        </a>
+      }
+      @if (hasRole('superadmin', 'rental_manager')) {
+        <a routerLink="/admin/rentals" routerLinkActive="active" class="sidebar-link">
+          <span class="sidebar-icon">📋</span> Bérlések
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <p class="sidebar-user-name">{{ currentUser?.name }}</p>
+        <p class="sidebar-user-role">{{ currentUser?.role }}</p>
+      </div>
+      <button class="sidebar-logout" (click)="logout()">Kijelentkezés</button>
+    </div>
+  </aside>
+
+  <!-- FŐ TARTALOM -->
+  <main class="admin-main">
+    <div class="admin-header">
+      <div>
+        <h1 class="admin-page-title">{{ pageTitle }}</h1>
+        <p class="admin-page-subtitle">
+          {{ isEditMode ? 'Módosítsa az autó adatait' : 'Töltse ki az összes szükséges mezőt' }}
+        </p>
+      </div>
+      <a routerLink="/admin/cars" class="admin-back-btn">← Vissza</a>
+    </div>
+
+    <form [formGroup]="carForm" class="car-form-grid">
+
+      <!-- ALAPADATOK -->
+      <div class="form-section">
+        <h5 class="form-section-title">Alapadatok</h5>
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Márka *</label>
+              <input type="text" formControlName="brand" placeholder="pl. Volkswagen">
+              @if (carForm.get('brand')?.invalid && carForm.get('brand')?.touched) {
+                <span class="form-error">Kötelező mező.</span>
+              }
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Modell *</label>
+              <input type="text" formControlName="model" placeholder="pl. Golf 2.0 TDI">
+              @if (carForm.get('model')?.invalid && carForm.get('model')?.touched) {
+                <span class="form-error">Kötelező mező.</span>
+              }
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Rendszám *</label>
+              <input type="text" formControlName="licensePlate" placeholder="pl. ABC-123">
+              @if (carForm.get('licensePlate')?.invalid && carForm.get('licensePlate')?.touched) {
+                <span class="form-error">Kötelező mező.</span>
+              }
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Évjárat *</label>
+              <input type="number" formControlName="year" placeholder="pl. 2021">
+              @if (carForm.get('year')?.invalid && carForm.get('year')?.touched) {
+                <span class="form-error">Kötelező mező.</span>
+              }
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Futásteljesítmény (km) *</label>
+              <input type="number" formControlName="mileage" placeholder="pl. 45000">
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Szín</label>
+              <input type="text" formControlName="color" placeholder="pl. Fehér">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MŰSZAKI ADATOK -->
+      <div class="form-section">
+        <h5 class="form-section-title">Műszaki adatok</h5>
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Üzemanyag</label>
+              <select formControlName="fuelType">
+                <option value="">– Válasszon –</option>
+                @for (fuel of fuelTypes; track fuel) {
+                  <option [value]="fuel">{{ fuel }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Sebességváltó</label>
+              <select formControlName="transmission">
+                <option value="">– Válasszon –</option>
+                @for (t of transmissions; track t) {
+                  <option [value]="t">{{ t }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Hengerűrtartalom (cm³)</label>
+              <input type="number" formControlName="engineCapacity" placeholder="pl. 1968">
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Teljesítmény (LE)</label>
+              <input type="number" formControlName="horsepower" placeholder="pl. 150">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEÍRÁS -->
+      <div class="form-section">
+        <h5 class="form-section-title">Leírás</h5>
+        <div class="form-field">
+          <label>Leírás</label>
+          <textarea formControlName="description" rows="4" placeholder="Az autó részletes leírása..."></textarea>
+        </div>
+      </div>
+
+      <!-- KATEGÓRIA ÉS ÁR -->
+      <div class="form-section">
+        <h5 class="form-section-title">Kategória és ár</h5>
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Kategória *</label>
+              <select formControlName="purpose">
+                @for (p of purposes; track p.value) {
+                  <option [value]="p.value">{{ p.label }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Eladási ár (Ft)</label>
+              <input type="number" formControlName="salePrice" placeholder="pl. 8900000">
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-field">
+              <label>Bérleti díj (Ft/nap)</label>
+              <input type="number" formControlName="rentPricePerDay" placeholder="pl. 15000">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-field">
+              <label>Elérhetőség</label>
+              <select formControlName="isAvailable">
+                <option [ngValue]="true">Elérhető</option>
+                <option [ngValue]="false">Foglalt</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MENTÉS GOMB -->
+      <div class="form-actions">
+        <a routerLink="/admin/cars" class="form-cancel-btn">Mégsem</a>
+        <button class="form-submit-btn" (click)="submit()" [disabled]="carForm.invalid || loading">
+          {{ loading ? 'Mentés...' : (isEditMode ? 'Módosítások mentése' : 'Autó felvitele') }}
+        </button>
+      </div>
+
+    </form>
+  </main>
+</div>
