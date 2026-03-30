@@ -1,78 +1,125 @@
-<div class="container-fluid mt-4">
-  <div class="row">
+<section class="cars-hero">
+  <div class="container">
+    <p class="cars-eyebrow">Kínálatunk</p>
+    <h1 class="cars-title">Találja meg álmai autóját!</h1>
+    <p class="cars-subtitle">Böngésszen folyamatosan frissülő, megbízható eladó és bérelhető gépjárműveink között.</p>
+  </div>
+</section>
 
-    <div class="col-12 col-md-3 col-lg-2 mb-3 mb-md-0">
-      <div class="filter-card p-3">
-        <h6 class="filter-title">Szűrés</h6>
-        <div class="d-flex flex-md-column flex-row gap-2">
-          <button class="filter-btn flex-fill" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">Összes</button>
-          <button class="filter-btn filter-btn-sale flex-fill" [class.active]="activeFilter === 'sale'" (click)="setFilter('sale')">Eladó</button>
-          <button class="filter-btn filter-btn-rent flex-fill" [class.active]="activeFilter === 'rent'" (click)="setFilter('rent')">Bérelhető</button>
+<section class="cars-main">
+  <div class="container">
+    
+    <div class="cars-toolbar">
+      <div class="cars-count">{{ cars.length }} jármű a kínálatban</div>
+      
+      <div class="hover-filter-wrapper">
+        <div class="filter-trigger">
+          <span class="filter-icon">⚙️</span> Szűrés 
+          <span class="filter-arrow">▼</span>
+        </div>
+        
+        <div class="filter-dropdown">
+          <button class="filter-btn" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">Összes jármű</button>
+          <button class="filter-btn filter-btn-sale" [class.active]="activeFilter === 'sale'" (click)="setFilter('sale')">Csak Eladó</button>
+          <button class="filter-btn filter-btn-rent" [class.active]="activeFilter === 'rent'" (click)="setFilter('rent')">Csak Bérelhető</button>
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-md-9 col-lg-10">
-      <div class="row">
-        @for (car of cars; track car.id) {
-          <div class="col-12 col-sm-6 col-xl-4 mb-4">
-            <div class="car-card" [class.car-card-unavailable]="car.status !== 'AVAILABLE'">
+    <div class="row g-4">
+      @for (car of cars; track car.id) {
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+          <div class="car-card" [class.car-card-unavailable]="car.status !== 'AVAILABLE'">
 
-              <div class="car-card-badges">
+            <div class="car-card-badges">
+              @if (car.status !== 'AVAILABLE') {
+                <span class="car-badge" [ngClass]="getStatusClass(car.status)">{{ getStatusText(car.status) }}</span>
+              }
+            </div>
+
+            <div class="car-card-img">
+              <img [src]="car.images && car.images.length > 0 ? backendUrl + car.images[activeImageIndex[car.id]].imageUrl : 'https://via.placeholder.com/400x250?text=Nincs+kép'" alt="Autó fotó">
+            </div>
+
+            @if (car.images && car.images.length > 1) {
+              <div class="car-card-thumbs">
+                @for (img of car.images; track img.id; let i = $index) {
+                  <img [src]="backendUrl + img.imageUrl" (click)="setActiveImage(car.id, i)" [class.active]="activeImageIndex[car.id] === i" alt="előnézet">
+                }
+              </div>
+            }
+
+            <div class="car-card-body">
+              
+              <h5 class="car-card-title">{{ car.brand }} {{ car.model }}</h5>
+
+              <p class="car-card-purpose">
                 @if (car.purpose === 'sale') {
-                  <span class="car-badge car-badge-sale">Eladó</span>
+                  <span class="purpose-sale">● Eladó jármű</span>
                 } @else {
-                  <span class="car-badge car-badge-rent">Bérelhető</span>
+                  <span class="purpose-rent">● Bérelhető jármű</span>
                 }
-                @if (car.status !== 'AVAILABLE') {
-                  <span class="car-badge" [ngClass]="getStatusClass(car.status)">{{ getStatusText(car.status) }}</span>
-                }
-              </div>
+              </p>
 
-              <div class="car-card-img">
-                <img [src]="car.images && car.images.length > 0 ? backendUrl + car.images[activeImageIndex[car.id]].imageUrl : 'https://via.placeholder.com/400x250?text=Nincs+kép'" alt="Autó fotó">
-              </div>
-
-              @if (car.images && car.images.length > 1) {
-                <div class="car-card-thumbs">
-                  @for (img of car.images; track img.id; let i = $index) {
-                    <img [src]="backendUrl + img.imageUrl" (click)="setActiveImage(car.id, i)" [class.active]="activeImageIndex[car.id] === i" alt="előnézet">
+              @if (car.features && car.features.length > 0) {
+                <div class="car-card-features">
+                  @for (feature of car.features | slice:0:4; track $index) {
+                    <span class="feature-pill">{{ feature }}</span>
                   }
+                  @if (car.features.length > 4) {
+                    <span class="feature-pill feature-more">+{{ car.features.length - 4 }}</span>
+                  }
+                </div>
+              } @else {
+                <div class="car-card-features">
+                  <span class="feature-pill empty">Nincs megadva extra</span>
                 </div>
               }
 
-              <div class="car-card-body">
-                <h5 class="car-card-title">{{ car.brand }} {{ car.model }}</h5>
-
-                <ul class="car-card-meta">
-                  @if (car.year) { <li><span>Évjárat:</span> {{ car.year }}</li> }
-                  @if (car.bodyType) { <li><span>Kivitel:</span> {{ car.bodyType }}</li> }
-                  @if (car.horsepower) { <li><span>Teljesítmény:</span> {{ car.horsepower }} LE</li> }
-                </ul>
-
-                <div class="car-card-footer">
-                  <div class="car-card-price">
-                    @if (car.purpose === 'sale') {
-                      {{ car.salePrice | number:'1.0-0' }} Ft
-                    } @else {
-                      {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small>/ nap</small>
-                    }
-                  </div>
-                  <button class="car-card-btn" (click)="goToDetail(car.id)">Részletek →</button>
+              <div class="car-card-specs-grid">
+                <div class="spec-data">
+                  <span class="spec-label">Évjárat</span>
+                  <strong class="spec-value">{{ car.year || '-' }}</strong>
+                </div>
+                <div class="spec-data">
+                  <span class="spec-label">Üzemanyag</span>
+                  <strong class="spec-value">{{ car.fuelType || '-' }}</strong>
+                </div>
+                <div class="spec-data">
+                  <span class="spec-label">Teljesítmény</span>
+                  <strong class="spec-value">{{ car.horsepower ? car.horsepower + ' LE' : '-' }}</strong>
+                </div>
+                <div class="spec-data">
+                  <span class="spec-label">Futás</span>
+                  <strong class="spec-value">{{ car.mileage ? (car.mileage | number:'1.0-0') + ' km' : '-' }}</strong>
                 </div>
               </div>
 
+              <div class="car-card-footer">
+                <div class="car-card-price">
+                  @if (car.purpose === 'sale') {
+                    {{ car.salePrice | number:'1.0-0' }} Ft
+                  } @else {
+                    {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small>/ nap</small>
+                  }
+                </div>
+                <button class="car-card-btn" (click)="goToDetail(car.id)">Részletek →</button>
+              </div>
             </div>
+
           </div>
-        } @empty {
-          <div class="col-12 text-center py-5">
-            <div class="empty-state">
-              <p class="empty-state-text">Jelenleg nincs egyetlen autónk sem a kínálatban.</p>
-            </div>
+        </div>
+      } @empty {
+        <div class="col-12 text-center py-5">
+          <div class="empty-state">
+            <div class="empty-icon">🚗</div>
+            <h4 class="empty-title">Nincs találat</h4>
+            <p class="empty-state-text">Jelenleg nincs a szűrésnek megfelelő autónk a kínálatban.</p>
+            <button class="btn-reset" (click)="setFilter('all')">Összes jármű mutatása</button>
           </div>
-        }
-      </div>
+        </div>
+      }
     </div>
 
   </div>
-</div>
+</section>

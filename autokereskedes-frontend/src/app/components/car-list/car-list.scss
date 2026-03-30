@@ -3,276 +3,171 @@ $sale: #e87c2e;
 $rent: #c9a84c;
 $unavailable: #e05a5a;
 $dark: #1a1a1a;
+$light: #f8f8f6;
 
-// SZŰRŐ
-.filter-card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  border: 1px solid #f0f0f0;
+// HERO SZEKCIÓ 
+.cars-hero {
+  background: linear-gradient(160deg, #f8f8f6 0%, #efefea 100%);
+  padding: 4rem 0 3rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: 'KÍNÁLAT';
+    position: absolute; right: -2%; top: 50%; transform: translateY(-50%);
+    font-size: clamp(4rem, 10vw, 10rem); font-weight: 900; color: rgba(0,0,0,0.03);
+    letter-spacing: -3px; white-space: nowrap; pointer-events: none;
+  }
 }
 
-.filter-title {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #999;
-  margin-bottom: 1rem;
+.cars-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: $gold; margin-bottom: 0.75rem; }
+.cars-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: $dark; margin-bottom: 1rem; }
+.cars-subtitle { font-size: 1rem; color: #777; max-width: 580px; line-height: 1.6; margin: 0; }
+
+// FŐ GRID ÉS TOOLBAR
+.cars-main { padding: 3rem 0 5rem; background: #fff; }
+
+.cars-toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0;
+}
+
+.cars-count { font-size: 0.9rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+
+// HOVER SZŰRŐ ANIMÁCIÓ
+.hover-filter-wrapper {
+  position: relative;
+  
+  .filter-trigger {
+    background: #fff; border: 1px solid #e8e8e8; padding: 0.6rem 1.25rem;
+    border-radius: 50px; font-size: 0.9rem; font-weight: 600; color: $dark;
+    cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+    transition: all 0.2s ease;
+    
+    .filter-arrow { font-size: 0.6rem; color: #aaa; transition: transform 0.3s; }
+    &:hover { border-color: $gold; color: $gold; box-shadow: 0 4px 12px rgba($gold, 0.1); }
+  }
+
+  .filter-dropdown {
+    position: absolute; top: 120%; right: 0; z-index: 100;
+    background: #fff; border-radius: 16px; padding: 0.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #f0f0f0;
+    min-width: 200px; display: flex; flex-direction: column; gap: 0.25rem;
+    
+    opacity: 0; visibility: hidden; transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover {
+    .filter-arrow { transform: rotate(180deg); color: $gold; }
+    .filter-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+  }
 }
 
 .filter-btn {
-  background: transparent;
-  border: 1px solid #e0e0e0;
-  color: #666;
-  padding: 0.4rem 0.75rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
+  background: transparent; border: none; padding: 0.75rem 1rem;
+  border-radius: 10px; font-size: 0.85rem; font-weight: 600; color: #666;
+  text-align: left; cursor: pointer; transition: all 0.2s;
 
-  &:hover {
-    border-color: $dark;
-    color: $dark;
-  }
-
-  &.active {
-    background: $dark;
-    border-color: $dark;
-    color: #fff;
-  }
-
-  &.filter-btn-sale.active {
-    background: $sale;
-    border-color: $sale;
-    color: #fff;
-  }
-
-  &.filter-btn-rent.active {
-    background: $rent;
-    border-color: $rent;
-    color: #fff;
-  }
+  &:hover { background: #f8f8f6; color: $dark; }
+  &.active { background: #f0f0f0; color: $dark; }
+  &.filter-btn-sale.active { background: rgba($sale, 0.1); color: darken($sale, 10%); }
+  &.filter-btn-rent.active { background: rgba($rent, 0.1); color: darken($rent, 10%); }
 }
 
-// AUTÓ KÁRTYA
+// AUTÓ KÁRTYÁK
 .car-card {
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  border: 1px solid #f0f0f0;
+  background: #fff; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #f5f5f5;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+  height: 100%; display: flex; flex-direction: column; position: relative;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.1);
-
-    .car-card-img img {
-      transform: scale(1.05);
-    }
+    transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+    .car-card-img img { transform: scale(1.05); }
   }
-
-  &.car-card-unavailable {
-    .car-card-img img {
-      filter: grayscale(40%);
-    }
-  }
+  &.car-card-unavailable .car-card-img img { filter: grayscale(50%) brightness(0.8); }
 }
 
-// BADGE-EK
 .car-card-badges {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  align-items: flex-end;
+  position: absolute; top: 1rem; right: 1rem; z-index: 2;
+  display: flex; flex-direction: column; gap: 0.3rem; align-items: flex-end;
 }
 
 .car-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 50px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-
-  &.car-badge-sale {
-    background: $sale;
-    color: #fff;
-  }
-
-  &.car-badge-rent {
-    background: $rent;
-    color: #fff;
-  }
-
-  &.car-badge-reserved {
-    background: #3498;
-    color: #fff;
-  }
-  &.car-badge-rented {
-    background: #9b59b6;
-    color: #fff;
-  }
-  &.car-badge-service {
-    background: #f39c12;
-    color: #fff;
-  }
-  &.car-badge-sold {
-    background: #95a5a6;
-    color: #fff;
-  }
-  &.car-badge-unavailable {
-    background: $unavailable;
-    color: #fff;
-  }
+  padding: 0.3rem 0.85rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  &.car-badge-reserved { background: #3498db; color: #fff; }
+  &.car-badge-rented { background: #9b59b6; color: #fff; }
+  &.car-badge-service { background: #f39c12; color: #fff; }
+  &.car-badge-sold { background: #95a5a6; color: #fff; }
+  &.car-badge-unavailable { background: $unavailable; color: #fff; }
 }
 
-// KÉP
 .car-card-img {
-  overflow: hidden;
-  height: 200px;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-  }
+  height: 220px; overflow: hidden; position: relative;
+  img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
 }
 
-// ELŐNÉZETI KÉPEK
 .car-card-thumbs {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.5rem 0.75rem 0;
-
+  display: flex; gap: 0.4rem; padding: 0.75rem 1.25rem 0;
   img {
-    width: 48px;
-    height: 36px;
-    object-fit: cover;
-    border-radius: 6px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.2s;
-
-    &.active {
-      border-color: $gold;
-    }
-
-    &:hover {
-      border-color: $gold;
-    }
+    width: 45px; height: 35px; object-fit: cover; border-radius: 6px;
+    cursor: pointer; border: 2px solid transparent; transition: all 0.2s; opacity: 0.7;
+    &:hover, &.active { border-color: $gold; opacity: 1; }
   }
 }
 
-// KÁRTYA TÖRZS
-.car-card-body {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+// ÚJ KÁRTYA TÖRZS
+.car-card-body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+.car-card-title { font-size: 1.1rem; font-weight: 800; color: $dark; margin-bottom: 0.25rem; }
+
+.car-card-purpose {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;
+  .purpose-sale { color: $sale; }
+  .purpose-rent { color: $rent; }
 }
 
-.car-card-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: $dark;
-  margin-bottom: 0.75rem;
+.car-card-features {
+  display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem; min-height: 48px; align-content: flex-start;
+  .feature-pill {
+    background: #f0f0f0; color: #555; padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 600;
+    &.empty { background: transparent; color: #aaa; border: 1px dashed #ddd; font-style: italic; }
+  }
+  .feature-more { background: $dark; color: #fff; }
 }
 
-.car-card-meta {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1rem;
-
-  li {
-    font-size: 0.8rem;
-    color: #888;
-    margin-bottom: 0.2rem;
-
-    span {
-      color: #aaa;
-    }
+.car-card-specs-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: #fafafa;
+  padding: 1rem; border-radius: 12px; border: 1px solid #f0f0f0; margin-bottom: 1.5rem;
+  .spec-data {
+    display: flex; flex-direction: column;
+    .spec-label { font-size: 0.65rem; text-transform: uppercase; color: #aaa; font-weight: 700; margin-bottom: 0.1rem; }
+    .spec-value { font-size: 0.85rem; color: $dark; font-weight: 800; }
   }
 }
 
-// KÁRTYA LÁBLÉC
 .car-card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 0.75rem;
-  margin-top: auto;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid #f0f0f0; padding-top: 1rem; margin-top: auto;
 }
 
 .car-card-price {
-  font-size: 1rem;
-  font-weight: 700;
-  color: $dark;
-
-  small {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: #aaa;
-  }
+  font-size: 1.1rem; font-weight: 800; color: $dark;
+  small { font-size: 0.75rem; font-weight: 500; color: #aaa; }
 }
 
 .car-card-btn {
-  background: transparent;
-  border: none;
-  color: $gold;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.2s;
-  padding: 0;
-  letter-spacing: 0.3px;
-
-  &:hover {
-    color: $dark;
-  }
+  background: #f8f8f6; border: none; color: $dark; padding: 0.5rem 1rem; border-radius: 8px;
+  font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  &:hover { background: $gold; color: #fff; }
 }
 
 // ÜRES ÁLLAPOT
 .empty-state {
-  background: #fff;
-  border-radius: 16px;
-  padding: 3rem;
-  border: 1px solid #f0f0f0;
-
-  .empty-state-text {
-    color: #aaa;
-    font-size: 0.95rem;
-    margin: 0;
-  }
-}
-
-// iPad Mini javítás
-@media (min-width: 768px) and (max-width: 1024px) {
-  .car-card-title {
-    font-size: 0.9rem;
-  }
-
-  .car-card-price {
-    font-size: 0.85rem;
-  }
-}
-
-// Mobilon szűrő vízszintes
-@media (max-width: 767px) {
-  .filter-card {
-    padding: 0.75rem !important;
-  }
+  background: #f8f8f6; border-radius: 20px; padding: 4rem 2rem; border: 1px dashed #dcdcdc;
+  .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+  .empty-title { font-size: 1.25rem; font-weight: 800; color: $dark; margin-bottom: 0.5rem; }
+  .empty-state-text { color: #888; font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .btn-reset { background: $dark; color: #fff; border: none; padding: 0.75rem 1.5rem; border-radius: 50px; font-weight: 600; cursor: pointer; &:hover { background: $gold; } }
 }

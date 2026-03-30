@@ -1,22 +1,10 @@
-// kapcsolat oldal --> footer elérhetőség megírása
-// rólunk részen kapcsolatfelvétel
 // főoldal legalsó része tuning 
-// ADMIN felület
-        --minden dolgozónak saját fiók
-            --tulaj meg az ügyvezető tud mindent
-            --értékesítő tud mindent kivéve törölni
-            --koordinátor tud mindent kivéve törölni meg módosítani
-
-    / külön javafx + scenebuilder admin felület ha van idő
 
 // favicon logo
 
 // indításkor deprecation 
 
-// kínálat szűrés bővítése
 // nagyobb adatbázis több autóval képekkel
-// kínálat részen lapozható képek 
-// valamiért nem maradnak meg a képek
 
 // bérlések részen ugyanarra a napra lehet foglalni
         / 2026-01-01-től 2026-01-10
@@ -24,3 +12,12 @@
     /szerkesztés nem működik
 
 // admin felület legyen reszponzívabb
+
+// dashboard nem tölt be egyből
+// felhasználók oldal el van csúszva a többihez képest
+// bérlések oldalon nem működik a részletes adatok rész
+
+// jelenlegi státuszok nem az igaziak
+        -- Elérhető, lefoglalva (figyelje a dátumot), eladva
+
+// ha eladva állapotban van egy autó megjeleníti hogy Eladó / Eladva
