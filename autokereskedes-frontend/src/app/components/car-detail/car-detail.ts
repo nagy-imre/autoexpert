@@ -19,15 +19,12 @@ export class CarDetail implements OnInit {
   salePhone = '+36 30 123 4567';
   rentPhone = '+36 30 987 6543';
 
-  // Képnézegető (Lightbox)
   showImageModal = false;
 
-  // Bérlős modal
   showRentalModal = false;
   rentalForm: FormGroup;
   rentalSending = false;
 
-  // Eladós modal
   showSaleModal = false;
   saleForm: FormGroup;
   saleSending = false;
@@ -67,7 +64,6 @@ export class CarDetail implements OnInit {
     });
   }
 
-  // --- KÉPKEZELÉS ÉS GALÉRIA ---
   setActiveImage(index: number): void {
     this.activeImageIndex = index;
     this.cdr.detectChanges();
@@ -103,12 +99,10 @@ export class CarDetail implements OnInit {
     }
   }
 
-  // --- NAVIGÁCIÓ ---
   goBack(): void {
     this.router.navigate(['/cars']);
   }
 
-  // --- ADAT FORDÍTÓK ---
   getStatusText(status: string): string {
     const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Szervizben', 'SOLD': 'Eladva' };
     return map[status] || status;
@@ -142,17 +136,26 @@ export class CarDetail implements OnInit {
   submitRental(): void {
     if (this.rentalForm.invalid) return;
     this.rentalSending = true;
-    this.carService.createRental({ ...this.rentalForm.value, CarId: this.car.id }).subscribe({
+
+    // A backend inquiryController.js-nek megfelelően állítjuk össze az adatokat
+    const payload = {
+      ...this.rentalForm.value,
+      CarId: this.car.id,        // NAGY C-vel küldjük, mert az inquiryController így várja
+      inquiryType: 'rent'        // Jelezzük a backendnek, hogy ez egy bérlés
+    };
+
+    // A createInquiry-t hívjuk, mert a publikus oldalon még csak érdeklődés történik
+    this.carService.createInquiry(payload).subscribe({
       next: () => {
         this.rentalSending = false;
         this.closeRentalModal();
-        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Érdeklődését sikeresen elküldtük! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#198754' });
+        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Bérlési érdeklődését megkaptuk! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#198754' });
         this.rentalForm.reset();
         this.cdr.detectChanges();
       },
       error: (err) => {
         this.rentalSending = false;
-        Swal.fire({ icon: 'error', title: 'Hiba!', text: err.error?.message || 'Hiba történt a küldés során.', confirmButtonText: 'Rendben', confirmButtonColor: '#198754' });
+        Swal.fire({ icon: 'error', title: 'Hiba!', text: err.error?.message || 'Hiba történt a küldés során.', confirmButtonText: 'Rendben', confirmButtonColor: '#e05a5a' });
         this.cdr.detectChanges();
       }
     });
@@ -171,17 +174,24 @@ export class CarDetail implements OnInit {
   submitSale(): void {
     if (this.saleForm.invalid) return;
     this.saleSending = true;
-    this.carService.createInquiry({ ...this.saleForm.value, CarId: this.car.id }).subscribe({
+
+    const payload = {
+      ...this.saleForm.value,
+      CarId: this.car.id,        // NAGY C-vel küldjük!
+      inquiryType: 'sale'        // Jelezzük a backendnek, hogy ez egy vásárlás
+    };
+
+    this.carService.createInquiry(payload).subscribe({
       next: () => {
         this.saleSending = false;
         this.closeSaleModal();
-        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Érdeklődését sikeresen elküldtük! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#0d6efd' });
+        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Vásárlási érdeklődését megkaptuk! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#0d6efd' });
         this.saleForm.reset();
         this.cdr.detectChanges();
       },
       error: (err) => {
         this.saleSending = false;
-        Swal.fire({ icon: 'error', title: 'Hiba!', text: err.error?.message || 'Hiba történt a küldés során.', confirmButtonText: 'Rendben', confirmButtonColor: '#0d6efd' });
+        Swal.fire({ icon: 'error', title: 'Hiba!', text: err.error?.message || 'Hiba történt a küldés során.', confirmButtonText: 'Rendben', confirmButtonColor: '#e05a5a' });
         this.cdr.detectChanges();
       }
     });

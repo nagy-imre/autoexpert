@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 
 exports.createInquiry = async (req, res) => {
   try {
-    const { CarId, customerName, customerEmail, customerPhone, message } = req.body;
+    const { CarId, customerName, customerEmail, customerPhone, message, inquiryType, startDate, endDate } = req.body;
 
     const car = await Car.findByPk(CarId);
 
@@ -23,21 +23,36 @@ exports.createInquiry = async (req, res) => {
         }
       });
 
+      // Dinamikusan állítjuk össze a levél szövegét aszerint, hogy eladás vagy bérlés
+      const isRent = inquiryType === 'rent';
+      const subjectText = isRent ? 'bérlési' : 'vásárlási';
+      
+      // Ha bérlés, a napi díjat írjuk ki, ha vásárlás, akkor az eladási árat
+      const priceText = isRent 
+        ? `<p><b>Napi bérleti díj:</b> ${car.rentPricePerDay} Ft</p>` 
+        : `<p><b>Irányár:</b> ${car.salePrice} Ft</p>`;
+        
+      // Ha bérlés, beleírjuk a kért dátumokat is
+      const datesText = (isRent && startDate && endDate) 
+        ? `<p><b>Tervezett időszak:</b> ${startDate} - ${endDate}</p>` 
+        : '';
+
       const info = await transporter.sendMail({
         from: `"AutoExpert" <${testAccount.user}>`,
-        to: testAccount.user,
-        subject: `🚗 Új vásárlási érdeklődés – ${car.brand} ${car.model}`,
+        to: testAccount.user, // Ide mehet majd a saját email címed, ha élesíted
+        subject: `🚗 Új ${subjectText} érdeklődés – ${car.brand} ${car.model}`,
         html: `
-          <h2>Új vásárlási érdeklődés érkezett!</h2>
+          <h2>Új ${subjectText} érdeklődés érkezett!</h2>
           <h3>Autó adatai:</h3>
           <p><b>Márka/Modell:</b> ${car.brand} ${car.model}</p>
           <p><b>Rendszám:</b> ${car.licensePlate}</p>
-          <p><b>Irányár:</b> ${car.salePrice} Ft</p>
+          ${priceText}
           <hr>
           <h3>Érdeklődő adatai:</h3>
           <p><b>Név:</b> ${customerName}</p>
           <p><b>Email:</b> ${customerEmail}</p>
           <p><b>Telefon:</b> ${customerPhone}</p>
+          ${datesText}
           ${message ? `<hr><h3>Megjegyzés:</h3><p>${message}</p>` : ''}
         `
       });

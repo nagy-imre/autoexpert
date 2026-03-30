@@ -7,8 +7,15 @@ const carRoutes = require('./routes/carRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const rentalRoutes = require('./routes/rentalRoutes');
 const inquiryRoutes = require('./routes/inquiryRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:4200', // Engedélyezzük az Angular felületet
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'] // Fontos a token miatt!
+}));
 
 app.use(cors());
 app.use(express.json());
@@ -22,10 +29,11 @@ app.get('/', (req, res) => {
 });
 
 // --- ÚTVONALAK REGISZTRÁLÁSA ---
-// Minden, ami a /api/cars útvonalra jön, azt a carRoutes fogja kezelni
 app.use('/api/cars', carRoutes);
-app.use('/api/uploads', uploadRoutes);
+app.use('/api/upload', uploadRoutes);
 app.use('/api/rentals', rentalRoutes);
 app.use('/api/inquiries', inquiryRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', require('./routes/userRoutes'));
 
 module.exports = app;

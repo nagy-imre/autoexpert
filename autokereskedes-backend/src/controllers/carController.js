@@ -75,11 +75,25 @@ exports.updateCar = async (req, res) => {
 exports.deleteCar = async (req, res) => {
   try {
     const carId = req.params.id;
-    const car = await Car.findByPk(carId);
+    const car = await Car.findByPk(carId, {
+      include: [{ model: CarImage, as: 'images' }]
+    });
+    
     if (!car) {
       return res.status(404).json({ message: 'A törölni kívánt autó nem található.' });
     }
-    await car.destroy();
+
+    // BÓNUSZ: Fizikai képek eltakarítása a mappából az autó törlésekor!
+    if (car.images && car.images.length > 0) {
+      for (const image of car.images) {
+        const filePath = path.join(__dirname, '../../uploads', image.imageUrl);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+    }
+
+    await car.destroy(); // Ez a kaszkádolás miatt az adatbázisból is törli a CarImage rekordokat
     res.status(200).json({ message: 'Autó és a hozzá tartozó képek adatai sikeresen törölve!' });
   } catch (error) {
     console.error('Hiba az autó törlésekor:', error);
@@ -141,19 +155,33 @@ exports.updateImage = async (req, res) => {
   }
 };
 
-// --- 9. Kép törlése (DELETE) ---
+// --- 9. Kép törlése (DELETE) JAVÍTVA ---
 exports.deleteImage = async (req, res) => {
   try {
-    const imageId = req.params.imageId;
-    const image = await CarImage.findByPk(imageId);
+    const { id, imageId } = req.params; // id = autó azonosítója, imageId = kép azonosítója
+
+    // Megkeressük a képet, DE ellenőrizzük, hogy tényleg ahhoz az autóhoz tartozik-e!
+    const image = await CarImage.findOne({ 
+      where: { id: imageId, CarId: id } 
+    });
+
     if (!image) {
-      return res.status(404).json({ message: 'A kép nem található.' });
+      return res.status(404).json({ message: 'A kép nem található az adatbázisban.' });
     }
-    const filePath = path.join(__dirname, '../../../uploads', image.imageUrl);
+
+    // Fizikai fájl törlése az uploads mappából (Javított elérési út!)
+    // __dirname a src/controllers mappában van. Innen 2 szintet megyünk fel (../../) és ott az uploads.
+    const filePath = path.join(__dirname, '../../uploads', image.imageUrl);
+    
     if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+      fs.unlinkSync(filePath); // Fájl letörlése a merevlemezről
+    } else {
+      console.warn('A fizikai fájl már nem létezett, de az adatbázisból töröljük:', filePath);
     }
+
+    // Adatbázis rekord törlése
     await image.destroy();
+
     res.status(200).json({ message: 'Kép sikeresen törölve!' });
   } catch (error) {
     console.error('Hiba a kép törlésekor:', error);

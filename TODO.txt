@@ -1,6 +1,6 @@
 // kapcsolat oldal --> footer elérhetőség megírása
 // rólunk részen kapcsolatfelvétel
-// csapatnak külön telefonszámok + email címek
+// csapatnak külön telefonszámok
 // főoldal legalsó része tuning 
 // ADMIN felület
         --minden dolgozónak saját fiók
@@ -10,12 +10,18 @@
 
     / külön javafx + scenebuilder admin felület ha van idő
 
-// dolgozók pólóján lévő logó használata --> navbar, footer, faviconm
-                                                meg ahol jól néz ki
+// favicon logo
 
 // indításkor deprecation 
 
 // kínálat szűrés bővítése
 // nagyobb adatbázis több autóval képekkel
 // kínálat részen lapozható képek 
+// valamiért nem maradnak meg a képek
 
+// bérlések részen ugyanarra a napra lehet foglalni
+        / 2026-01-01-től 2026-01-10
+        / 2026-01-10-re már enged foglalni
+    /szerkesztés nem működik
+
+// admin felület legyen reszponzívabb

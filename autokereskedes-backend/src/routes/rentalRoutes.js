@@ -2,13 +2,10 @@ const express = require('express');
 const router = express.Router();
 const rentalController = require('../controllers/rentalController');
 
-// GET: Összes bérlés lekérése
-router.get('/', rentalController.getRentals);
-
-// POST: Új bérlés rögzítése
-router.post('/', rentalController.createRental);
-
-// PUT: Autó visszahozatala (Bérlés lezárása ID alapján)
-router.put('/:id/return', rentalController.returnCar);
+router.get('/',           rentalController.getRentals);
+router.get('/:id',        rentalController.getRentalById);
+router.post('/',          rentalController.createRental);
+router.patch('/:id/status', rentalController.updateRentalStatus);
+router.delete('/:id',     rentalController.deleteRental);
 
 module.exports = router;

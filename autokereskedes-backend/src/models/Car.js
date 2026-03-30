@@ -9,7 +9,7 @@ const Car = sequelize.define('Car', {
   },
   
   // --- 1. AZONOSÍTÓ ADATOK ---
-  vin: { type: DataTypes.STRING(17), allowNull: true, unique: true }, // Alvázszám
+  vin: { type: DataTypes.STRING(17), allowNull: true, unique: false }, // Alvázszám
   licensePlate: { type: DataTypes.STRING, allowNull: false, unique: true },
   internalId: { type: DataTypes.STRING, allowNull: true }, // Kereskedés belső azonosítója
   motExpiry: { type: DataTypes.DATEONLY, allowNull: true }, // Műszaki vizsga lejárata
