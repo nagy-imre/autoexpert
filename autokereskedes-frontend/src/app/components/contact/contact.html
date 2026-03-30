@@ -22,7 +22,7 @@
               <div class="col-md-6">
                 <div class="form-field">
                   <label>Teljes név *</label>
-                  <input type="text" formControlName="name" placeholder="pl. Kovács Péter" 
+                  <input type="text" formControlName="name" placeholder="pl. Darányi Zsolt" 
                          [class.is-invalid]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
                 </div>
               </div>
@@ -36,7 +36,7 @@
               <div class="col-md-6">
                 <div class="form-field">
                   <label>Email cím *</label>
-                  <input type="email" formControlName="email" placeholder="pl. pelda@email.hu"
+                  <input type="email" formControlName="email" placeholder="pl. zsolt.daranyi@autoexpert.com"
                          [class.is-invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
                 </div>
               </div>
@@ -46,7 +46,8 @@
                   <select formControlName="topic">
                     <option value="sale">Autóvásárlás</option>
                     <option value="rent">Autóbérlés</option>
-                    <option value="service">Szerviz / Garancia</option>
+                    <option value="job">Karrier</option>
+                    <option value="service">Szerviz</option>
                     <option value="other">Egyéb kérdés</option>
                   </select>
                 </div>

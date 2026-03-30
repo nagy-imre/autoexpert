@@ -2,10 +2,10 @@ $gold: #c9a84c;
 $dark: #1a1a1a;
 $light: #f8f8f6;
 
-// HERO - JAVÍTOTT, KISEBB TÉRKÖZÖK
+// HERO
 .contact-hero {
   background: linear-gradient(160deg, #f8f8f6 0%, #efefea 100%);
-  padding: 3rem 0 2rem; // Kisebb fenti és lenti üres tér
+  padding: 3rem 0 2rem;
   position: relative;
   overflow: hidden;
 
@@ -28,10 +28,10 @@ $light: #f8f8f6;
 .contact-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: $dark; margin-bottom: 1rem; }
 .contact-subtitle { font-size: 1rem; color: #777; max-width: 580px; line-height: 1.6; margin: 0; }
 
-// MAIN GRID (Űrlap & Info) - JAVÍTOTT, KISEBB FELSŐ TÉRKÖZ
+// MAIN GRID (Űrlap & Info)
 .contact-main {
   background: #fff;
-  padding: 3rem 0; // Itt is lecsökkentve 5rem-ről 3rem-re
+  padding: 3rem 0;
 }
 
 // ŰRLAP (Bal oldal)

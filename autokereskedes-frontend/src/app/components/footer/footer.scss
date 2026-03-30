@@ -69,6 +69,18 @@ $dark: #1a1a1a;
     margin-bottom: 0.3rem;
   }
 
+  .footer-contact-address {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $gold;
+    }
+  }
+
   .footer-contact-phone {
     font-size: 0.95rem;
     font-weight: 600;
