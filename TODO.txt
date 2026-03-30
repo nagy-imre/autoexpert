@@ -1,6 +1,5 @@
 // kapcsolat oldal --> footer elérhetőség megírása
 // rólunk részen kapcsolatfelvétel
-// csapatnak külön telefonszámok
 // főoldal legalsó része tuning 
 // ADMIN felület
         --minden dolgozónak saját fiók
