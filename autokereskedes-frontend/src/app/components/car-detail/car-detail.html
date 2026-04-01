@@ -5,9 +5,8 @@
       ← Vissza a listához
     </button>
 
-    <div class="row g-4 mb-4">
-
-      <div class="col-lg-6">
+    <div class="row g-4 mb-5">
+      <div class="col-lg-7">
         <div class="detail-img-main" (click)="openImageModal()" title="Kattints a nagyításhoz">
           <img
             [src]="car.images && car.images.length > 0
@@ -20,9 +19,6 @@
               <span class="detail-badge detail-badge-sale">Eladó</span>
             } @else {
               <span class="detail-badge detail-badge-rent">Bérelhető</span>
-            }
-            @if (car.status !== 'AVAILABLE') {
-              <span class="detail-badge" [ngClass]="getStatusClass(car.status)">{{ getStatusText(car.status) }}</span>
             }
           </div>
         </div>
@@ -40,91 +36,35 @@
         }
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-5">
         <h2 class="detail-title">{{ car.brand }} {{ car.model }}</h2>
 
-        <div class="detail-specs">
-          
-          @if (car.vin) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Alvázszám</span>
-              <span class="detail-spec-value">{{ car.vin }}</span>
-            </div>
-          }
-          @if (car.licensePlate) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Rendszám</span>
-              <span class="detail-spec-value">{{ car.licensePlate }}</span>
-            </div>
-          }
-          @if (car.year) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Évjárat</span>
-              <span class="detail-spec-value">{{ car.year }}</span>
-            </div>
-          }
-          @if (car.mileage) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Futásteljesítmény</span>
-              <span class="detail-spec-value">{{ car.mileage | number:'1.0-0' }} km</span>
-            </div>
-          }
-          @if (car.bodyType) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Kivitel</span>
-              <span class="detail-spec-value">{{ car.bodyType }}</span>
-            </div>
-          }
-          @if (car.fuelType) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Üzemanyag</span>
-              <span class="detail-spec-value">{{ car.fuelType }}</span>
-            </div>
-          }
-          @if (car.transmission) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Sebességváltó</span>
-              <span class="detail-spec-value">{{ car.transmission }}</span>
-            </div>
-          }
-          @if (car.horsepower) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Teljesítmény</span>
-              <span class="detail-spec-value">{{ car.horsepower }} LE</span>
-            </div>
-          }
-          @if (car.condition) {
-            <div class="detail-spec-item">
-              <span class="detail-spec-label">Állapot</span>
-              <span class="detail-spec-value">{{ getCondition(car.condition) }}</span>
-            </div>
-          }
-
-          @if (car.features && car.features.length > 0) {
-            <div class="detail-spec-item detail-spec-features">
-              <span class="detail-spec-label">Felszereltség</span>
-              <div class="detail-features">
-                @for (feature of car.features; track feature) {
-                  <span class="detail-feature-tag">{{ feature }}</span>
-                }
-              </div>
-            </div>
-          }
+        <div class="quick-specs-grid">
+          <div class="q-spec-item">
+            <span class="q-label">Évjárat</span>
+            <span class="q-val">{{ car.year || '-' }}</span>
+          </div>
+          <div class="q-spec-item">
+            <span class="q-label">Állapot</span>
+            <span class="q-val">{{ getCondition(car.condition) }}</span>
+          </div>
+          <div class="q-spec-item">
+            <span class="q-label">Üzemanyag</span>
+            <span class="q-val">{{ getFuelText(car.fuelType) }}</span>
+          </div>
+          <div class="q-spec-item">
+            <span class="q-label">Teljesítmény</span>
+            <span class="q-val">{{ car.horsepower ? car.horsepower + ' LE' : '-' }}</span>
+          </div>
+          <div class="q-spec-item">
+            <span class="q-label">Futás</span>
+            <span class="q-val">{{ car.mileage ? (car.mileage | number:'1.0-0') + ' km' : '-' }}</span>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="row g-4 mb-5">
-      <div class="col-lg-6">
-        <h5 class="detail-section-title">Leírás</h5>
-        <p class="detail-description">{{ car.description || 'Nincs leírás megadva ehhez a járműhöz.' }}</p>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="detail-purchase-card">
-          
+        <div class="detail-purchase-card mt-4">
           <div class="detail-availability">
-            <span class="detail-spec-label">Jelenlegi státusz</span>
+            <span class="detail-spec-label">Jelenlegi státusz:</span>
             <span class="detail-badge" [ngClass]="getStatusClass(car.status)">
               {{ getStatusText(car.status) }}
             </span>
@@ -132,34 +72,32 @@
 
           @if (car.purpose === 'rent') {
             <div class="detail-rental-extras">
-              @if (car.deposit) {
-                <div class="rental-extra-row">
-                  <span class="detail-spec-label">Kaució:</span>
-                  <span class="rental-extra-val">{{ car.deposit | number:'1.0-0' }} Ft</span>
-                </div>
-              }
               <div class="rental-extra-row">
-                <span class="detail-spec-label">Napi limit:</span>
-                <span class="rental-extra-val">{{ car.dailyKmLimit }} km</span>
+                <span class="detail-spec-label">Kaució:</span>
+                <span class="rental-extra-val">{{ car.deposit ? (car.deposit | number:'1.0-0') + ' Ft' : '-' }}</span>
+              </div>
+              <div class="rental-extra-row">
+                <span class="detail-spec-label">Napi km limit:</span>
+                <span class="rental-extra-val">{{ car.dailyKmLimit ? car.dailyKmLimit + ' km' : '-' }}</span>
               </div>
               <div class="rental-extra-row">
                 <span class="detail-spec-label">Túlfutási díj:</span>
-                <span class="rental-extra-val">{{ car.extraKmFee }} Ft / km</span>
+                <span class="rental-extra-val">{{ car.extraKmFee ? car.extraKmFee + ' Ft/km' : '-' }}</span>
               </div>
             </div>
           }
 
-          <div class="detail-price-row">
+          <div class="detail-price-row mt-3">
             <div>
               <span class="detail-price-label">Ár</span>
               <div class="detail-price">
                 @if (car.purpose === 'sale') {
-                  {{ car.salePrice | number:'1.0-0' }} Ft
+                  {{ car.salePrice ? (car.salePrice | number:'1.0-0') + ' Ft' : 'Érdeklődjön' }}
                   @if (car.vatReclaimable) {
                     <small class="vat-info">+ ÁFA visszaigényelhető</small>
                   }
                 } @else {
-                  {{ car.rentPricePerDay | number:'1.0-0' }} Ft <small>/ nap</small>
+                  {{ car.rentPricePerDay ? (car.rentPricePerDay | number:'1.0-0') + ' Ft' : 'Érdeklődjön' }} <small>/ nap</small>
                 }
               </div>
             </div>
@@ -179,6 +117,45 @@
             }
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="row g-5">
+      <div class="col-lg-7">
+        <h4 class="section-heading">Leírás</h4>
+        <p class="detail-description">{{ car.description || 'Nincs leírás megadva ehhez a járműhöz.' }}</p>
+
+        @if (car.features && car.features.length > 0) {
+          <h4 class="section-heading mt-5">Felszereltség (Extrák)</h4>
+          <div class="detail-features">
+            @for (feature of car.features; track feature) {
+              <span class="detail-feature-tag">{{ feature }}</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="col-lg-5">
+        <h4 class="section-heading">Műszaki adatok</h4>
+        <table class="tech-table">
+          <tbody>
+            <tr><td>Évjárat</td><td>{{ car.year || '-' }}</td></tr>
+            <tr><td>Kivitel</td><td>{{ getBodyText(car.bodyType) }}</td></tr>
+            <tr><td>Üzemanyag</td><td>{{ getFuelText(car.fuelType) }}</td></tr>
+            <tr><td>Sebességváltó</td><td>{{ getTransmissionText(car.transmission) }}</td></tr>
+            <tr><td>Hajtás</td><td>{{ getDriveText(car.driveType) }}</td></tr>
+            <tr><td>Hengerűrtartalom</td><td>{{ car.engineCapacity ? car.engineCapacity + ' cm³' : '-' }}</td></tr>
+            <tr><td>Teljesítmény</td><td>{{ car.horsepower ? car.horsepower + ' LE' : '-' }}</td></tr>
+            <tr><td>Futásteljesítmény</td><td>{{ car.mileage ? (car.mileage | number:'1.0-0') + ' km' : '-' }}</td></tr>
+            <tr><td>Szín</td><td>{{ car.color || '-' }}</td></tr>
+            <tr><td>Ajtók száma</td><td>{{ car.doors ? car.doors + ' db' : '-' }}</td></tr>
+            <tr><td>Ülések száma</td><td>{{ car.seats ? car.seats + ' fő' : '-' }}</td></tr>
+            <tr><td>Műszaki vizsga érvényes</td><td>{{ car.motExpiry ? (car.motExpiry | date:'yyyy. MM. dd.') : '-' }}</td></tr>
+            <tr><td>Szervizkönyv</td><td>{{ getServiceBook(car.serviceBook) }}</td></tr>
+            <tr><td>Törésmentes</td><td>{{ car.isCrashed === false ? 'Igen' : (car.isCrashed === true ? 'Nem' : '-') }}</td></tr>
+            <tr><td>Előző tulajdonosok</td><td>{{ car.previousOwners || '-' }}</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 

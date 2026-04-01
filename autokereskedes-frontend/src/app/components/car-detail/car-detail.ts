@@ -103,8 +103,9 @@ export class CarDetail implements OnInit {
     this.router.navigate(['/cars']);
   }
 
+  // --- FORMÁZÓ ÉS FORDÍTÓ FÜGGVÉNYEK ---
   getStatusText(status: string): string {
-    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Karbantartás alatt', 'SOLD': 'Eladva' };
+    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Felkészítés alatt', 'SOLD': 'Eladva' };
     return map[status] || status;
   }
 
@@ -114,13 +115,39 @@ export class CarDetail implements OnInit {
   }
 
   getCondition(condition: string): string {
-    const map: any = { 'new': 'Új', 'excellent': 'Újszerű', 'normal': 'Normál', 'damaged': 'Sérült' };
-    return map[condition] || condition;
+    const map: any = { 'new': 'Új', 'excellent': 'Kiváló', 'normal': 'Normál', 'damaged': 'Sérült' };
+    return condition ? (map[condition] || condition) : '-';
   }
 
   getServiceBook(book: string): string {
-    const map: any = { 'full_dealer': 'Végig márkaKarbantartás alatt vezetett', 'partial': 'Részleges', 'none': 'Nincs' };
-    return map[book] || book;
+    const map: any = { 'full_dealer': 'Végig márkaszervizben vezetett', 'partial': 'Részleges', 'none': 'Nincs' };
+    return book ? (map[book] || book) : '-';
+  }
+
+  getFuelText(val: string): string {
+    const map: any = { petrol: 'Benzin', gasoline: 'Benzin', diesel: 'Dízel', electric: 'Elektromos', hybrid: 'Hibrid', lpg: 'LPG' };
+    return val ? (map[val] || val) : '-';
+  }
+
+  getTransmissionText(val: string): string {
+    const map: any = { manual: 'Manuális', automatic: 'Automata' };
+    return val ? (map[val] || val) : '-';
+  }
+
+  getDriveText(val: string): string {
+    const map: any = { FWD: 'Első kerék', RWD: 'Hátsó kerék', AWD: 'Összkerék', '4WD': 'Összkerék' };
+    return val ? (map[val] || val) : '-';
+  }
+
+  getBodyText(val: string): string {
+    const map: any = { sedan: 'Sedan', suv: 'SUV', kombi: 'Kombi', hatchback: 'Ferdehátú', coupe: 'Kupé', cabrio: 'Kabrió', van: 'Furgon', pickup: 'Pickup' };
+    return val ? (map[val] || val) : '-';
+  }
+
+  getBoolText(val: any): string {
+    if (val === true) return 'Igen';
+    if (val === false) return 'Nem';
+    return '-';
   }
 
   // --- BÉRLŐS MODAL ---
@@ -137,19 +164,17 @@ export class CarDetail implements OnInit {
     if (this.rentalForm.invalid) return;
     this.rentalSending = true;
 
-    // A backend inquiryController.js-nek megfelelően állítjuk össze az adatokat
     const payload = {
       ...this.rentalForm.value,
-      CarId: this.car.id,        // NAGY C-vel küldjük, mert az inquiryController így várja
-      inquiryType: 'rent'        // Jelezzük a backendnek, hogy ez egy bérlés
+      CarId: this.car.id,
+      inquiryType: 'rent'
     };
 
-    // A createInquiry-t hívjuk, mert a publikus oldalon még csak érdeklődés történik
     this.carService.createInquiry(payload).subscribe({
       next: () => {
         this.rentalSending = false;
         this.closeRentalModal();
-        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Bérlési érdeklődését megkaptuk! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#198754' });
+        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Bérlési érdeklődését megkaptuk! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#c9a84c' });
         this.rentalForm.reset();
         this.cdr.detectChanges();
       },
@@ -177,15 +202,15 @@ export class CarDetail implements OnInit {
 
     const payload = {
       ...this.saleForm.value,
-      CarId: this.car.id,        // NAGY C-vel küldjük!
-      inquiryType: 'sale'        // Jelezzük a backendnek, hogy ez egy vásárlás
+      CarId: this.car.id,
+      inquiryType: 'sale'
     };
 
     this.carService.createInquiry(payload).subscribe({
       next: () => {
         this.saleSending = false;
         this.closeSaleModal();
-        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Vásárlási érdeklődését megkaptuk! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#0d6efd' });
+        Swal.fire({ icon: 'success', title: 'Sikeresen elküldve!', text: 'Vásárlási érdeklődését megkaptuk! Hamarosan visszajelzünk.', confirmButtonText: 'Rendben', confirmButtonColor: '#c9a84c' });
         this.saleForm.reset();
         this.cdr.detectChanges();
       },

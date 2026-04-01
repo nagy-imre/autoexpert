@@ -1,10 +1,7 @@
-// főoldal legalsó része tuning 
+// favicon kivágása, felhasználása máshol is
 
-// favicon log
+// ügyfél lássa mikor van foglalva egy bérelt autó
+
 
 // nagyobb adatbázis több autóval képekkel
-
-// jelenlegi státuszok nem az igaziak
-        -- Elérhető, lefoglalva (figyelje a dátumot), eladva
-
-// személyes ügyfélszolgálat + nyitvatartás egy blokkban
+// DOKUMENTÁCIÓ

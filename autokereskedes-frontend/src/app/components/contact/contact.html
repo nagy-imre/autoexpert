@@ -72,47 +72,55 @@
       <div class="col-lg-5">
         <div class="info-sidebar">
           
-          <div class="info-group">
-            <h4 class="info-group-title">Telefonos elérhetőségeink</h4>
-            @for (item of contactInfo; track item.label) {
-              <div class="contact-mini-card">
-                <div class="icon">📞</div>
-                <div>
-                  <p class="label">{{ item.label }}</p>
-                  <a [href]="item.href" class="phone">{{ item.phone }}</a>
-                  <p class="desc">{{ item.desc }}</p>
-                </div>
-              </div>
-            }
-          </div>
-
-          <div class="info-group">
-            <h4 class="info-group-title">Személyes ügyfélszolgálat</h4>
-            <div class="contact-mini-card">
-              <div class="icon">📍</div>
-              <div>
+          <div class="contact-feature-card">
+            <h4 class="card-title">Személyes ügyfélszolgálat</h4>
+            
+            <div class="feature-section">
+              <div class="icon-box">📍</div>
+              <div class="details">
                 <p class="label">Címünk</p>
-                <p class="address">1131, Budapest,<br>Turbina utca 3.</p>
-                <a href="https://maps.google.com/?q=1131+Budapest+Turbina+utca+3" target="_blank" class="map-link">Útvonaltervezés →</a>
+                <p class="text-highlight">1131, Budapest,<br>Turbina utca 3.</p>
+                <a href="https://maps.google.com/?q=1131+Budapest+Turbina+utca+3" target="_blank" class="action-link">Útvonaltervezés →</a>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="feature-section">
+              <div class="icon-box">🕒</div>
+              <div class="details w-100">
+                <p class="label">Nyitvatartás</p>
+                <div class="hours-compact">
+                  <div class="hour-row">
+                    <span>Hétfő – Péntek</span>
+                    <strong>08:00 – 18:00</strong>
+                  </div>
+                  <div class="hour-row">
+                    <span>Szombat</span>
+                    <strong>09:00 – 14:00</strong>
+                  </div>
+                  <div class="hour-row text-danger">
+                    <span>Vasárnap</span>
+                    <strong>Zárva</strong>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="hours-card">
-            <h4 class="hours-title">Nyitvatartás</h4>
-            <div class="hours-list">
-              <div class="hours-item">
-                <span class="hours-day">Hétfő – Péntek</span>
-                <span class="hours-time">08:00 – 18:00</span>
-              </div>
-              <div class="hours-item">
-                <span class="hours-day">Szombat</span>
-                <span class="hours-time">09:00 – 14:00</span>
-              </div>
-              <div class="hours-item hours-item-closed">
-                <span class="hours-day">Vasárnap</span>
-                <span class="hours-time">Zárva</span>
-              </div>
+          <div class="info-group">
+            <h4 class="info-group-title">Telefonos elérhetőségeink</h4>
+            <div class="phones-wrapper">
+              @for (item of contactInfo; track item.label) {
+                <div class="contact-mini-card">
+                  <div class="icon-box">📞</div>
+                  <div class="details">
+                    <p class="label">{{ item.label }}</p>
+                    <a [href]="item.href" class="phone-link">{{ item.phone }}</a>
+                    <p class="desc">{{ item.desc }}</p>
+                  </div>
+                </div>
+              }
             </div>
           </div>
 

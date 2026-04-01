@@ -1,7 +1,10 @@
 // VÁLTOZÓK
 $gold: #c9a84c;
+$muted-gold: #b39340;      // Elegánsabb, sötétebb arany a gombokhoz
 $dark: #1a1a1a;
+$deep-anthracite: #2c2c2e; // A fekete helyett használt prémium mélyszürke
 $light-gray: #f8f8f6;
+$soft-border: rgba(255, 255, 255, 0.1);
 
 // ÁLTALÁNOS
 .py-6 {
@@ -37,7 +40,7 @@ $light-gray: #f8f8f6;
   margin: 0 auto;
 }
 
-// HERO
+// HERO SZEKCIÓ
 .hero {
   position: relative;
   min-height: 92vh;
@@ -59,18 +62,6 @@ $light-gray: #f8f8f6;
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: -20%;
-    right: -10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
   }
 
   .hero-content {
@@ -118,7 +109,6 @@ $light-gray: #f8f8f6;
   border-radius: 50px;
   font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
   text-decoration: none;
   transition: all 0.3s ease;
   border: 2px solid $dark;
@@ -127,7 +117,6 @@ $light-gray: #f8f8f6;
   &:hover {
     background: $gold;
     border-color: $gold;
-    color: #fff;
     transform: translateY(-2px);
   }
 }
@@ -139,7 +128,6 @@ $light-gray: #f8f8f6;
   border-radius: 50px;
   font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
   text-decoration: none;
   transition: all 0.3s ease;
   border: 2px solid rgba(0,0,0,0.2);
@@ -152,33 +140,7 @@ $light-gray: #f8f8f6;
   }
 }
 
-// SCROLL INDICATOR
-.hero-scroll-indicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-
-  span {
-    display: block;
-    width: 1px;
-    height: 60px;
-    background: linear-gradient(to bottom, transparent, $gold);
-    margin: 0 auto;
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
-}
-
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
-  50% { opacity: 1; transform: scaleY(1); }
-}
-
-// KIEMELT AUTÓK
-.featured {
-  background: #fff;
-}
-
+// KIEMELT AUTÓK (KÁRTYÁK)
 .featured-card {
   background: #fff;
   border-radius: 16px;
@@ -190,251 +152,181 @@ $light-gray: #f8f8f6;
   &:hover {
     transform: translateY(-6px);
     box-shadow: 0 16px 40px rgba(0,0,0,0.12);
-
-    .featured-card-img img {
-      transform: scale(1.05);
-    }
+    .featured-card-img img { transform: scale(1.05); }
   }
 
   .featured-card-img {
     position: relative;
     overflow: hidden;
     height: 220px;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
+    img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
   }
 
   .featured-card-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-
-    .badge-sale {
-    background: #e87c2e;
-    color: #fff;
-    padding: 0.3rem 0.9rem;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    }
-
-    .badge-rent {
-      background: $gold;
-      color: #fff;
-      padding: 0.3rem 0.9rem;
-      border-radius: 50px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+    position: absolute; top: 1rem; right: 1rem;
+    span { padding: 0.3rem 0.9rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #fff; }
+    .badge-sale { background: #e87c2e; }
+    .badge-rent { background: $gold; }
   }
 
-  .featured-card-body {
-    padding: 1.5rem;
-  }
-
-  .featured-card-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: $dark;
-    margin-bottom: 0.5rem;
-  }
-
+  .featured-card-body { padding: 1.5rem; }
+  .featured-card-title { font-size: 1.15rem; font-weight: 700; color: $dark; margin-bottom: 0.5rem; }
   .featured-card-meta {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.25rem;
-
-    span {
-      font-size: 0.75rem;
-      color: #888;
-      background: #f5f5f3;
-      padding: 0.2rem 0.7rem;
-      border-radius: 50px;
-    }
+    display: flex; gap: 0.5rem; margin-bottom: 1.25rem;
+    span { font-size: 0.75rem; color: #888; background: #f5f5f3; padding: 0.2rem 0.7rem; border-radius: 50px; }
   }
 
   .featured-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #f0f0f0;
-    padding-top: 1rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #f0f0f0; padding-top: 1rem;
   }
 
-  .featured-card-price {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: $dark;
-
-    small {
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: #888;
-    }
-  }
-
-  .btn-card {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: $gold;
-    text-decoration: none;
-    letter-spacing: 0.5px;
-    transition: color 0.2s;
-
-    &:hover {
-      color: $dark;
-    }
-  }
+  .featured-card-price { font-size: 1.1rem; font-weight: 700; color: $dark; }
+  .btn-card { font-size: 0.8rem; font-weight: 600; color: $gold; text-decoration: none; &:hover { color: $dark; } }
 }
 
-// ÖSSZES GOMB
+// --- ÖSSZES JÁRMŰ GOMB (Ez javítja a kék linket a főoldalon!) ---
 .btn-outline-featured {
-  border: 1px solid rgba(0,0,0,0.15);
+  background: transparent;
+  border: 2px solid rgba(0,0,0,0.1);
   color: $dark;
-  padding: 0.7rem 2.5rem;
+  padding: 0.85rem 2.5rem;
   border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease;
   display: inline-block;
+  margin-bottom: 2rem;
 
   &:hover {
     border-color: $gold;
     color: $gold;
+    transform: translateY(-2px);
   }
 }
 
-// ELŐNYÖK
-.benefits {
-  background: $light-gray;
-
-  .benefit-item {
-    padding: 2rem 1.5rem;
-    border-right: 1px solid rgba(0,0,0,0.06);
-
-    &:last-child {
-      border-right: none;
-    }
-  }
-
-  .benefit-icon {
-    font-size: 1.8rem;
-    color: $gold;
-    margin-bottom: 1.25rem;
-  }
-
-  .benefit-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: $dark;
-    margin-bottom: 0.75rem;
-  }
-
-  .benefit-text {
-    font-size: 0.875rem;
-    color: #777;
-    line-height: 1.7;
-    margin: 0;
-  }
-}
-
-// CTA
-.cta {
+// --- ELŐNYÖK SZEKCIÓ (Tuningolva) ---
+.benefits-section {
   background: #fff;
+  padding: 6rem 0;
 
-  .cta-inner {
-    background: $dark;
+  .benefit-card {
+    background: #fcfcfb;
+    padding: 3.5rem 2.5rem;
     border-radius: 24px;
-    padding: 4rem;
+    height: 100%;
+    text-align: center;
+    border: 1px solid #f2f2f0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 
-    @media (max-width: 768px) {
-      padding: 2.5rem 1.5rem;
+    &:hover {
+      background: #fff;
+      border-color: rgba($gold, 0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+      transform: translateY(-8px);
     }
   }
 
-  .cta-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: $gold;
-    margin-bottom: 1rem;
-  }
+  .benefit-icon { font-size: 2.2rem; color: $muted-gold; margin-bottom: 1.5rem; display: block; }
+  .benefit-title { font-size: 1.1rem; font-weight: 700; color: $dark; margin-bottom: 1rem; }
+  .benefit-text { font-size: 0.92rem; color: #777; line-height: 1.7; margin: 0; }
+}
 
-  .cta-title {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 1rem;
-  }
+// --- CTA SZEKCIÓ (Prémium Design) ---
+.cta-section {
+  background: #fff;
+  padding-bottom: 8rem;
 
-  .cta-subtitle {
-    color: rgba(255,255,255,0.5);
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin: 0;
-  }
+  .cta-box {
+    background: $deep-anthracite;
+    border-radius: 30px;
+    padding: 5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.12);
 
-  .btn-cta-primary {
-    background: $gold;
-    color: #fff;
-    padding: 0.85rem 2.5rem;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-block;
-
-    &:hover {
-      background: darken($gold, 8%);
-      transform: translateY(-2px);
+    &::after {
+      content: '';
+      position: absolute; bottom: -15%; right: -5%;
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba($muted-gold, 0.06) 0%, transparent 70%);
+      pointer-events: none;
     }
   }
 
-  .btn-cta-secondary {
-    background: transparent;
-    color: rgba(255,255,255,0.7);
-    padding: 0.85rem 2.5rem;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255,255,255,0.2);
-    display: inline-block;
+  .cta-inner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    gap: 3rem;
 
-    &:hover {
-      color: #fff;
-      border-color: rgba(255,255,255,0.5);
-      transform: translateY(-2px);
+    @media (max-width: 991px) {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  .cta-text { max-width: 580px; }
+  .cta-eyebrow { color: $muted-gold; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; font-size: 0.8rem; margin-bottom: 1rem; }
+  .cta-title { color: #fff; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; margin-bottom: 1.25rem; line-height: 1.2; }
+  .cta-subtitle { color: rgba(255,255,255,0.55); font-size: 1.05rem; line-height: 1.6; margin: 0; }
+
+  .cta-btns {
+    display: flex;
+    gap: 1.5rem;
+    flex-shrink: 0;
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+      width: 100%;
     }
   }
 }
 
-// RESZPONZÍV
+// ÚJ GOMB STÍLUSOK (CTA-hoz)
+.btn-cta-dark-gold {
+  background: $muted-gold;
+  color: #fff;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 10px 20px rgba($muted-gold, 0.2);
+
+  &:hover {
+    background: lighten($muted-gold, 5%);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba($muted-gold, 0.3);
+    color: #fff;
+  }
+}
+
+.btn-cta-outline-soft {
+  background: transparent;
+  color: #fff;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid $soft-border;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: $muted-gold;
+    color: $muted-gold;
+    transform: translateY(-3px);
+  }
+}
+
+// RESZPONZÍV JAVÍTÁSOK
 @media (max-width: 768px) {
-  .hero {
-    min-height: 80vh;
-  }
-
-  .benefit-item {
-    border-right: none !important;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
+  .hero { min-height: 80vh; }
+  .cta-section .cta-box { padding: 3.5rem 2rem; }
+  .benefits-section .benefit-card { padding: 2.5rem 1.5rem; }
 }
