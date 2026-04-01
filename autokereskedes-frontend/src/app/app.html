@@ -2,13 +2,7 @@
   <app-navbar></app-navbar>
 }
 
-<div [class.admin-wrapper]="isAdminRoute">
-  @if (isAdminRoute) {
-    <app-admin-sidebar></app-admin-sidebar>
-  }
-
-  <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>
 
 @if (!isAdminRoute) {
   <app-footer></app-footer>

@@ -1,113 +1,78 @@
-<div class="admin-layout">
-        <div class="sidebar-footer">
-            <div class="sidebar-user">
-                <p class="sidebar-user-name">{{ currentUser?.name }}</p>
-                <p class="sidebar-user-role">{{ currentUser?.role }}</p>
-            </div>
-            <button class="sidebar-logout" (click)="logout()">Kijelentkezés</button>
-        </div>
-    <main class="admin-main">
-        <div class="admin-header">
-            <div>
-                <h1 class="admin-page-title">Munkatársak</h1>
-                <p class="admin-page-subtitle">Rendszerhez hozzáférő fiókok kezelése</p>
-            </div>
-            @if (hasRole('superadmin')) {
-            <button class="admin-add-btn" style="border:none; cursor:pointer;" (click)="openModal()">+ Új fiók</button>
-            }
-        </div>
-        @if (loading) {
-        <div class="text-center py-5">
-            <div class="spinner-border text-warning"></div>
-        </div>
-        } @else {
-        <div class="cars-table-wrapper">
-            <table class="cars-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Név</th>
-                        <th>Felhasználónév (Login)</th>
-                        <th>Jogosultság</th>
-                        <th>Regisztrálva</th>
-                        <th>Műveletek</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (user of users; track user.id) {
-                    <tr>
-                        <td class="car-id">#{{ user.id }}</td>
-                        <td><strong>{{ user.name }}</strong></td>
-                        <td style="color: #666;">{{ user.username }}</td>
-                        <td>
-                            <span class="table-badge table-badge-rent">{{ getRoleLabel(user.role) }}</span>
-                        </td>
-                        <td style="color: #aaa; font-size: 0.8rem;">{{ user.createdAt | date:'yyyy. MM. dd.' }}</td>
-                        <td class="car-actions">
-                            @if (user.role !== 'superadmin' && hasRole('superadmin')) {
-                            <button class="action-btn action-btn-delete" (click)="deleteUser(user)">Törlés</button>
-                            } @else {
-                            <span style="color:#ccc; font-size:0.8rem;">Védett fiók</span>
-                            }
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        }
-    </main>
+<div class="admin-header">
+    <div>
+        <h1 class="admin-page-title">Munkatársak</h1>
+        <p class="admin-page-subtitle">Rendszerhez hozzáférő fiókok kezelése</p>
+    </div>
+    @if (hasRole('superadmin')) {
+        <button class="admin-add-btn" (click)="openModal()">+ Új fiók</button>
+    }
 </div>
-@if (showModal) {
-<div class="modal-overlay"
-    style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; display:flex; justify-content:center; align-items:center;"
-    (click)="closeModal()">
-    <div class="modal-box" style="background:#fff; padding:2rem; border-radius:16px; width:100%; max-width:500px;"
-        (click)="$event.stopPropagation()">
-        <h3 style="margin-top:0; color:#1a1a1a; font-weight:800;">Új munkatárs hozzáadása</h3>
-        <p style="color:#666; font-size:0.85rem; margin-bottom:1.5rem;">A jelszót a rendszer biztonságosan titkosítva
-            tárolja.</p>
 
-        <form [formGroup]="userForm" style="display:flex; flex-direction:column; gap:1rem;">
+@if (loading) {
+    <div class="text-center py-5">
+        <div class="spinner-border text-warning"></div>
+    </div>
+} @else {
+    <div class="cars-table-wrapper">
+        <table class="cars-table">
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Felhasználónév</th>
+                    <th>Jogosultság</th>
+                    <th>Regisztrálva</th>
+                    <th>Műveletek</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (user of users; track user.id) {
+                <tr>
+                    <td><strong>{{ user.name }}</strong></td>
+                    <td style="color: #666;">{{ user.username }}</td>
+                    <td>
+                        <span class="table-badge table-badge-rent">{{ getRoleLabel(user.role) }}</span>
+                    </td>
+                    <td style="color: #aaa; font-size: 0.8rem;">{{ user.createdAt | date:'yyyy. MM. dd.' }}</td>
+                    <td class="car-actions">
+                        @if (user.role !== 'superadmin' && hasRole('superadmin')) {
+                            <button class="action-btn action-btn-delete" (click)="deleteUser(user)">Törlés</button>
+                        } @else {
+                            <span style="color:#ccc; font-size:0.8rem; font-weight: 600;">Védett</span>
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (showModal) {
+<div class="modal-overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; display:flex; justify-content:center; align-items:center;" (click)="closeModal()">
+    <div class="modal-box" style="background:#fff; padding:2rem; border-radius:16px; width:100%; max-width:500px;" (click)="$event.stopPropagation()">
+        <h3 style="margin-top:0; color:#1a1a1a; font-weight:800;">Új munkatárs</h3>
+        <form [formGroup]="userForm" style="display:flex; flex-direction:column; gap:1rem; margin-top: 1.5rem;">
             <div>
-                <label
-                    style="display:block; font-size:0.8rem; font-weight:600; color:#555; margin-bottom:0.3rem;">Kolléga
-                    teljes neve *</label>
-                <input type="text" formControlName="name" placeholder="pl. Kovács János"
-                    style="width:100%; padding:0.65rem; border:1px solid #ddd; border-radius:8px;">
+                <label style="display:block; font-size:0.8rem; font-weight:600; color:#555; margin-bottom:0.3rem;">Teljes név *</label>
+                <input type="text" formControlName="name" style="width:100%; padding:0.65rem; border:1px solid #ddd; border-radius:8px;">
             </div>
             <div>
-                <label
-                    style="display:block; font-size:0.8rem; font-weight:600; color:#555; margin-bottom:0.3rem;">Felhasználónév
-                    (Loginhoz) *</label>
-                <input type="text" formControlName="username" placeholder="pl. jkovacs"
-                    style="width:100%; padding:0.65rem; border:1px solid #ddd; border-radius:8px;">
+                <label style="display:block; font-size:0.8rem; font-weight:600; color:#555; margin-bottom:0.3rem;">Felhasználónév *</label>
+                <input type="text" formControlName="username" style="width:100%; padding:0.65rem; border:1px solid #ddd; border-radius:8px;">
             </div>
             <div>
-                <label
-                    style="display:block; font-size:0.8rem; font-weight:600; color:#555; margin-bottom:0.3rem;">Jelszó
-                    (Min. 6 karakter) *</label>
-                <input type="password" formControlName="password" placeholder="Titkos jelszó"
-                    style="width:100%; padding:0.65rem; border:1px solid #ddd; border-radius:8px;">
+                <label style="display:block; font-size:0.8rem; font-weight:600; color:#555; margin-bottom:0.3rem;">Jelszó (Min. 6) *</label>
+                <input type="password" formControlName="password" style="width:100%; padding:0.65rem; border:1px solid #ddd; border-radius:8px;">
             </div>
             <div>
-                <label
-                    style="display:block; font-size:0.8rem; font-weight:600; color:#555; margin-bottom:0.3rem;">Jogosultsági
-                    szint *</label>
-                <select formControlName="role"
-                    style="width:100%; padding:0.65rem; border:1px solid #ddd; border-radius:8px;">
-                    @for (role of roles; track role.value) {
-                    <option [value]="role.value">{{ role.label }}</option>
-                    }
+                <label style="display:block; font-size:0.8rem; font-weight:600; color:#555; margin-bottom:0.3rem;">Jogosultság *</label>
+                <select formControlName="role" style="width:100%; padding:0.65rem; border:1px solid #ddd; border-radius:8px;">
+                    @for (role of roles; track role.value) { <option [value]="role.value">{{ role.label }}</option> }
                 </select>
             </div>
             <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:1rem;">
-                <button type="button" (click)="closeModal()"
-                    style="background:none; border:1px solid #ddd; padding:0.6rem 1.5rem; border-radius:50px; cursor:pointer;">Mégse</button>
-                <button type="button" (click)="submitUser()" [disabled]="userForm.invalid || isSubmitting"
-                    style="background:#1a1a1a; color:#fff; border:none; padding:0.6rem 1.5rem; border-radius:50px; cursor:pointer; font-weight:600;">
-                    {{ isSubmitting ? 'Mentés...' : 'Fiók létrehozása' }}
-                </button>
+                <button type="button" (click)="closeModal()" style="background:none; border:1px solid #ddd; padding:0.6rem 1.5rem; border-radius:50px; cursor:pointer;">Mégse</button>
+                <button type="button" (click)="submitUser()" [disabled]="userForm.invalid || isSubmitting" style="background:#1a1a1a; color:#fff; border:none; padding:0.6rem 1.5rem; border-radius:50px; cursor:pointer; font-weight:600;">{{ isSubmitting ? 'Mentés...' : 'Létrehozás' }}</button>
             </div>
         </form>
     </div>

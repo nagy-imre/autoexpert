@@ -50,7 +50,7 @@ export class CarManager implements OnInit {
 
   // --- ÚJ: Státusz fordító és színező ---
   getStatusText(status: string): string {
-    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Szervizben', 'SOLD': 'Eladva' };
+    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Karbantartás alatt', 'SOLD': 'Eladva' };
     return map[status] || status;
   }
 

@@ -104,7 +104,7 @@ export class CarDetail implements OnInit {
   }
 
   getStatusText(status: string): string {
-    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Szervizben', 'SOLD': 'Eladva' };
+    const map: any = { 'AVAILABLE': 'Elérhető', 'RESERVED': 'Lefoglalva', 'RENTED': 'Kiadva', 'IN_SERVICE': 'Karbantartás alatt', 'SOLD': 'Eladva' };
     return map[status] || status;
   }
 
@@ -119,7 +119,7 @@ export class CarDetail implements OnInit {
   }
 
   getServiceBook(book: string): string {
-    const map: any = { 'full_dealer': 'Végig márkaszervizben vezetett', 'partial': 'Részleges', 'none': 'Nincs' };
+    const map: any = { 'full_dealer': 'Végig márkaKarbantartás alatt vezetett', 'partial': 'Részleges', 'none': 'Nincs' };
     return map[book] || book;
   }
 

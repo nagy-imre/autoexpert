@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors({
   origin: 'http://localhost:4200', // Engedélyezzük az Angular felületet
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'] // Fontos a token miatt!
 }));
 

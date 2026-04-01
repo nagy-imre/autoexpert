@@ -1,79 +1,75 @@
-<div class="admin-layout">
-    <main class="admin-main">
-        <div class="admin-header">
-            <div>
-                <h1 class="admin-page-title">Autók</h1>
-                <p class="admin-page-subtitle">{{ cars.length }} jármű a kínálatban</p>
-            </div>
-            @if (hasRole('superadmin', 'car_manager')) {
-            <a routerLink="/admin/cars/new" class="admin-add-btn">+ Új autó</a>
-            }
-        </div>
-
-        @if (loading) {
-        <div class="text-center py-5">
-            <div class="spinner-border text-warning"></div>
-        </div>
-        } @else {
-        <div class="cars-table-wrapper">
-            <table class="cars-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Márka / Modell</th>
-                        <th>Kategória</th>
-                        <th>Évjárat</th>
-                        <th>Futás</th>
-                        <th>Üzemanyag</th>
-                        <th>Ár</th>
-                        <th>Státusz</th>
-                        @if (hasRole('superadmin', 'car_manager')) {
-                        <th>Műveletek</th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (car of cars; track car.id) {
-                    <tr>
-                        <td class="car-id">#{{ car.id }}</td>
-                        <td class="car-name">
-                            <strong>{{ car.brand }}</strong> {{ car.model }}
-                            <span class="car-plate">{{ car.licensePlate }}</span>
-                        </td>
-                        <td>
-                            @if (car.purpose === 'sale') {
-                            <span class="table-badge table-badge-sale">Eladó</span>
-                            } @else {
-                            <span class="table-badge table-badge-rent">Bérelhető</span>
-                            }
-                        </td>
-                        <td>{{ car.year }}</td>
-                        <td>{{ car.mileage | number:'1.0-0' }} km</td>
-                        <td>{{ car.fuelType || '–' }}</td>
-                        <td class="car-price">
-                            @if (car.purpose === 'sale') {
-                            {{ car.salePrice | number:'1.0-0' }} Ft
-                            } @else {
-                            {{ car.rentPricePerDay | number:'1.0-0' }} Ft/nap
-                            }
-                        </td>
-                        <td>
-                            <span class="table-badge" [ngClass]="getStatusClass(car.status)">
-                                {{ getStatusText(car.status) }}
-                            </span>
-                        </td>
-                        @if (hasRole('superadmin', 'car_manager')) {
-                        <td class="car-actions">
-                            <button class="action-btn action-btn-edit" (click)="editCar(car.id)">Szerkesztés</button>
-                            <button class="action-btn action-btn-delete"
-                                (click)="deleteCar(car.id, car.brand, car.model)">Törlés</button>
-                        </td>
-                        }
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        }
-    </main>
+<div class="admin-header">
+    <div>
+        <h1 class="admin-page-title">Autók</h1>
+        <p class="admin-page-subtitle">{{ cars.length }} jármű a kínálatban</p>
+    </div>
+    @if (hasRole('superadmin', 'car_manager')) {
+    <a routerLink="/admin/cars/new" class="admin-add-btn">+ Új autó</a>
+    }
 </div>
+
+@if (loading) {
+<div class="text-center py-5">
+    <div class="spinner-border text-warning"></div>
+</div>
+} @else {
+<div class="cars-table-wrapper">
+    <table class="cars-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Márka / Modell</th>
+                <th>Kategória</th>
+                <th>Évjárat</th>
+                <th>Futás</th>
+                <th>Üzemanyag</th>
+                <th>Ár</th>
+                <th>Státusz</th>
+                @if (hasRole('superadmin', 'car_manager')) {
+                <th>Műveletek</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (car of cars; track car.id) {
+            <tr>
+                <td class="car-id">#{{ car.id }}</td>
+                <td class="car-name">
+                    <strong>{{ car.brand }}</strong> {{ car.model }}
+                    <span class="car-plate">{{ car.licensePlate }}</span>
+                </td>
+                <td>
+                    @if (car.purpose === 'sale') {
+                    <span class="table-badge table-badge-sale">Eladó</span>
+                    } @else {
+                    <span class="table-badge table-badge-rent">Bérelhető</span>
+                    }
+                </td>
+                <td>{{ car.year }}</td>
+                <td>{{ car.mileage | number:'1.0-0' }} km</td>
+                <td>{{ car.fuelType || '–' }}</td>
+                <td class="car-price">
+                    @if (car.purpose === 'sale') {
+                    {{ car.salePrice | number:'1.0-0' }} Ft
+                    } @else {
+                    {{ car.rentPricePerDay | number:'1.0-0' }} Ft/nap
+                    }
+                </td>
+                <td>
+                    <span class="table-badge" [ngClass]="getStatusClass(car.status)">
+                        {{ getStatusText(car.status) }}
+                    </span>
+                </td>
+                @if (hasRole('superadmin', 'car_manager')) {
+                <td class="car-actions">
+                    <button class="action-btn action-btn-edit" (click)="editCar(car.id)">Szerkesztés</button>
+                    <button class="action-btn action-btn-delete"
+                        (click)="deleteCar(car.id, car.brand, car.model)">Törlés</button>
+                </td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}

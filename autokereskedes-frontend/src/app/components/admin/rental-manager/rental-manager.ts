@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth';
 import { RentalService } from '../../../services/rental';
 import { CarService } from '../../../services/car';
-import { AdminSidebar } from '../admin-sidebar/admin-sidebar';
 import Swal from 'sweetalert2';
 
 // Magyar fordítások
@@ -47,7 +46,7 @@ const SERVICE_BOOK_LABELS: Record<string, string> = {
 @Component({
   selector: 'app-rental-manager',
   standalone: true,
-  imports: [CommonModule, FormsModule, AdminSidebar],
+  imports: [CommonModule, FormsModule],
   templateUrl: './rental-manager.html',
   styleUrl: './rental-manager.scss'
 })
@@ -190,7 +189,7 @@ export class RentalManager implements OnInit {
       title: '<span style="font-size:1.05rem;font-weight:700;">Új bérlés — 2/4</span>',
       html: `
         <p style="color:#aaa;font-size:0.8rem;margin:0 0 1.1rem;">Jármű kiválasztása</p>
-        <select id="swal-car" class="swal2-input" style="margin-bottom:0;">
+        <select id="swal-car" class="swal2-select" style="width:100%; max-width:100%; box-sizing:border-box; margin:0; font-size:0.9rem;">
           <option value="">— Válassz járművet —</option>
           ${carOptions}
         </select>
@@ -265,12 +264,13 @@ export class RentalManager implements OnInit {
           ${this.row('Autó',     `${car?.brand ?? ''} ${car?.model ?? ''}`)}
           ${this.row('Rendszám', car?.licensePlate ?? '—')}
         </table>
+        
         <div id="car-details-toggle" style="display:flex;align-items:center;gap:0.35rem;cursor:pointer;
              color:#c9a84c;font-size:0.75rem;font-weight:600;margin:0.4rem 0.5rem 0.1rem;user-select:none;">
           <span id="car-details-arrow" style="display:inline-block;transition:transform 0.2s;">▶</span>
-          <span>Részletes adatok megjelenítése</span>
+          <span id="car-details-text">Részletes adatok megjelenítése</span>
         </div>
-        <div id="car-details-body" style="display:none;">
+        <div id="car-details-body" style="display:none; margin-top:0.5rem;">
           <table style="width:100%;border-collapse:collapse;">
             ${car?.year            ? this.row('Évjárat',        String(car.year))                                   : ''}
             ${car?.bodyType        ? this.row('Karosszéria',    this.tr(BODY_LABELS, car.bodyType))                 : ''}
@@ -319,8 +319,29 @@ export class RentalManager implements OnInit {
       cancelButtonText: '← Vissza',
       confirmButtonColor: '#c9a84c',
       cancelButtonColor: '#aaa',
-      width: '540px'
+      width: '540px',
+      didOpen: () => {
+        const toggleBtn = document.getElementById('car-details-toggle');
+        const detailsBody = document.getElementById('car-details-body');
+        const arrow = document.getElementById('car-details-arrow');
+        const textSpan = document.getElementById('car-details-text');
+        
+        if (toggleBtn && detailsBody && arrow && textSpan) {
+          toggleBtn.addEventListener('click', () => {
+            if (detailsBody.style.display === 'none') {
+              detailsBody.style.display = 'block';
+              arrow.style.transform = 'rotate(90deg)';
+              textSpan.innerText = 'Részletes adatok elrejtése';
+            } else {
+              detailsBody.style.display = 'none';
+              arrow.style.transform = 'rotate(0deg)';
+              textSpan.innerText = 'Részletes adatok megjelenítése';
+            }
+          });
+        }
+      }
     });
+    
     if (!step4.isConfirmed) { this.openNewRentalModal(); return; }
 
     // ── API hívás ─────────────────────────────────────────────────────────

@@ -1,4 +1,12 @@
-<div class="login-wrapper">
+<div class="login-fullscreen-wrapper">
+  
+  <div class="floating-bg">
+    <div class="bg-track track-1"><span>AUTOEXPERT</span><span>AUTOEXPERT</span><span>AUTOEXPERT</span><span>AUTOEXPERT</span></div>
+    <div class="bg-track track-2"><span>ADMIN</span><span>ADMIN</span><span>ADMIN</span><span>ADMIN</span><span>ADMIN</span></div>
+    <div class="bg-track track-3"><span>AUTOEXPERT</span><span>AUTOEXPERT</span><span>AUTOEXPERT</span><span>AUTOEXPERT</span></div>
+    <div class="bg-track track-4"><span>ADMIN</span><span>ADMIN</span><span>ADMIN</span><span>ADMIN</span><span>ADMIN</span></div>
+  </div>
+
   <div class="login-card">
     <div class="login-header">
       <div class="login-logo">🚗</div>
@@ -9,23 +17,26 @@
     @if (errorMessage) {
       <div class="login-error">{{ errorMessage }}</div>
     }
+    
     <form [formGroup]="loginForm">
       <div class="login-field">
         <label>Felhasználónév</label>
-        <input type="text" formControlName="username" placeholder="Felhasználónév">
+        <input type="text" formControlName="username" placeholder="Írja be a felhasználónevét">
         @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
-          <span class="login-field-error">Kötelező mező.</span>
+          <span class="login-field-error">A felhasználónév megadása kötelező.</span>
         }
       </div>
+      
       <div class="login-field">
         <label>Jelszó</label>
         <input type="password" formControlName="password" placeholder="••••••••">
         @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-          <span class="login-field-error">Kötelező mező.</span>
+          <span class="login-field-error">A jelszó megadása kötelező.</span>
         }
       </div>
+      
       <button class="login-btn" (click)="submit()" [disabled]="loginForm.invalid || loading">
-        {{ loading ? 'Bejelentkezés...' : 'Bejelentkezés' }}
+        {{ loading ? 'Hitelesítés...' : 'Bejelentkezés' }}
       </button>
     </form>
   </div>

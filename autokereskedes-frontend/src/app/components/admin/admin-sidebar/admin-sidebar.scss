@@ -2,15 +2,53 @@ $gold: #c9a84c;
 $dark: #1a1a1a;
 $sidebar-width: 260px;
 
+// GLOBÁLIS KERET (Megakadályozza a vízszintes görgetést)
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f8f6;
+  overflow-x: hidden; 
+}
+
+// MENÜ GOMB (Mindig ott van)
+.menu-toggle-btn {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1100;
+  background: $dark;
+  color: #fff;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $gold;
+    transform: translateY(-2px);
+  }
+}
+
+// OLDALSÁV
 .admin-sidebar {
   width: $sidebar-width;
   background: $dark;
-  padding: 2rem 1.5rem;
+  padding: 6rem 1.5rem 2rem 1.5rem; // Fent extra hely a gombnak
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 0; left: 0; height: 100vh;
-  overflow-y: auto; z-index: 100;
+  overflow-y: auto; 
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(0);
 }
 
 .sidebar-logo { font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: 1px; margin-bottom: 0.25rem; }
@@ -24,10 +62,10 @@ $sidebar-width: 260px;
   &.active { background: rgba(201,168,76,0.15); color: $gold; }
 }
 .sidebar-icon { font-size: 1rem; width: 20px; text-align: center; }
-.sidebar-footer { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; margin-top: 1.5rem; }
+.sidebar-footer { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; margin-top: auto; }
 .sidebar-user { margin-bottom: 1rem; }
 .sidebar-user-name { font-size: 0.875rem; font-weight: 600; color: #fff; margin: 0; }
-.sidebar-user-role { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar-user-role { font-size: 0.7rem; color: rgba(255,255,255,0.35); margin: 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
 .sidebar-logout {
   width: 100%; background: transparent; border: 1px solid rgba(255,255,255,0.1);
   color: rgba(255,255,255,0.5); padding: 0.5rem; border-radius: 8px; font-size: 0.8rem;
@@ -35,6 +73,62 @@ $sidebar-width: 260px;
   &:hover { border-color: #e05a5a; color: #e05a5a; }
 }
 
-@media (max-width: 768px) {
-  .admin-sidebar { width: 100%; height: auto; position: relative; }
+// FŐ TARTALOM
+.admin-main {
+  margin-left: $sidebar-width;
+  flex: 1;
+  padding: 6rem 2rem 2rem 2rem;
+  min-height: 100vh;
+  width: calc(100% - #{$sidebar-width});
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  justify-content: center; // KÖZÉPRE IGAZÍTÁS
+  align-items: flex-start;
+}
+
+// BELSŐ KONTÉNER (Ez akadályozza meg, hogy túlzottan széthúzódjon)
+.admin-content-inner {
+  width: 100%;
+  max-width: 1200px; // Maximális szélesség, hogy szép arányos maradjon
+}
+
+// ÖSSZECSUKOTT ÁLLAPOT (A varázslat!)
+.admin-wrapper.sidebar-collapsed {
+  .admin-sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+  .admin-main {
+    margin-left: 0;
+    width: 100%;
+  }
+  .menu-toggle-btn {
+    background: #fff;
+    color: $dark;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    &:hover { background: $gold; color: #fff; }
+  }
+}
+
+// RESZPONZÍV (Mobil és Tablet)
+@media (max-width: 1300px) {
+  .admin-sidebar {
+    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+  }
+  .admin-main {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-toggle-btn {
+    top: 1rem;
+    left: 1rem;
+  }
+  .admin-main {
+    padding-top: 5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

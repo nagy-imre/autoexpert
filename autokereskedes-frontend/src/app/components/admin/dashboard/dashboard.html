@@ -1,59 +1,64 @@
-<div class="admin-layout">
-  <main class="admin-main">
-    <div class="admin-header">
-      <h1 class="admin-page-title">Dashboard</h1>
-      <p class="admin-page-subtitle">Üdvözöljük, {{ currentUser?.name }}!</p>
-    </div>
-    <div class="row g-4 mb-5">
-      <div class="col-12 col-sm-4">
-        <div class="stat-card">
-          <p class="stat-label">Összes autó</p>
-          <h2 class="stat-value">{{ carCount }}</h2>
-        </div>
-      </div>
-      <div class="col-12 col-sm-4">
-        <div class="stat-card">
-          <p class="stat-label">Eladó</p>
-          <h2 class="stat-value stat-value-sale">{{ saleCount }}</h2>
-        </div>
-      </div>
-      <div class="col-12 col-sm-4">
-        <div class="stat-card">
-          <p class="stat-label">Bérelhető</p>
-          <h2 class="stat-value stat-value-rent">{{ rentCount }}</h2>
-        </div>
-      </div>
-    </div>
+<div class="admin-header">
+  <h1 class="admin-page-title">Irányítópult</h1>
+  <p class="admin-page-subtitle">Üdvözöljük, {{ currentUser?.name }}!</p>
+</div>
 
-    <div class="admin-section">
-      <h5 class="admin-section-title">Gyors műveletek</h5>
-      <div class="row g-3">
-        @if (hasRole('superadmin', 'car_manager')) {
-          <div class="col-12 col-sm-6 col-md-4">
-            <a routerLink="/admin/cars/new" class="quick-action-card">
-              <span class="quick-action-icon">+</span>
-              <span class="quick-action-label">Új autó felvitele</span>
-            </a>
-          </div>
-        }
-        @if (hasRole('superadmin', 'car_manager', 'viewer')) {
-          <div class="col-12 col-sm-6 col-md-4">
-            <a routerLink="/admin/cars" class="quick-action-card">
-              <span class="quick-action-icon">⊞</span>
-              <span class="quick-action-label">Autók listája</span>
-            </a>
-          </div>
-        }
-        @if (hasRole('superadmin', 'rental_manager')) {
-          <div class="col-12 col-sm-6 col-md-4">
-            <a routerLink="/admin/rentals" class="quick-action-card">
-              <span class="quick-action-icon">📋</span>
-              <span class="quick-action-label">Bérlések kezelése</span>
-            </a>
-          </div>
-        }
+<div class="row g-4 mb-5">
+  <div class="col-12 col-sm-4">
+    <div class="stat-card">
+      <div class="stat-icon">🚗</div>
+      <div>
+        <p class="stat-label">Összes autó</p>
+        <h2 class="stat-value">{{ carCount }}</h2>
       </div>
     </div>
+  </div>
+  <div class="col-12 col-sm-4">
+    <div class="stat-card">
+      <div class="stat-icon" style="color: #e87c2e;">🏷️</div>
+      <div>
+        <p class="stat-label">Eladó</p>
+        <h2 class="stat-value stat-value-sale">{{ saleCount }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-4">
+    <div class="stat-card">
+      <div class="stat-icon" style="color: #c9a84c;">🔑</div>
+      <div>
+        <p class="stat-label">Bérelhető</p>
+        <h2 class="stat-value stat-value-rent">{{ rentCount }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
 
-  </main>
+<div class="admin-section">
+  <h5 class="admin-section-title">Gyors műveletek</h5>
+  <div class="row g-3">
+    @if (hasRole('superadmin', 'car_manager')) {
+      <div class="col-12 col-sm-6 col-md-4">
+        <a routerLink="/admin/cars/new" class="quick-action-card">
+          <div class="icon-wrap">+</div>
+          <span>Új autó felvitele</span>
+        </a>
+      </div>
+    }
+    @if (hasRole('superadmin', 'car_manager', 'viewer')) {
+      <div class="col-12 col-sm-6 col-md-4">
+        <a routerLink="/admin/cars" class="quick-action-card">
+          <div class="icon-wrap">⊞</div>
+          <span>Autók listája</span>
+        </a>
+      </div>
+    }
+    @if (hasRole('superadmin', 'rental_manager')) {
+      <div class="col-12 col-sm-6 col-md-4">
+        <a routerLink="/admin/rentals" class="quick-action-card">
+          <div class="icon-wrap">📋</div>
+          <span>Bérlések kezelése</span>
+        </a>
+      </div>
+    }
+  </div>
 </div>

@@ -41,7 +41,7 @@ export class CarForm implements OnInit {
   ];
 
   serviceBooks = [
-    { value: 'full_dealer', label: 'Végig márkaszervizben' },
+    { value: 'full_dealer', label: 'Végig márkaKarbantartás alatt' },
     { value: 'partial', label: 'Részlegesen vezetett' },
     { value: 'none', label: 'Nincs' }
   ];
@@ -53,10 +53,10 @@ export class CarForm implements OnInit {
 
   statuses = [
     { value: 'AVAILABLE', label: 'Elérhető' },
+    { value: 'IN_SERVICE', label: 'Karbantartás alatt' },
+    { value: 'SOLD', label: 'Eladva' },
     { value: 'RESERVED', label: 'Lefoglalva' },
-    { value: 'RENTED', label: 'Kiadva' },
-    { value: 'IN_SERVICE', label: 'Szervizben' },
-    { value: 'SOLD', label: 'Eladva' }
+    { value: 'RENTED', label: 'Kiadva' }
   ];
 
   constructor(

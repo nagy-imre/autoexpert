@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // <-- 1. Behoztuk a ChangeDetectorRef-et
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth';
 import { CarService } from '../../../services/car';
-// Importáljuk a kiszervezett oldalsávot (az útvonalat igazítsd, ha máshol van!)
-import { AdminSidebar } from '../admin-sidebar/admin-sidebar'; 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink], // <-- Ide is bekerült
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -22,7 +20,8 @@ export class Dashboard implements OnInit {
   constructor(
     private authService: AuthService,
     private carService: CarService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef // <-- 2. Példányosítottuk
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +31,9 @@ export class Dashboard implements OnInit {
         this.carCount = cars.length;
         this.saleCount = cars.filter(c => c.purpose === 'sale').length;
         this.rentCount = cars.filter(c => c.purpose === 'rent').length;
+        
+        // 3. Szólunk az Angularnak, hogy frissítse a képernyőn a számokat!
+        this.cdr.detectChanges(); 
       }
     });
   }

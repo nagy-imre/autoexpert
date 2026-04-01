@@ -1,36 +1,51 @@
-<aside class="admin-sidebar">
-    <div class="sidebar-logo">🚗 AUTOEXPERT</div>
-    <p class="sidebar-subtitle">Admin felület</p>
+<div class="admin-wrapper" [class.sidebar-collapsed]="!menuOpen">
+  
+  <button class="menu-toggle-btn" (click)="toggleMenu()">☰</button>
 
-    <nav class="sidebar-nav">
-        <a routerLink="/admin/dashboard" routerLinkActive="active" class="sidebar-link">
-            <span class="sidebar-icon">⊞</span> Dashboard
-        </a>
+  <aside class="admin-sidebar">
+      <div class="sidebar-logo">🚗 AUTOEXPERT</div>
+      <p class="sidebar-subtitle">Admin felület</p>
 
-        @if (hasRole('superadmin', 'car_manager', 'viewer')) {
-        <a routerLink="/admin/cars" routerLinkActive="active" class="sidebar-link">
-            <span class="sidebar-icon">🚗</span> Autók
-        </a>
-        }
+      <nav class="sidebar-nav">
+          <a routerLink="/admin/dashboard" routerLinkActive="active" class="sidebar-link" (click)="onLinkClick()">
+              <span class="sidebar-icon">⊞</span> Irányítópult
+          </a>
 
-        @if (hasRole('superadmin', 'rental_manager')) {
-        <a routerLink="/admin/rentals" routerLinkActive="active" class="sidebar-link">
-            <span class="sidebar-icon">📋</span> Bérlések
-        </a>
-        }
+          @if (hasRole('superadmin', 'car_manager', 'viewer')) {
+          <a routerLink="/admin/cars" routerLinkActive="active" class="sidebar-link" (click)="onLinkClick()">
+              <span class="sidebar-icon">🚗</span> Autók
+          </a>
+          }
 
-        @if (hasRole('superadmin')) {
-        <a routerLink="/admin/users" routerLinkActive="active" class="sidebar-link">
-            <span class="sidebar-icon">👥</span> Felhasználók
-        </a>
-        }
-    </nav>
+          @if (hasRole('superadmin', 'rental_manager')) {
+          <a routerLink="/admin/rentals" routerLinkActive="active" class="sidebar-link" (click)="onLinkClick()">
+              <span class="sidebar-icon">📋</span> Bérlések
+          </a>
+          }
 
-    <div class="sidebar-footer">
-        <div class="sidebar-user">
-            <p class="sidebar-user-name">{{ currentUser?.name }}</p>
-            <p class="sidebar-user-role">{{ currentUser?.role }}</p>
-        </div>
-        <button class="sidebar-logout" (click)="logout()">Kijelentkezés</button>
+          @if (hasRole('superadmin')) {
+          <a routerLink="/admin/users" routerLinkActive="active" class="sidebar-link" (click)="onLinkClick()">
+              <span class="sidebar-icon">👥</span> Felhasználók
+          </a>
+          }
+      </nav>
+
+      <div class="sidebar-footer">
+          <div class="sidebar-user">
+              <p class="sidebar-user-name">{{ currentUser?.name || 'Ismeretlen' }}</p>
+              <p class="sidebar-user-role">
+                  {{ currentUser?.role === 'superadmin' ? 'Rendszergazda' : 
+                     currentUser?.role === 'car_manager' ? 'Autó menedzser' : 
+                     currentUser?.role === 'rental_manager' ? 'Bérlés menedzser' : 'Megfigyelő' }}
+              </p>
+          </div>
+          <button class="sidebar-logout" (click)="logout()">Kijelentkezés</button>
+      </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-content-inner">
+      <router-outlet></router-outlet>
     </div>
-</aside>
+  </main>
+</div>
