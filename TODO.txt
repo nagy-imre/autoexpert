@@ -2,6 +2,4 @@
 
 // ügyfél lássa mikor van foglalva egy bérelt autó
 
-
 // nagyobb adatbázis több autóval képekkel
-// DOKUMENTÁCIÓ
