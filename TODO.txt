@@ -3,3 +3,6 @@
 // ügyfél lássa mikor van foglalva egy bérelt autó
 
 // nagyobb adatbázis több autóval képekkel
+
+// GITIGNORE BŐVÍTÉS, SEEDER KÉSZÍTÉSE
+        ---backendben ott a node_modules, illetve a database.sqlite
