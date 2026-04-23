@@ -41,7 +41,7 @@ export class CarForm implements OnInit {
   ];
 
   serviceBooks = [
-    { value: 'full_dealer', label: 'Végig márkaKarbantartás alatt' },
+    { value: 'full_dealer', label: 'Végig márkaszervízben vezetett' },
     { value: 'partial', label: 'Részlegesen vezetett' },
     { value: 'none', label: 'Nincs' }
   ];

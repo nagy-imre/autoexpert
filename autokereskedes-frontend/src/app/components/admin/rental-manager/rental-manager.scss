@@ -20,7 +20,7 @@ $sidebar-width: 260px;
 .admin-page-title { font-size: 1.75rem; font-weight: 800; color: $dark; margin-bottom: 0.25rem; }
 .admin-page-subtitle { color: #aaa; font-size: 0.875rem; margin: 0; }
 
-.btn-primary { background: $gold; color: #fff; border: none; padding: 0.65rem 1.4rem; border-radius: 10px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; &:hover { background: darken($gold, 8%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba($gold, 0.3); } }
+.btn-primary { background: $gold; color: #fff; border: none; padding: 0.65rem 1.4rem; border-radius: 10px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; &:hover { background: dark($gold, 8%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba($gold, 0.3); } }
 .btn-secondary { background: transparent; border: 1px solid #ddd; color: #555; padding: 0.65rem 1.4rem; border-radius: 10px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s; &:hover { border-color: #aaa; color: $dark; } }
 .btn-clear { background: none; border: none; color: #aaa; font-size: 0.8rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 8px; transition: all 0.2s; &:hover { background: #f0f0f0; color: $dark; } }
 

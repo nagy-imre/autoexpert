@@ -71,8 +71,8 @@ $light: #f8f8f6;
 
   &:hover { background: #f8f8f6; color: $dark; }
   &.active { background: #f0f0f0; color: $dark; }
-  &.filter-btn-sale.active { background: rgba($sale, 0.1); color: darken($sale, 10%); }
-  &.filter-btn-rent.active { background: rgba($rent, 0.1); color: darken($rent, 10%); }
+  &.filter-btn-sale.active { background: rgba($sale, 0.1); color: dark($sale, 10%); }
+  &.filter-btn-rent.active { background: rgba($rent, 0.1); color: dark($rent, 10%); }
 }
 
 // AUTÓ KÁRTYÁK
@@ -163,7 +163,6 @@ $light: #f8f8f6;
   &:hover { background: $gold; color: #fff; }
 }
 
-// ÜRES ÁLLAPOT
 .empty-state {
   background: #f8f8f6; border-radius: 20px; padding: 4rem 2rem; border: 1px dashed #dcdcdc;
   .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }

@@ -4,5 +4,6 @@
 
 // nagyobb adatbázis több autóval képekkel
 
-// GITIGNORE BŐVÍTÉS, SEEDER KÉSZÍTÉSE
-        ---backendben ott a node_modules, illetve a database.sqlite
+// seeder készítése
+
+// admin felületen felhasználó készítésekor password confirmation

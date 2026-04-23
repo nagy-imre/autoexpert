@@ -230,7 +230,7 @@ $light: #f8f8f6;
   display: inline-block;
 
   &:hover {
-    background: darken($gold, 8%);
+    background: dark($gold, 8%);
     transform: translateY(-2px);
   }
 }

@@ -68,8 +68,8 @@ $light: #f8f8f6;
     border: 2px solid $gold;
 
     &:hover {
-      background: darken($gold, 10%);
-      border-color: darken($gold, 10%);
+      background: dark($gold, 10%);
+      border-color: dark($gold, 10%);
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
     }
