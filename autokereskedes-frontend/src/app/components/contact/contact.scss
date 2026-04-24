@@ -107,7 +107,7 @@ $light: #f8f8f6;
     flex: 1;
     .label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.25rem; letter-spacing: 1px; }
     .text-highlight { font-size: 1.1rem; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 0.5rem; }
-    .action-link { font-size: 0.85rem; font-weight: 700; color: $gold; text-decoration: none; transition: color 0.2s; &:hover { color: lighten($gold, 15%); } }
+    .action-link { font-size: 0.85rem; font-weight: 700; color: $gold; text-decoration: none; transition: color 0.2s; &:hover { color: light($gold, 15%); } }
   }
 
   .divider {

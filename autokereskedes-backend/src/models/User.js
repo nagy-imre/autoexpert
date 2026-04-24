@@ -23,7 +23,6 @@ const User = sequelize.define('User', {
   }
 }, {
   hooks: {
-    // Ez a varázslat: Mielőtt elmenti a usert, titkosítja a jelszót!
     beforeCreate: async (user) => {
       if (user.password) {
         const salt = await bcrypt.genSalt(10);

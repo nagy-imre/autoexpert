@@ -7,7 +7,6 @@ exports.createInquiry = async (req, res) => {
 
     let car = null;
     
-    // Csak akkor keressük az autót, ha a frontend küldött CarId-t
     if (CarId) {
       car = await Car.findByPk(CarId);
       if (!car) {
@@ -30,12 +29,10 @@ exports.createInquiry = async (req, res) => {
       let subjectText = "Általános megkeresés";
       let carDetailsHtml = "";
       
-      // Téma lefordítása magyarra (a Contact oldal legördülő menüjéből)
       const topicText = topic === 'sale' ? 'Autóvásárlás' : 
                         topic === 'rent' ? 'Autóbérlés' : 
                         topic === 'service' ? 'Szerviz / Garancia' : 'Egyéb kérdés';
 
-      // HA VAN AUTÓ (Car-details oldalról jött)
       if (car) {
         const isRent = inquiryType === 'rent';
         subjectText = isRent ? `Új bérlési érdeklődés – ${car.brand} ${car.model}` : `Új vásárlási érdeklődés – ${car.brand} ${car.model}`;
@@ -57,15 +54,13 @@ exports.createInquiry = async (req, res) => {
           <hr>
         `;
       } 
-      // HA NINCS AUTÓ (Általános Contact oldalról jött)
       else {
         subjectText = `Új kapcsolatfelvételi űrlap kitöltés: ${topicText}`;
       }
 
-      // LEVÉL ELKÜLDÉSE
       const info = await transporter.sendMail({
         from: `"AutoExpert Weboldal" <${testAccount.user}>`,
-        to: testAccount.user, // Ezt később átírhatod a saját címedre
+        to: testAccount.user,
         subject: `🚗 ${subjectText}`,
         html: `
           <h2>${car ? subjectText : 'Új általános megkeresés érkezett!'}</h2>

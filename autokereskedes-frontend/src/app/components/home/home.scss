@@ -299,7 +299,7 @@ $soft-border: rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 20px rgba($muted-gold, 0.2);
 
   &:hover {
-    background: lighten($muted-gold, 5%);
+    background: light($muted-gold, 5%);
     transform: translateY(-3px);
     box-shadow: 0 15px 30px rgba($muted-gold, 0.3);
     color: #fff;
